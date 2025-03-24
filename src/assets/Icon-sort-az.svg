@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <clipPath id="clip-Icon-sort-az">
+      <rect width="56" height="56"/>
+    </clipPath>
+  </defs>
+  <g id="Icon-sort-az" clip-path="url(#clip-Icon-sort-az)">
+    <g id="Group_6" data-name="Group 6" transform="translate(1 1)">
+      <path id="Path_1" data-name="Path 1" d="M10.913,26.878l8.041-21.74,7.665,21.74" transform="translate(-8.913 -3.307)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      <path id="Path_2" data-name="Path 2" d="M14.362,21.956H24.3" transform="translate(-9.494 -6.141)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="3"/>
+    </g>
+    <path id="Path_3" data-name="Path 3" d="M10.913,35.746H26.554l-3.985,5.385L10.913,56.881H26.554" transform="translate(-7.913 -2.97)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    <g id="Group_5" data-name="Group 5" transform="translate(1.44 3.032)">
+      <path id="Path_4" data-name="Path 4" d="M59.659,12.139V58.394" transform="translate(-21.285 -10.307)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="3"/>
+      <path id="Path_5" data-name="Path 5" d="M45.45,41.662,57.319,63.388,69.138,41.662" transform="translate(-18.89 -15.282)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    </g>
+  </g>
+</svg>
