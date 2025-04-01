@@ -3,6 +3,7 @@ import {SearchFacet} from "./components/SearchFacet";
 import RangeSlider from "./components/RangeSliderFacet";
 import SiteHeader from "./components/SiteHeader";
 import ResultsView from "./components/ResultsView";
+import {Result} from "./components/ResultsView";
 
 
 
@@ -83,7 +84,7 @@ export function App() {
           "facetItemLevel": 0
         }
       ]
-      const resultsList = [
+      const resultsList: Result[] = [
         {
           "resultsTitle": "What is Community Radio??",
           "resultsMoreSubItems":4,

@@ -2,17 +2,18 @@ import React, { JSX } from 'react';
 import ResultCardSubResults from "./ResultCardSubResults";
 import SelectedFacetItems from "./SelectedFacetItems";
 
+export interface Result {
+    resultsTitle: string;
+    resultsMoreSubItems?: number;
+    resultsSubitems: {
+        resultsSubitemsFileld1: string | undefined;
+        resultsSubitemsFileld2: string | undefined;
+        resultsSubitemsFileld3: string | undefined;
+    };
+}
+
 interface IProps {
-    resultsList: {
-        resultsTitle: string;
-        resultsMoreSubItems?: number;
-        resultsSubitems?: {
-            resultsSubitemsFileld1?: string;
-            resultsSubitemsFileld2?: string;
-            resultsSubitemsFileld3?: string;
-        }
-    
-    }[];
+    resultsList: Result[];
     searchInfo: {
         selectedFacetItems: {
             selectedFacetItemsTitle: string;

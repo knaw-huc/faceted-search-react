@@ -16,7 +16,10 @@ const ResultCardSubResults: React.FC<IProps> = ({resultsTitle, resultsMoreSubIte
 
 
     const resultSubItemsList = (): JSX.Element[] => {
-        return resultsSubitems.map(resultsSubitem => {
+        if (!resultsSubitems) {
+            return []
+        }
+        return resultsSubitems.map((resultsSubitem: { resultsSubitemsFileld2: string | number | bigint | boolean | object | React.ReactNode[] | React.ReactElement<any> | null | undefined; resultsSubitemsFileld3: string | number | bigint | boolean | object | React.ReactNode[] | React.ReactElement<any> | null | undefined; resultsSubitemsFileld1: string | number | bigint | boolean | object | React.ReactNode[] | React.ReactElement<any> | null | undefined; }) => {
             return (
                 <button className="grid grid-cols-subgrid col-span-4 p-2 border-b last:border-b-0 border-neutral-200  items-center w-full text-left hover:bg-neutral-100">
                     <div className="text-sm text-neutral-600">{resultsSubitem.resultsSubitemsFileld2}</div>
