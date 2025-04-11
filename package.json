@@ -3,30 +3,52 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.,css"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b ./tsconfig.lib.json && vite build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "@tailwindcss/vite": "^4.0.12",
-    "preact": "^10.26.2",
-    "tailwindcss": "^4.0.12"
+    "@heroicons/react": "^2.2.0"
+  },
+  "peerDependencies": {
+    "react": "19",
+    "react-dom": "19"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",
-    "@preact/preset-vite": "^2.10.1",
+    "@eslint/js": "^9.21.0",
     "@storybook/addon-essentials": "^8.6.4",
     "@storybook/blocks": "^8.6.4",
     "@storybook/experimental-addon-test": "^8.6.4",
     "@storybook/preact": "^8.6.4",
     "@storybook/preact-vite": "^8.6.4",
     "@storybook/test": "^8.6.4",
+    "@tailwindcss/vite": "^4.0.12",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
     "storybook": "^8.6.4",
+    "tailwindcss": "^4.0.12",
     "typescript": "~5.7.2",
-    "vite": "^6.2.0"
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0",
+    "vite-plugin-dts": "^4.5.3"
   }
 }
