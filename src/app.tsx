@@ -1,12 +1,12 @@
 import FilterFacet, {FilterFacetItem} from '../lib/components/FilterFacet';
 import SearchFacet from '../lib/components/SearchFacet';
 import RangeFacet from '../lib/components/RangeFacet';
-import SiteHeader from '../lib/components/SiteHeader';
 import ResultsView from '../lib/components/ResultsView';
 import Facet from '../lib/components/Facet.tsx';
 import SelectedFacets, {SelectedFacet} from '../lib/components/SelectedFacets.tsx';
 import Pagination from '../lib/components/Pagination.tsx';
 import ResultCardSubResults, {ResultCardSubResultsProps} from '../lib/components/ResultCardSubResults.tsx';
+import ResultCardBasic, {ResultCardBasicProps} from '../lib/components/ResultCardBasic.tsx';
 
 export default function App() {
     const facetItemsList1: FilterFacetItem[] = [
@@ -98,6 +98,63 @@ export default function App() {
             isSelected: false
         }
     ];
+
+    const resultsBasic: ResultCardBasicProps[] = [
+        {
+            title: 'Ucto-Webservice',
+            link: '#',
+            description: 'Ucto is a rule-based tokeniser for multiple languages. This is the webservice for it, for both humans and machines.',
+            tags: [
+                {
+                    columns: [
+                        'Tool'
+                    ],
+                    mainColumnIndex: 2,
+                },
+                {
+                    columns: [
+                        'Tagging'
+                    ],
+                    mainColumnIndex: 2,
+                }
+            ],
+            maxInitialItemsShown: 2
+        },
+        {
+            title: 'Search-ui',
+            link: '#',
+            description: 'This repository contains the code for a Search UI to test the functionality of the basic vocabulary-recommender.',
+            tags: [
+                {
+                    columns: [
+                        'Tool'
+                    ],
+                    mainColumnIndex: 2,
+                }
+            ],
+            maxInitialItemsShown: 2
+        },
+        {
+            title: 'Udpipe-service',
+            link: '#',
+            description: 'UDPipe Frysk is a webservice for lemmatizing, part-of-speech tagging and dependency parsing of (West) Frisian texts using UDPipe (Straka and Straková, 2017). The tool allows for multiple ways of processing a text (the web service facilitates texts, files and web addresses). ',
+            tags: [
+                {
+                    columns: [
+                        'Tool'
+                    ],
+                    mainColumnIndex: 2,
+                },
+                {
+                    columns: [
+                        'Annotating'
+                    ],
+                    mainColumnIndex: 2,
+                }
+            ],
+            maxInitialItemsShown: 2
+        }
+    ]
 
     const results: ResultCardSubResultsProps[] = [
         {
@@ -210,9 +267,7 @@ export default function App() {
 
     return (
         <div className="w-full h-full min-h-screen flex flex-col items-center">
-            <SiteHeader name="Interface"/>
-
-            <div className="flex flex-col lg:flex-row xl:gap-10 h-full grow max-w-[1300px] w-full mt-8 lg:mb-16">
+            <div className="flex flex-col lg:flex-row xl:gap-10 h-full grow max-w-(--site-max-width) w-full mt-8 lg:mb-16">
                 <div className="w-full lg:w-96 px-4 pb-6">
                     <div className="w-full my-4">
                         <button
@@ -232,7 +287,7 @@ export default function App() {
                         </button>
                     </div>
                     <section id="facets"
-                             className="w-full hidden lg:flex flex-col max-w-[300px] absolute lg:relative p-4 lg:p-0 shadow-xl lg:shadow-none bg-neutral-50 lg:bg-white">
+                             className="w-full hidden lg:flex flex-col max-w-(--site-max-width) absolute lg:relative p-4 lg:p-0 shadow-xl lg:shadow-none bg-neutral-50 lg:bg-white">
                         <div id="closeFacets" className="w-full text-right">
                             <button className="lg:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -291,10 +346,18 @@ export default function App() {
                     <SelectedFacets selectedFacets={selectedFacets} onClear={() => console.log('Clear facets')}/>
 
                     <ResultsView>
-                        {results.map((result, idx) =>
+                        {resultsBasic.map((resultBasic, idx) =>
+                            <ResultCardBasic key={idx} {...resultBasic}/>
+                        )}
+                    </ResultsView>
+
+                    <ResultsView>
+                    {results.map((result, idx) =>
                             <ResultCardSubResults key={idx} {...result}/>
                         )}
                     </ResultsView>
+
+                    
 
                     <Pagination current={2} prev="#" next="#" pages={{
                         1: '#',

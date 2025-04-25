@@ -15,12 +15,12 @@ export default function SearchFacet({onSearch}: SearchFacetProps) {
             </label>
 
             <div className="flex flex-row w-full">
-                <input className="py-1 px-3 w-full rounded-l border-l  border-t  border-b  border-neutral-600"
+                <input className="py-1 px-3 w-full rounded-l border-l  border-t  border-b  border-neutral-300"
                        type="search" id={id} name="q" value={query}
                        onChange={e => setQuery(e.target.value)}
                        onKeyUp={e => e.key === 'Enter' && onSearch(query)}/>
 
-                <button className="bg-neutral-600 py-1 px-3 rounded-r border border-neutral-600"
+                <button className="bg-(--color-support-001) py-1 px-3 rounded-r border border-(--color-support-001)"
                         aria-label="Search" onClick={_ => onSearch(query)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                          className="w-6 h-6 fill-white">
