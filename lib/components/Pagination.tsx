@@ -25,7 +25,7 @@ export default function Pagination({current, pages, prev, next}: PaginationProps
                         </a>}
 
                     {parseInt(page) === current &&
-                        <div className="bg-neutral-700 text-white rounded font-bold p-2 min-w-10 text-center">
+                        <div className="bg-(--color-support-001) text-white rounded font-bold p-2 min-w-10 text-center">
                             {page}
                         </div>}
                 </Fragment>)}
