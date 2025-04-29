@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
+import ResultCard from './ResultCard.tsx';
 
 export interface ResultCardSubResultsProps {
     title: string;
@@ -19,7 +20,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
     const [showAllItems, setShowAllItems] = useState(moreItems == 0);
 
     return (
-        <li className="col-span-4 grid grid-cols-subgrid bg-neutral-50 border border-neutral-200 hover:bg-white hover:border-neutral-200 rounded w-full cursor-pointer">
+        <ResultCard>
             <a href={link} className="w-full no-underline grid grid-cols-subgrid col-span-4">
                 <div className="p-2 border-b border-neutral-200 text-lg col-span-4">
                     <h3>{title}</h3>
@@ -40,7 +41,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
                     </svg>
                 </button>}
             </a>
-        </li>
+        </ResultCard>
     );
 }
 

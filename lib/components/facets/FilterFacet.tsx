@@ -1,8 +1,8 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
-import iconSortAz from '../assets/icon-sort-az.svg';
-import iconSortZa from '../assets/icon-sort-za.svg';
-import iconSort09 from '../assets/icon-sort-09.svg';
+import iconSortAz from '../../assets/icon-sort-az.svg';
+import iconSortZa from '../../assets/icon-sort-za.svg';
+import iconSort09 from '../../assets/icon-sort-09.svg';
 
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     items: FilterFacetItem[];
