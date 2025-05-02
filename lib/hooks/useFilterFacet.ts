@@ -4,11 +4,19 @@ import useSearchState from './useSearchState.ts';
 import {SearchState} from '../store/FacetedSearchStore.ts';
 import {FilterFacetItem, Selected, Sort} from '../components/facets/FilterFacet.tsx';
 
+interface useFilterFacetReturn {
+    items: FilterFacetItem[];
+    selected: Selected;
+    onSelect: (selected: Selected) => void;
+    onTextFilterChange: (textFilter: string) => void;
+    onSort: (sort: Sort) => void;
+}
+
 export type FilterFacetItemsFn =
     (state: SearchState, selected: Selected, textFilter?: string, sort?: Sort)
         => Promise<FilterFacetItem[]>;
 
-export default function useFilterFacet(facetKey: string, filterFacetItemsFn: FilterFacetItemsFn) {
+export default function useFilterFacet(facetKey: string, filterFacetItemsFn: FilterFacetItemsFn): useFilterFacetReturn {
     const state = useSearchState();
     const [values, setValues] = useFacet(facetKey);
 

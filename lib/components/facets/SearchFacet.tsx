@@ -1,12 +1,13 @@
 import {useId, useState} from 'react';
 
 export interface SearchFacetProps {
+    initialQuery?: string;
     onSearch: (query: string) => void;
 }
 
-export default function SearchFacet({onSearch}: SearchFacetProps) {
+export default function SearchFacet({initialQuery, onSearch}: SearchFacetProps) {
     const id = useId();
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState(initialQuery || '');
 
     return (
         <div className="mb-6">
