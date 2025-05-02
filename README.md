@@ -1,12 +1,4 @@
-# huc-search-interface
-Generic Search Interface UI
+# Faceted Search React
 
-## Install
-`npm i`
-
-## Development
-`npm run dev`
-
-
-## Build
-`npm run build`
+Faceted Search React is a library for building faceted search interfaces in React applications. It provides reusable
+components and hooks for filtering, sorting, and displaying search results. 
