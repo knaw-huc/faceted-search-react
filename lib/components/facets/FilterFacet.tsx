@@ -1,24 +1,33 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
+import * as ScrollArea from '@radix-ui/react-scroll-area';
 import iconSortAz from '../../assets/icon-sort-az.svg';
 import iconSortZa from '../../assets/icon-sort-za.svg';
 import iconSort09 from '../../assets/icon-sort-09.svg';
+import iconDoubleArrowDown from '../../assets/icon-double-arrow-down.svg';
+
+type SelectedState = boolean | 'indeterminate';
+export type Selected = { [itemKey: string]: SelectedState };
+export type Sort = 'asc' | 'desc' | 'amount';
 
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     items: FilterFacetItem[];
+    selected: Selected;
     maxInitialItems?: number;
-    onSelected: (key: string) => void;
     showAmount?: boolean;
     itemsClosed?: boolean;
+    onSelect: (selected: Selected) => void;
 }
 
 interface FilterFacetFiltersProps {
     onTextFilterChange?: (value: string) => void;
-    onSort?: (type: 'asc' | 'desc' | 'amount') => void;
+    onSort?: (type: Sort) => void;
 }
 
 interface FilterFacetItemProps extends FilterFacetItem {
-    onSelected: (key: string) => void;
+    state: Selected;
+    parents: Map<string, FilterFacetItem>;
+    onSelected: (selected: Selected) => void;
     hasChildren: boolean;
     showAmount?: boolean;
     itemsClosed?: boolean;
@@ -28,19 +37,32 @@ export interface FilterFacetItem {
     itemKey: string;
     label: string;
     amount: number;
-    isSelected: boolean;
     children?: FilterFacetItem[];
+}
+
+function buildParents(items: FilterFacetItem[], parent?: FilterFacetItem, map = new Map<string, FilterFacetItem>()) {
+    for (const item of items) {
+        if (parent) {
+            map.set(item.itemKey, parent);
+        }
+        if (item.children) {
+            buildParents(item.children, item, map);
+        }
+    }
+    return map;
 }
 
 export default function FilterFacet({
                                         items,
+                                        selected,
                                         maxInitialItems,
-                                        onSelected,
+                                        onSelect,
                                         showAmount = true,
                                         itemsClosed = false,
                                         onTextFilterChange,
                                         onSort
                                     }: FilterFacetProps) {
+    const parents = buildParents(items);
     const hasChildren = items.some(item => item.children && item.children.length > 0);
     const [showAll, setShowAll] = useState(!(maxInitialItems && items.length > maxInitialItems));
 
@@ -49,14 +71,23 @@ export default function FilterFacet({
             {(onTextFilterChange || onSort) &&
                 <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort}/>}
 
-            <div className="max-h-48 overflow-y-auto">
-                {(showAll ? items : items.slice(0, maxInitialItems)).map(facetItem =>
-                    <FilterFacetItem key={facetItem.itemKey} {...facetItem} onSelected={onSelected}
-                                     hasChildren={hasChildren} showAmount={showAmount} itemsClosed={itemsClosed}/>)}
-            </div>
+            <ScrollArea.Root className="relative overflow-hidden">
+                <ScrollArea.Viewport className="max-h-48 pr-4">
+                    {(showAll ? items : items.slice(0, maxInitialItems)).map(facetItem =>
+                        <FilterFacetItem key={facetItem.itemKey} {...facetItem}
+                                         state={selected} parents={parents}
+                                         onSelected={onSelect} hasChildren={hasChildren}
+                                         showAmount={showAmount} itemsClosed={itemsClosed}/>)}
+                </ScrollArea.Viewport>
+
+                <ScrollArea.Scrollbar orientation="vertical"
+                                      className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]">
+                    <ScrollArea.Thumb className="relative flex-1 rounded-full bg-neutral-100"/>
+                </ScrollArea.Scrollbar>
+            </ScrollArea.Root>
 
             {maxInitialItems && items.length > maxInitialItems &&
-                <ToggleItems toggle={() => setShowAll(showAll => !showAll)}/>}
+                <ToggleItems isOpen={showAll} toggle={() => setShowAll(showAll => !showAll)}/>}
         </>
     )
 }
@@ -101,7 +132,8 @@ function FilterFacetItem({
                              itemKey,
                              label,
                              amount,
-                             isSelected,
+                             state,
+                             parents,
                              children,
                              onSelected,
                              hasChildren,
@@ -109,37 +141,48 @@ function FilterFacetItem({
                              itemsClosed = false
                          }: FilterFacetItemProps) {
     const itemHasChildren = children && children.length > 0;
-    const areAllSelected = (items: FilterFacetItem[], allSelected: boolean) => items.every(item => item.isSelected === allSelected);
-
     const id = useId();
     const [isOpen, setIsOpen] = useState(!itemsClosed);
     const ref = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (ref.current) {
-            if (itemHasChildren) {
-                if (children.flatMap(item => item.children ? areAllSelected(item.children, true) : item.isSelected)) {
-                    ref.current.checked = true;
-                    ref.current.indeterminate = false;
-                }
-                else if (children.flatMap(item => item.children ? areAllSelected(item.children, false) : !item.isSelected)) {
-                    ref.current.checked = false;
-                    ref.current.indeterminate = false;
-                }
-                else {
-                    ref.current.checked = false;
-                    ref.current.indeterminate = true;
-                }
-            }
-            else {
-                ref.current.checked = isSelected;
-                ref.current.indeterminate = false;
-            }
+            ref.current.indeterminate = state[itemKey] === 'indeterminate';
         }
-    }, [isSelected, children]);
+    }, [state]);
+
+    function updateDown(itemKey: string, children: FilterFacetItem[] | undefined,
+                        checked: boolean, newState: Selected) {
+        newState[itemKey] = checked;
+        for (const child of children || []) {
+            updateDown(child.itemKey, child.children, checked, newState);
+        }
+    }
+
+    function updateUp(itemKey: string, newState: Selected) {
+        const parent = parents.get(itemKey);
+        if (!parent)
+            return;
+
+        const children = parent.children!;
+        const states = children.map(child => newState[child.itemKey]);
+        const allChecked = states.every(s => s === true);
+        const noneChecked = states.every(s => s === false);
+
+        newState[parent.itemKey] = !allChecked && !noneChecked ? 'indeterminate' : allChecked;
+
+        updateUp(parent.itemKey, newState);
+    }
+
+    function onChange(checked: boolean) {
+        const newState = {...state};
+        updateDown(itemKey, children, checked, newState);
+        updateUp(itemKey, newState);
+        onSelected(newState);
+    }
 
     return (
-        <div className="flex flex-col justify-between gap-1 w-full items-center">
+        <div className="flex flex-col justify-between w-full items-center">
             <div className="flex flex-row items-center w-full">
                 {itemHasChildren &&
                     <button className="mr-2" onClick={_ => setIsOpen(isOpen => !isOpen)}>
@@ -147,8 +190,8 @@ function FilterFacetItem({
                     </button>}
 
                 <input className={`w-4 h-4 mr-2 block ${!itemHasChildren && hasChildren ? 'ml-5' : ''}`}
-                       type="checkbox" id={id} name={itemKey} ref={ref}
-                       onChange={_ => onSelected(itemKey)}/>
+                       type="checkbox" id={id} name={itemKey} ref={ref} checked={Boolean(state[itemKey])}
+                       onChange={e => onChange(e.target.checked)}/>
 
                 <label htmlFor={id} className="flex justify-between w-full">
                     <div className="grow">{label}</div>
@@ -162,8 +205,10 @@ function FilterFacetItem({
             {itemHasChildren && <div className={`w-full ${isOpen ? 'block' : 'hidden'}`}>
                 <div className="ml-2">
                     {children.map(facetItem =>
-                        <FilterFacetItem key={facetItem.itemKey} {...facetItem} onSelected={onSelected}
-                                         hasChildren={hasChildren} showAmount={showAmount} itemsClosed={itemsClosed}/>)}
+                        <FilterFacetItem key={facetItem.itemKey} {...facetItem}
+                                         state={state} parents={parents}
+                                         onSelected={onSelected} hasChildren={hasChildren}
+                                         showAmount={showAmount} itemsClosed={itemsClosed}/>)}
                 </div>
             </div>}
         </div>
@@ -177,18 +222,14 @@ function ChevronIcon({isOpen}: { isOpen: boolean }) {
     return <ChevronRightIcon className="w-3 h-3 fill-neutral-900"/>;
 }
 
-function ToggleItems({toggle}: { toggle: () => void }) {
+function ToggleItems({isOpen, toggle}: { isOpen: boolean, toggle: () => void }) {
     return (
         <div className="flex justify-end">
             <button className="text-xs flex flex-row text-sky-700 items-center justify-start gap-1"
                     onClick={toggle}>
                 All items
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                     className="w-4 h-4 fill-bg-sky-700">
-                    <path fillRule="evenodd"
-                          d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
-                          clipRule="evenodd"/>
-                </svg>
+                <img src={iconDoubleArrowDown} alt=""
+                     className={`w-4 h-4 fill-bg-sky-700 ${isOpen ? 'rotate-180' : ''}`}/>
             </button>
         </div>
     );
