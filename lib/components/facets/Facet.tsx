@@ -1,4 +1,5 @@
 import {ReactNode, useState} from 'react';
+import iconArrowDown from '../../assets/icon-arrow-down.svg';
 
 export interface FacetProps {
     label: string;
@@ -9,6 +10,8 @@ export interface FacetProps {
 }
 
 export default function Facet({label, infoText, startOpen = true, allowToggle = true, children}: FacetProps) {
+    const [isOpen, setOpen] = useState(startOpen);
+
     return (
         <div className="mb-10 w-full max-w-[400px]" aria-label={`Facet for ${label}`}>
             <div className="flex justify-between items-center mb-1">
@@ -22,11 +25,12 @@ export default function Facet({label, infoText, startOpen = true, allowToggle = 
                     </a>
 
                     {infoText && <FacetInfo text={infoText}/>}
-                    {allowToggle && <ToggleShowHide startOpen={startOpen}/>}
+                    {allowToggle && <ToggleShowHide isOpen={isOpen}
+                                                    onToggle={() => setOpen(isOpen => !isOpen)}/>}
                 </div>
             </div>
 
-            {children}
+            {isOpen && children}
         </div>
     );
 }
@@ -52,20 +56,12 @@ function FacetInfo({text}: { text: string }) {
     );
 }
 
-function ToggleShowHide({startOpen}: { startOpen: boolean }) {
-    const [isOpen, setOpen] = useState(startOpen);
-
+function ToggleShowHide({isOpen, onToggle}: { isOpen: boolean, onToggle: () => void }) {
     return (
         <button
             className="p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center translate-x-2"
-            aria-label={`Click to ${isOpen ? 'close' : 'open'} the facet`}
-            onClick={_ => setOpen(isOpen => !isOpen)}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                 className="w-3 h-3 fill-neutral-900">
-                <path fillRule="evenodd"
-                      d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
-                      clipRule="evenodd"/>
-            </svg>
+            aria-label={`Click to ${isOpen ? 'close' : 'open'} the facet`} onClick={onToggle}>
+            <img src={iconArrowDown} alt="" className={`w-3 h-3 fill-neutral-900 ${!isOpen ? 'rotate-180' : ''}`}/>
         </button>
     );
 }

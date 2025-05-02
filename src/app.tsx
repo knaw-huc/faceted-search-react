@@ -1,6 +1,17 @@
+import {useState} from 'react';
 import {
-    ContentWithAsides, Facet, FacetsSection, FilterFacet, Layout, Pagination, RangeFacet, ResultCardBasic,
-    ResultCardSubResults, ResultsView, SearchFacet, SelectedFacets
+    ContentWithAsides,
+    Facet,
+    FacetsSection,
+    FilterFacet,
+    Layout,
+    Pagination,
+    RangeFacet,
+    ResultCardBasic,
+    ResultCardSubResults,
+    ResultsView,
+    SearchFacet,
+    SelectedFacets
 } from '../lib';
 import '../lib/index.css';
 
@@ -8,26 +19,22 @@ const facetItemsList1 = [
     {
         itemKey: 'assum',
         label: 'Assum',
-        amount: 12,
-        isSelected: false
+        amount: 12
     },
     {
         itemKey: 'berends',
         label: 'Berends',
-        amount: 48,
-        isSelected: false
+        amount: 48
     },
     {
         itemKey: 'bertens',
         label: 'Bertens',
-        amount: 111,
-        isSelected: false
+        amount: 111
     },
     {
         itemKey: 'blankhart',
         label: 'Blankhart',
-        amount: 312,
-        isSelected: false
+        amount: 312
     }
 ];
 
@@ -35,62 +42,94 @@ const facetItemsList2 = [
     {
         itemKey: 'abidjan',
         label: 'Abidjan',
-        amount: 12,
-        isSelected: false
+        amount: 12
     },
     {
         itemKey: 'accra',
         label: 'Accra',
-        amount: 48,
-        isSelected: false
+        amount: 48
     },
     {
         itemKey: 'europa',
         label: 'Europa',
-        amount: 121,
-        isSelected: false
+        amount: 121
     },
     {
         itemKey: 'benelux',
         label: 'Benelux',
         amount: 87,
-        isSelected: true,
         children: [
             {
                 itemKey: 'nederland',
                 label: 'Nederland',
                 amount: 45,
-                isSelected: true,
                 children: [
                     {
                         itemKey: 'amsterdam',
                         label: 'Amsterdam',
                         amount: 1,
-                        isSelected: true,
                         children: [
                             {
                                 itemKey: 'jordaan',
                                 label: 'Jordaan',
-                                amount: 0,
-                                isSelected: true
+                                amount: 2
+                            }, {
+                                itemKey: 'bos-en-lommer',
+                                label: 'Bos en Lommer',
+                                amount: 3
+                            }, {
+                                itemKey: 'de-pijp',
+                                label: 'De Pijp',
+                                amount: 2
+                            }
+                        ]
+                    },
+                    {
+                        itemKey: 'utrecht',
+                        label: 'Utrecht',
+                        amount: 7,
+                        children: [
+                            {
+                                itemKey: 'oudwijk',
+                                label: 'Oudwijk',
+                                amount: 7
+                            }
+                        ]
+                    },
+                    {
+                        itemKey: 'rotterdam',
+                        label: 'Rotterdam',
+                        amount: 4,
+                        children: [
+                            {
+                                itemKey: 'stadsdriehoek',
+                                label: 'Stadsdriehoek',
+                                amount: 2
+                            }, {
+                                itemKey: 'oude-westen',
+                                label: 'Oude Westen',
+                                amount: 2
                             }
                         ]
                     }
                 ]
+            },
+            {
+                itemKey: 'belgie',
+                label: 'Belgie',
+                amount: 35
             }
         ]
     },
     {
         itemKey: 'ankara',
         label: 'Ankara',
-        amount: 12,
-        isSelected: false
+        amount: 12
     },
     {
         itemKey: 'bagdad',
         label: 'Bagdad',
-        amount: 55,
-        isSelected: false
+        amount: 55
     }
 ];
 
@@ -225,6 +264,63 @@ const selectedFacets = [
 ];
 
 export default function App() {
+    const [facetItemsList1State, setFacetItemsList1State] =  useState({
+        'assum': false,
+        'berends': false,
+        'bertens': false,
+        'blankhart': false
+    });
+
+    const [facetItemsList2State, setFacetItemsList2State] = useState({
+        'abidjan': false,
+        'accra': false,
+        'europa': false,
+        'benelux': false,
+        'nederland': false,
+        'amsterdam': false,
+        'jordaan': false,
+        'ankara': false,
+        'bagdad': false
+    });
+
+    function Facets() {
+        return (
+            <FacetsSection>
+                <SearchFacet onSearch={query => console.log('Search query', query)}/>
+
+                <Facet label="Range">
+                    <RangeFacet min={0} max={1000} step={1}
+                                onChange={(min, max) => console.log('Range', min, max)}/>
+                </Facet>
+
+                <Facet label="Name" infoText="Info about this facet.">
+                    <FilterFacet items={facetItemsList1}
+                                 selected={facetItemsList1State}
+                                 onTextFilterChange={value => console.log('Name text filter', value)}
+                                 onSort={type => console.log('Name sort', type)}
+                                 onSelect={state => setFacetItemsList1State(state as any)}/>
+                </Facet>
+
+                <Facet label="Location" infoText="Info about this facet.">
+                    <FilterFacet items={facetItemsList2}
+                                 selected={facetItemsList2State}
+                                 onTextFilterChange={value => console.log('Location text filter', value)}
+                                 onSort={type => console.log('Location sort', type)}
+                                 onSelect={state => setFacetItemsList2State(state as any)}/>
+                </Facet>
+
+                <Facet label="Organisation" infoText="Info about this facet.">
+                    <FilterFacet items={facetItemsList1.concat(facetItemsList1)}
+                                 selected={{}}
+                                 maxInitialItems={3}
+                                 onTextFilterChange={value => console.log('Organisation text filter', value)}
+                                 onSort={type => console.log('Organisation sort', type)}
+                                 onSelect={_ => console.log('Changed organisation')}/>
+                </Facet>
+            </FacetsSection>
+        );
+    }
+
     return (
         <Layout>
             <ContentWithAsides leftAside={<Facets/>}>
@@ -256,46 +352,3 @@ export default function App() {
     )
 }
 
-function Facets() {
-    return (
-        <FacetsSection>
-            <SearchFacet onSearch={query => console.log('Search query', query)}/>
-
-            <Facet label="Range">
-                <RangeFacet min={0} max={1000} step={1}
-                            onChange={(min, max) => console.log('Range', min, max)}/>
-            </Facet>
-
-            <Facet label="Name" infoText="Info about this facet.">
-                <FilterFacet items={facetItemsList1}
-                             onTextFilterChange={value => console.log('Name text filter', value)}
-                             onSort={type => console.log('Name sort', type)}
-                             onSelected={key => {
-                                 const item = facetItemsList1.find(item => item.itemKey === key);
-                                 item && (item.isSelected = !item.isSelected);
-                             }}/>
-            </Facet>
-
-            <Facet label="Location" infoText="Info about this facet.">
-                <FilterFacet items={facetItemsList2}
-                             onTextFilterChange={value => console.log('Location text filter', value)}
-                             onSort={type => console.log('Location sort', type)}
-                             onSelected={key => {
-                                 const item = facetItemsList1.find(item => item.itemKey === key);
-                                 item && (item.isSelected = !item.isSelected);
-                             }}/>
-            </Facet>
-
-            <Facet label="Organisation" infoText="Info about this facet.">
-                <FilterFacet items={facetItemsList1.concat(facetItemsList1)}
-                             maxInitialItems={3}
-                             onTextFilterChange={value => console.log('Organisation text filter', value)}
-                             onSort={type => console.log('Organisation sort', type)}
-                             onSelected={key => {
-                                 const item = facetItemsList1.find(item => item.itemKey === key);
-                                 item && (item.isSelected = !item.isSelected);
-                             }}/>
-            </Facet>
-        </FacetsSection>
-    );
-}
