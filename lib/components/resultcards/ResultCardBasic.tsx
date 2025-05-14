@@ -1,4 +1,4 @@
-import ResultCard from './ResultCard.tsx';
+import ResultCard from './ResultCard';
 
 export interface ResultCardBasicProps {
     title: string;

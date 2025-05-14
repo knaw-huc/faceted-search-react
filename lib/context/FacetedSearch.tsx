@@ -1,10 +1,10 @@
 import {createContext, useRef, ReactNode} from 'react';
-import createFacetedSearchStore, {SearchFn, FacetedSearchStore} from '../store/FacetedSearchStore.ts';
+import createFacetedSearchStore, {SearchFn, FacetedSearchStore} from '../store/FacetedSearchStore';
 
 interface FacetedSearchParams<R> {
     searchFn: SearchFn<R>;
     pageSize?: number;
-    children: ReactNode | ReactNode[];
+    children: ReactNode;
 }
 
 export const FacetedSearchContext = createContext<FacetedSearchStore<any> | null>(null);

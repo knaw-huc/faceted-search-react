@@ -1,48 +1,44 @@
-import {useEffect, useState} from 'react';
-import useFacet from './useFacet.ts';
-import useSearchState from './useSearchState.ts';
-import {SearchState} from '../store/FacetedSearchStore.ts';
-import {FilterFacetItem, Selected, Sort} from '../components/facets/FilterFacet.tsx';
+import {use, useState} from 'react';
+import useFacet from './useFacet';
+import useSearchState from './useSearchState';
+import {SearchState} from '../store';
+import {FilterFacetItem, Selected, Sort} from '../components/facets/FilterFacet';
 
 interface useFilterFacetReturn {
-    items: FilterFacetItem[];
+    items: FilterFacetItem[] | Promise<FilterFacetItem[]>;
     selected: Selected;
     onSelect: (selected: Selected) => void;
     onTextFilterChange: (textFilter: string) => void;
     onSort: (sort: Sort) => void;
 }
 
-export type FilterFacetItemsFn =
-    (state: SearchState, selected: Selected, textFilter?: string, sort?: Sort)
-        => Promise<FilterFacetItem[]>;
+export type UseFetchItems = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) =>
+    FilterFacetItem[] | Promise<FilterFacetItem[]>;
 
-export default function useFilterFacet(facetKey: string, filterFacetItemsFn: FilterFacetItemsFn): useFilterFacetReturn {
+const getFlattenedItems = (items: FilterFacetItem[]): FilterFacetItem[] =>
+    items.reduce<FilterFacetItem[]>((acc, item) => {
+        if (item.children) {
+            return acc.concat(getFlattenedItems(item.children));
+        }
+        return acc.concat(item);
+    }, []);
+
+const getReadableValue = (items: FilterFacetItem[], value: string): string =>
+    getFlattenedItems(items).find(item => item.itemKey == value)?.label || '';
+
+export default function useFilterFacet(facetKey: string, label: string, useFetchItems: UseFetchItems): useFilterFacetReturn {
     const state = useSearchState();
-    const [values, setValues] = useFacet(facetKey);
-
-    const [items, setItems] = useState<FilterFacetItem[]>([]);
     const [filter, setFilter] = useState('');
     const [sort, setSort] = useState<Sort>('asc');
-
-    const selected = Object.fromEntries(items.map(item => [item.itemKey, false]));
-    for (const value of values) {
-        selected[value] = true;
-    }
-
-    useEffect(() => {
-        updateFacetValues();
-    }, [state, selected, filter, sort]);
+    const [values, setValues] = useFacet(facetKey, label, value => getReadableValue(items instanceof Promise ? use(items) : items, value), []);
+    const items = useFetchItems(state, values as string[], filter, sort);
+    const selected = Object.fromEntries((Array.isArray(values) ? values : [values]).map(value => [value, true]));
 
     function onSelect(selected: Selected) {
         const newValues = Object.entries(selected)
             .filter(([_itemKey, selected]) => selected === true)
             .map(([itemKey]) => itemKey);
         setValues(newValues);
-    }
-
-    async function updateFacetValues() {
-        const items = await filterFacetItemsFn(state, selected, filter, sort);
-        setItems(items);
     }
 
     return {items, selected, onSelect, onTextFilterChange: setFilter, onSort: setSort};

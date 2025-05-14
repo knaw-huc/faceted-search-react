@@ -1,14 +1,20 @@
-import useFacet from './useFacet.ts';
+import useFacet from './useFacet';
 
 interface useRangeFacetReturn {
     value?: [number, number];
     onChange: (min: number, max: number) => void;
 }
 
-export default function useRangeFacet(facetKey: string, min: number, max: number): useRangeFacetReturn {
-    const [values, setValues] = useFacet(facetKey);
+const getReadableValue = (value: string): string =>
+    value.split(':').map(v => {
+        const num = Number(v);
+        return isNaN(num) ? v : num.toLocaleString();
+    }).join(' - ');
 
-    const value = Array.isArray(values) ? values[0] : values;
+export default function useRangeFacet(facetKey: string, label: string, min: number, max: number): useRangeFacetReturn {
+    const [values, setValues] = useFacet(facetKey, label, getReadableValue, '');
+
+    const value = values[0];
     const hasValues = !value.includes(':');
     const [minValue, maxValue] = value.split(':').map(Number);
 

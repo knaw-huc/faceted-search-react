@@ -1,6 +1,6 @@
 import {ReactNode, useState} from 'react';
 
-export default function FacetsSection({children}: { children: ReactNode | ReactNode[] }) {
+export default function FacetsSection({children}: { children: ReactNode }) {
     const [showFacets, setShowFacets] = useState(false);
 
     return (

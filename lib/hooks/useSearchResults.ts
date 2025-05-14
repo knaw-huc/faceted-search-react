@@ -1,7 +1,8 @@
 import {use} from 'react';
-import {SearchResults} from '../store/FacetedSearchStore.ts';
-import useSearchContext from './useSearchContext.ts';
+import {SearchResults} from '../store';
+import useSearchContext from './useSearchContext';
 
 export default function useSearchResults<R>(): SearchResults<R> {
-    return use(useSearchContext<R, Promise<SearchResults<R>>>(s => s.results));
+    const results = useSearchContext<R, SearchResults<R> | Promise<SearchResults<R>>>(s => s.results);
+    return results instanceof Promise ? use(results) : results;
 }

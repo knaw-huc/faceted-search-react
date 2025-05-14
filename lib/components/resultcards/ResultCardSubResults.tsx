@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
-import ResultCard from './ResultCard.tsx';
+import ResultCard from './ResultCard';
 
 export interface ResultCardSubResultsProps {
     title: string;

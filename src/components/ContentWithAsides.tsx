@@ -1,9 +1,9 @@
 import {ReactNode} from 'react';
 
 export default function ContentWithAsides({children, leftAside, rightAside}: {
-    children: ReactNode | ReactNode[];
-    leftAside?: ReactNode | ReactNode[];
-    rightAside?: ReactNode | ReactNode[];
+    children: ReactNode;
+    leftAside?: ReactNode;
+    rightAside?: ReactNode;
 }) {
     return (
         <div className="flex flex-col lg:flex-row xl:gap-10 h-full grow max-w-(--site-max-width) w-full mt-8 lg:mb-16">

@@ -1,6 +1,7 @@
-import {useEffect, useId, useRef, useState} from 'react';
+import {Suspense, use, useEffect, useId, useRef, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
+import GhostLines from '../utils/GhostLines.tsx';
 import iconSortAz from '../../assets/icon-sort-az.svg';
 import iconSortZa from '../../assets/icon-sort-za.svg';
 import iconSort09 from '../../assets/icon-sort-09.svg';
@@ -10,8 +11,10 @@ type SelectedState = boolean | 'indeterminate';
 export type Selected = { [itemKey: string]: SelectedState };
 export type Sort = 'asc' | 'desc' | 'amount';
 
-export interface FilterFacetProps extends FilterFacetFiltersProps {
-    items: FilterFacetItem[];
+export type FilterFacetProps = GeneralFilterFacetProps & FilterFacetFiltersProps;
+
+interface GeneralFilterFacetProps {
+    items: FilterFacetItem[] | Promise<FilterFacetItem[]>;
     selected: Selected;
     maxInitialItems?: number;
     showAmount?: boolean;
@@ -62,34 +65,17 @@ export default function FilterFacet({
                                         onTextFilterChange,
                                         onSort
                                     }: FilterFacetProps) {
-    const parents = buildParents(items);
-    const hasChildren = items.some(item => item.children && item.children.length > 0);
-    const [showAll, setShowAll] = useState(!(maxInitialItems && items.length > maxInitialItems));
-
     return (
         <>
             {(onTextFilterChange || onSort) &&
                 <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort}/>}
 
-            <ScrollArea.Root className="relative overflow-hidden">
-                <ScrollArea.Viewport className="max-h-48 pr-4">
-                    {(showAll ? items : items.slice(0, maxInitialItems)).map(facetItem =>
-                        <FilterFacetItem key={facetItem.itemKey} {...facetItem}
-                                         state={selected} parents={parents}
-                                         onSelected={onSelect} hasChildren={hasChildren}
-                                         showAmount={showAmount} itemsClosed={itemsClosed}/>)}
-                </ScrollArea.Viewport>
-
-                <ScrollArea.Scrollbar orientation="vertical"
-                                      className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]">
-                    <ScrollArea.Thumb className="relative flex-1 rounded-full bg-neutral-100"/>
-                </ScrollArea.Scrollbar>
-            </ScrollArea.Root>
-
-            {maxInitialItems && items.length > maxInitialItems &&
-                <ToggleItems isOpen={showAll} toggle={() => setShowAll(showAll => !showAll)}/>}
+            <Suspense fallback={<GhostLines/>}>
+                <FilterFacetItems items={items} selected={selected} maxInitialItems={maxInitialItems}
+                                  onSelect={onSelect} showAmount={showAmount} itemsClosed={itemsClosed}/>
+            </Suspense>
         </>
-    )
+    );
 }
 
 function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProps) {
@@ -125,6 +111,42 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
                 </button>
             </div>}
         </div>
+    );
+}
+
+function FilterFacetItems({
+                              items,
+                              selected,
+                              maxInitialItems,
+                              showAmount,
+                              itemsClosed,
+                              onSelect
+                          }: GeneralFilterFacetProps) {
+    const resolvedItems = items instanceof Promise ? use(items) : items;
+    const parents = buildParents(resolvedItems);
+    const hasChildren = resolvedItems.some(item => item.children && item.children.length > 0);
+    const [showAll, setShowAll] = useState(!(maxInitialItems && resolvedItems.length > maxInitialItems));
+
+    return (
+        <>
+            <ScrollArea.Root className="relative overflow-hidden">
+                <ScrollArea.Viewport className="max-h-48 pr-4">
+                    {(showAll ? resolvedItems : resolvedItems.slice(0, maxInitialItems)).map(facetItem =>
+                        <FilterFacetItem key={facetItem.itemKey} {...facetItem}
+                                         state={selected} parents={parents}
+                                         onSelected={onSelect} hasChildren={hasChildren}
+                                         showAmount={showAmount} itemsClosed={itemsClosed}/>)}
+                </ScrollArea.Viewport>
+
+                <ScrollArea.Scrollbar orientation="vertical"
+                                      className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]">
+                    <ScrollArea.Thumb className="relative flex-1 rounded-full bg-neutral-100"/>
+                </ScrollArea.Scrollbar>
+            </ScrollArea.Root>
+
+            {maxInitialItems && resolvedItems.length > maxInitialItems &&
+                <ToggleItems isOpen={showAll} toggle={() => setShowAll(showAll => !showAll)}/>}
+        </>
     );
 }
 

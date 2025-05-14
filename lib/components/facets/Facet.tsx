@@ -6,7 +6,7 @@ export interface FacetProps {
     infoText?: string;
     startOpen?: boolean;
     allowToggle?: boolean;
-    children: ReactNode | ReactNode[];
+    children: ReactNode;
 }
 
 export default function Facet({label, infoText, startOpen = true, allowToggle = true, children}: FacetProps) {
