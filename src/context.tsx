@@ -46,9 +46,9 @@ export default function Context() {
                 <HookedSearchFacet facetKey="q" label="Search"/>
                 <HookedRangeFacet facetKey="range" label="Range" min={0} max={1000} step={1}/>
                 <HookedFilterFacet facetKey="name" label="Name" infoText="Info about this facet."
-                                   useFetchItems={loadFilterFacetItemsList1Fn}/>
+                                   fetchItemsFn={loadFilterFacetItemsList1Fn}/>
                 <HookedFilterFacet facetKey="location" label="Location" infoText="Info about this facet."
-                                   useFetchItems={loadFilterFacetItemsList2Fn}/>
+                                   fetchItemsFn={loadFilterFacetItemsList2Fn}/>
             </FacetsSection>
         );
     }

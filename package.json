@@ -1,5 +1,5 @@
 {
-  "name": "faceted-search-react",
+  "name": "@knaw-huc/faceted-search-react",
   "version": "0.0.1",
   "type": "module",
   "main": "dist/index.js",

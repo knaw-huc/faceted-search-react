@@ -9,7 +9,7 @@ import iconDoubleArrowDown from '../../assets/icon-double-arrow-down.svg';
 
 type SelectedState = boolean | 'indeterminate';
 export type Selected = { [itemKey: string]: SelectedState };
-export type Sort = 'asc' | 'desc' | 'amount';
+export type Sort = 'asc' | 'desc' | 'hits';
 
 export type FilterFacetProps = GeneralFilterFacetProps & FilterFacetFiltersProps;
 
@@ -106,7 +106,7 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order by the amount of results" onClick={_ => onSort('amount')}>
+                    aria-label="Order by the amount of results" onClick={_ => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}

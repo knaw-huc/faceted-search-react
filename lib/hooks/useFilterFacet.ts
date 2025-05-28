@@ -12,7 +12,7 @@ interface useFilterFacetReturn {
     onSort: (sort: Sort) => void;
 }
 
-export type UseFetchItems = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) =>
+export type FetchItemsFn = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) =>
     FilterFacetItem[] | Promise<FilterFacetItem[]>;
 
 const getFlattenedItems = (items: FilterFacetItem[]): FilterFacetItem[] =>
@@ -26,12 +26,12 @@ const getFlattenedItems = (items: FilterFacetItem[]): FilterFacetItem[] =>
 const getReadableValue = (items: FilterFacetItem[], value: string): string =>
     getFlattenedItems(items).find(item => item.itemKey == value)?.label || '';
 
-export default function useFilterFacet(facetKey: string, label: string, useFetchItems: UseFetchItems): useFilterFacetReturn {
+export default function useFilterFacet(facetKey: string, label: string, fetchItemsFn: FetchItemsFn): useFilterFacetReturn {
     const state = useSearchState();
     const [filter, setFilter] = useState('');
     const [sort, setSort] = useState<Sort>('asc');
     const [values, setValues] = useFacet(facetKey, label, value => getReadableValue(items instanceof Promise ? use(items) : items, value), []);
-    const items = useFetchItems(state, values as string[], filter, sort);
+    const items = fetchItemsFn(state, values as string[], filter, sort);
     const selected = Object.fromEntries((Array.isArray(values) ? values : [values]).map(value => [value, true]));
 
     function onSelect(selected: Selected) {
