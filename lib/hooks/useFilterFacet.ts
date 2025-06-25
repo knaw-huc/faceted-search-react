@@ -2,7 +2,7 @@ import {use, useState} from 'react';
 import useFacet from './useFacet';
 import useSearchState from './useSearchState';
 import {SearchState} from '../store';
-import {FilterFacetItem, Selected, Sort} from '../components/facets/FilterFacet';
+import {FilterFacetItem, Selected, Sort} from '../components';
 
 interface useFilterFacetReturn {
     items: FilterFacetItem[] | Promise<FilterFacetItem[]>;

@@ -2,8 +2,8 @@ import {SearchFacet} from '../facets';
 import useSearchFacet from '../../hooks/useSearchFacet';
 
 interface HookedSearchFacetProps {
-    label: string;
     facetKey: string;
+    label: string;
 }
 
 export default function HookedSearchFacet({facetKey, label}: HookedSearchFacetProps) {

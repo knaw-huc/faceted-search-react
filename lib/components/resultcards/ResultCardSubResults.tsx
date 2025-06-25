@@ -5,11 +5,11 @@ import ResultCard from './ResultCard';
 export interface ResultCardSubResultsProps {
     title: string;
     link: string;
-    items: ResultCardSubResultsItemProps[];
+    items: ResultCardSubResultsItem[];
     maxInitialItemsShown?: number;
 }
 
-export interface ResultCardSubResultsItemProps {
+export interface ResultCardSubResultsItem {
     columns: string[];
     mainColumnIndex: number;
     onClick?: () => void;
@@ -45,7 +45,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
     );
 }
 
-function ResultCardSubResultsItem({columns, mainColumnIndex, onClick}: ResultCardSubResultsItemProps) {
+function ResultCardSubResultsItem({columns, mainColumnIndex, onClick}: ResultCardSubResultsItem) {
     return (
         <button
             className="grid grid-cols-subgrid col-span-4 p-2 border-b last:border-b-0 border-neutral-200  items-center w-full text-left hover:bg-neutral-100"

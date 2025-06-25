@@ -4,7 +4,7 @@ export interface ResultCardBasicProps {
     title: string;
     link: string;
     description: string;
-    tags: string[];
+    tags?: string[];
 }
 
 export default function ResultCardBasic({title, link, description, tags}: ResultCardBasicProps) {
@@ -19,11 +19,11 @@ export default function ResultCardBasic({title, link, description, tags}: Result
                     {description}
                 </div>
 
-                <div className="p-2 flex gap-2">
+                {tags && tags.length > 0 && <div className="p-2 flex gap-2">
                     {tags.map(tag => <div key={tag} className="bg-(--color-support-002) p-1 text-sm">
                         {tag}
                     </div>)}
-                </div>
+                </div>}
             </a>
         </ResultCard>
     );
