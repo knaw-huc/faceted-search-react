@@ -53,7 +53,12 @@ function areStatesEqual(a: SearchState, b: SearchState) {
 function updateSearchParamsFromSearchState(state: SearchState) {
     const params = new URLSearchParams();
 
-    params.set('page', String(state.page));
+    if (state.page > 1) {
+        params.set('page', String(state.page));
+    }
+    if (state.query) {
+        params.set('q', state.query);
+    }
     if (state.sort) {
         params.set('sort', state.sort);
     }
@@ -73,7 +78,7 @@ function parseSearchParamsToSearchState(): SearchState {
     const facetValues: FacetValues = {};
 
     params.forEach((value, key) => {
-        if (key === 'page' || key === 'sort') {
+        if (['q', 'page', 'sort'].includes(key)) {
             return;
         }
 
@@ -86,6 +91,7 @@ function parseSearchParamsToSearchState(): SearchState {
     });
 
     return {
+        query: params.get('q') || undefined,
         page: parseInt(params.get('page') || '1', 10),
         sort: params.get('sort') || undefined,
         facetValues,

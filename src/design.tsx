@@ -14,7 +14,6 @@ import {
     SearchFacet,
     SelectedFacets
 } from '../lib';
-import '../lib/index.css';
 
 const selectedFacets = [
     {value: 'school', onRemove: () => console.log('Remove school')},

@@ -6,6 +6,7 @@ export type Facets = Record<string, Facet>;
 export type FacetValues = Record<string, string[]>;
 
 export interface SearchState {
+    query?: string;
     facetValues: FacetValues;
     page: number;
     sort?: string;
@@ -26,9 +27,12 @@ export type SearchFn<R> = (state: SearchState) => SearchResults<R> | Promise<Sea
 export interface FacetedSearchStoreState<R> {
     state: SearchState;
     facets: Facets;
+    searchLabel: string;
     results: SearchResults<R> | Promise<SearchResults<R>>;
     searchFn: SearchFn<R>;
     pageSize: number;
+    setQuery: (query?: string) => void;
+    setSearchLabel: (label: string) => void;
     registerFacets: (facets: Facets) => void;
     updateFacetValues: (facets: FacetValues) => void;
     setFacetValue: (facetKey: string, val: string | string[]) => void;
@@ -42,19 +46,33 @@ export interface FacetedSearchStoreState<R> {
 export type FacetedSearchStore<R> = StoreApi<FacetedSearchStoreState<R>>;
 
 export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageSize?: number) {
-    return createStore<FacetedSearchStoreState<R>>()(
+    const store = createStore<FacetedSearchStoreState<R>>()(
         withUrlSync((set, get) => ({
             state: {
                 facetValues: {},
                 page: 1,
             },
             facets: {},
+            searchLabel: 'Search',
             results: {
                 items: [],
                 total: 0,
             },
             searchFn,
             pageSize: pageSize || 10,
+
+            setQuery: (query?: string) => {
+                query = query?.trim();
+                if (query === undefined || query === '') {
+                    query = undefined;
+                }
+                set((s) => ({state: {...s.state, query}}));
+                get().runSearch();
+            },
+
+            setSearchLabel: (label: string) => {
+                set({searchLabel: label});
+            },
 
             registerFacets: (facets: Facets) => {
                 set({facets: {...facets}});
@@ -109,4 +127,8 @@ export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageS
             },
         }))
     );
+
+    store.getState().runSearch();
+
+    return store;
 }

@@ -1,15 +1,16 @@
 import {SearchFacet} from '../facets';
-import useSearchFacet from '../../hooks/useSearchFacet';
+import {useSearchFacet} from '../../hooks';
 
 interface HookedSearchFacetProps {
-    facetKey: string;
     label: string;
 }
 
-export default function HookedSearchFacet({facetKey, label}: HookedSearchFacetProps) {
-    const {query, onSearch} = useSearchFacet(facetKey, label);
+export default function HookedSearchFacet({label}: HookedSearchFacetProps) {
+    const {query, onSearch, setSearchLabel} = useSearchFacet();
+
+    setSearchLabel(label);
 
     return (
-        <SearchFacet initialQuery={query} onSearch={onSearch}/>
+        <SearchFacet initialQuery={query || ''} onSearch={onSearch}/>
     );
 }

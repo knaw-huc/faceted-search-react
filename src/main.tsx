@@ -2,7 +2,6 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import Design from './design';
 import Context from './context';
-import './main.css';
 
 function setUp() {
     const show = window.location.hash.slice(1).trim();

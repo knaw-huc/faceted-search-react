@@ -1,15 +1,17 @@
-import useFacet from './useFacet';
+import useQuery from './useQuery';
 
 interface useSearchFacetReturn {
-    query: string;
+    query?: string;
     onSearch: (query: string) => void;
+    setSearchLabel: (label: string) => void;
 }
 
-export default function useSearchFacet(facetKey: string, label: string): useSearchFacetReturn {
-    const [values, setValues] = useFacet(facetKey, label, null,'');
+export default function useSearchFacet(): useSearchFacetReturn {
+    const [query, setQuery, _searchLabel, setSearchLabel] = useQuery();
 
     return {
-        query: Array.isArray(values) ? values[0] : values,
-        onSearch: (query: string) => setValues(query.trim()),
+        query,
+        onSearch: setQuery,
+        setSearchLabel
     };
 }

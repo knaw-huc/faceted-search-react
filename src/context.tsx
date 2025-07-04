@@ -14,7 +14,6 @@ import {
     ResultCardBasic,
     HookedPagination
 } from '../lib';
-import '../lib/index.css';
 
 async function searchFn(state: SearchState) {
     console.log('Search called', state);
@@ -43,7 +42,7 @@ export default function Context() {
     function Facets() {
         return (
             <FacetsSection>
-                <HookedSearchFacet facetKey="q" label="Search"/>
+                <HookedSearchFacet label="Search"/>
                 <HookedRangeFacet facetKey="range" label="Range" min={0} max={1000} step={1}/>
                 <HookedFilterFacet facetKey="name" label="Name" infoText="Info about this facet."
                                    fetchItemsFn={loadFilterFacetItemsList1Fn}/>

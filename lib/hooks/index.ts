@@ -1,3 +1,4 @@
+export {default as useQuery} from './useQuery';
 export {default as useFacet} from './useFacet';
 export {default as useFacets} from './useFacets';
 export {default as useSearchFacet} from './useSearchFacet';
