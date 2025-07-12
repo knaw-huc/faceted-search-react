@@ -1,5 +1,6 @@
 import {createStore} from 'zustand';
 import {StoreApi} from 'zustand/vanilla';
+import {subscribeWithSelector} from 'zustand/middleware'
 import withUrlSync from './withUrlSync.ts';
 
 export type Facets = Record<string, Facet>;
@@ -47,86 +48,91 @@ export type FacetedSearchStore<R> = StoreApi<FacetedSearchStoreState<R>>;
 
 export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageSize?: number) {
     const store = createStore<FacetedSearchStoreState<R>>()(
-        withUrlSync((set, get) => ({
-            state: {
-                facetValues: {},
-                page: 1,
-            },
-            facets: {},
-            searchLabel: 'Search',
-            results: {
-                items: [],
-                total: 0,
-            },
-            searchFn,
-            pageSize: pageSize || 10,
+        subscribeWithSelector(
+            withUrlSync((set, get) => ({
+                state: {
+                    facetValues: {},
+                    page: 1,
+                },
+                facets: {},
+                searchLabel: 'Search',
+                results: {
+                    items: [],
+                    total: 0,
+                },
+                searchFn,
+                pageSize: pageSize || 10,
 
-            setQuery: (query?: string) => {
-                query = query?.trim();
-                if (query === undefined || query === '') {
-                    query = undefined;
-                }
-                set((s) => ({state: {...s.state, query}}));
-                get().runSearch();
-            },
+                setQuery: (query?: string) => {
+                    query = query?.trim();
+                    if (query === undefined || query === '') {
+                        query = undefined;
+                    }
+                    set((s) => ({state: {...s.state, query}}));
+                },
 
-            setSearchLabel: (label: string) => {
-                set({searchLabel: label});
-            },
+                setSearchLabel: (label: string) => {
+                    set({searchLabel: label});
+                },
 
-            registerFacets: (facets: Facets) => {
-                set({facets: {...facets}});
-            },
+                registerFacets: (facets: Facets) => {
+                    set({facets: {...facets}});
+                },
 
-            updateFacetValues: (facets: FacetValues) => {
-                set({
-                    state: {
-                        facetValues: {...facets},
-                        page: 1,
-                    },
-                });
-                get().runSearch();
-            },
+                updateFacetValues: (facets: FacetValues) => {
+                    set({
+                        state: {
+                            facetValues: {...facets},
+                            page: 1,
+                        },
+                    });
+                },
 
-            setFacetValue: (facetKey: string, val: string | string[]) => {
-                const {state: {facetValues}} = get();
-                get().updateFacetValues({...facetValues, [facetKey]: Array.isArray(val) ? val : [val]});
-            },
+                setFacetValue: (facetKey: string, val: string | string[]) => {
+                    const {state: {facetValues}} = get();
+                    get().updateFacetValues({...facetValues, [facetKey]: Array.isArray(val) ? val : [val]});
+                },
 
-            addFacetValue: (facetKey: string, val: string) => {
-                const {state: {facetValues}} = get();
-                const newFacets = {...facetValues};
-                if (!newFacets[facetKey].includes(val)) {
-                    newFacets[facetKey].push(val);
-                }
-                get().updateFacetValues(newFacets);
-            },
+                addFacetValue: (facetKey: string, val: string) => {
+                    const {state: {facetValues}} = get();
+                    const newFacets = {...facetValues};
+                    if (!newFacets[facetKey].includes(val)) {
+                        newFacets[facetKey].push(val);
+                    }
+                    get().updateFacetValues(newFacets);
+                },
 
-            removeFacetValue: (facetKey: string, val: string) => {
-                const {state: {facetValues}} = get();
-                const newFacets = {...facetValues};
-                newFacets[facetKey] = newFacets[facetKey].filter(v => v !== val);
-                if (newFacets[facetKey].length === 0) {
-                    delete newFacets[facetKey];
-                }
-                get().updateFacetValues(newFacets);
-            },
+                removeFacetValue: (facetKey: string, val: string) => {
+                    const {state: {facetValues}} = get();
+                    const newFacets = {...facetValues};
+                    newFacets[facetKey] = newFacets[facetKey].filter(v => v !== val);
+                    if (newFacets[facetKey].length === 0) {
+                        delete newFacets[facetKey];
+                    }
+                    get().updateFacetValues(newFacets);
+                },
 
-            clearFacetValues: () => {
-                get().updateFacetValues({});
-            },
+                clearFacetValues: () => {
+                    get().updateFacetValues({});
+                },
 
-            setPage: (page) => {
-                set((s) => ({state: {...s.state, page}}));
-                get().runSearch();
-            },
+                setPage: (page) => {
+                    set((s) => ({state: {...s.state, page}}));
+                },
 
-            runSearch: () => {
-                const {state, searchFn} = get();
-                set({results: searchFn(state)});
-            },
-        }))
+                runSearch: () => {
+                    const {state, searchFn} = get();
+                    set({results: searchFn(state)});
+                },
+            }))
+        )
     );
+
+    store.subscribe(state => state.state, (state, prevState) => {
+        if (JSON.stringify(state) !== JSON.stringify(prevState)) {
+            store.getState().runSearch();
+        }
+    })
 
     store.getState().runSearch();
 

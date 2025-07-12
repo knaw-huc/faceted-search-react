@@ -31,6 +31,10 @@ export default function useFilterFacet(facetKey: string, label: string, fetchIte
     const [filter, setFilter] = useState('');
     const [sort, setSort] = useState<Sort>('asc');
     const [values, setValues] = useFacet(facetKey, label, value => getReadableValue(items instanceof Promise ? use(items) : items, value), []);
+
+    // const filteredState = {...state, facetValues: {...state.facetValues}};
+    // delete filteredState.facetValues[facetKey];
+
     const items = fetchItemsFn(state, values as string[], filter, sort);
     const selected = Object.fromEntries((Array.isArray(values) ? values : [values]).map(value => [value, true]));
 
