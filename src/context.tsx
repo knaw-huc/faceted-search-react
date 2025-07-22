@@ -2,18 +2,33 @@ import {facetItemsList1, facetItemsList2, resultsBasic} from './data';
 import Layout from './components/Layout';
 import ContentWithAsides from './components/ContentWithAsides';
 import {
+    Sort,
+    Facets,
+    SearchState,
     FacetsSection,
     FacetedSearch,
     HookedSearchFacet,
     HookedRangeFacet,
     HookedFilterFacet,
     HookedSelectedFacets,
-    SearchState,
-    Sort,
     HookedResultsView,
     ResultCardBasic,
-    HookedPagination
+    HookedPagination,
+    getReadableRange,
 } from '../lib';
+
+const facets: Facets = {
+    range: {
+        label: 'Range',
+        getReadable: getReadableRange
+    },
+    name: {
+        label: 'Name',
+    },
+    location: {
+        label: 'Location',
+    }
+};
 
 async function searchFn(state: SearchState) {
     console.log('Search called', state);
@@ -42,11 +57,11 @@ export default function Context() {
     function Facets() {
         return (
             <FacetsSection>
-                <HookedSearchFacet label="Search"/>
-                <HookedRangeFacet facetKey="range" label="Range" min={0} max={1000} step={1}/>
-                <HookedFilterFacet facetKey="name" label="Name" infoText="Info about this facet."
+                <HookedSearchFacet/>
+                <HookedRangeFacet facetKey="range" min={0} max={1000} step={1}/>
+                <HookedFilterFacet facetKey="name" infoText="Info about this facet."
                                    fetchItemsFn={loadFilterFacetItemsList1Fn}/>
-                <HookedFilterFacet facetKey="location" label="Location" infoText="Info about this facet."
+                <HookedFilterFacet facetKey="location" infoText="Info about this facet."
                                    fetchItemsFn={loadFilterFacetItemsList2Fn}/>
             </FacetsSection>
         );
@@ -54,7 +69,7 @@ export default function Context() {
 
     return (
         <Layout>
-            <FacetedSearch searchFn={searchFn} pageSize={pageSize}>
+            <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
                 <ContentWithAsides leftAside={<Facets/>}>
                     <h2 className="mb-4">Results</h2>
 

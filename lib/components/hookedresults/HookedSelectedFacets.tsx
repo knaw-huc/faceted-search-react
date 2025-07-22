@@ -2,7 +2,8 @@ import {SelectedFacets} from '../results';
 import {useQuery, useFacets} from '../../hooks';
 
 export default function HookedSelectedFacets() {
-    const [query, setQuery, searchLabel] = useQuery();
+    const [label, query, setQuery] = useQuery();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [facets, facetValues, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
 
     const selectedFacets = Object.entries(facetValues).flatMap(([name, values]) => values.flat().map(value => ({
@@ -13,7 +14,7 @@ export default function HookedSelectedFacets() {
 
     if (query) {
         selectedFacets.unshift({
-            facet: searchLabel,
+            facet: label,
             value: query,
             onRemove: () => setQuery(undefined),
         });

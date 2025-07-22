@@ -25,17 +25,26 @@ import {FacetedSearch} from '@knaw-huc/faceted-search-react';
 
 function App() {
     return (
-        <FacetedSearch searchFn={searchFn} pageSize={pageSize}>
+        <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search for" pageSize={pageSize}>
             <YourAppComponents/>
         </FacetedSearch>
     );
 }
 ```
 
-The `searchFn` is a function that takes a `SearchState` object with the current search state and returns the search
-results (or a promise of search results): `SearchResults<R>`. The `pageSize` is the number of results to show per page.
+The `facets` lists all facets with their key, label and a rendering function of the value. The `searchFn` is a function
+that takes a `SearchState` object with the current search state and returns the search results (or a promise of search
+results): `SearchResults<R>`. The `searchLabel` provides the label for the search box. The `pageSize` is the number of
+results to show per page.
 
 ```ts
+type Facets = Record<string, Facet>;
+
+interface Facet {
+   label: string;
+   getReadable?: (value: string) => string;
+}
+
 interface SearchState {
     facetValues: Record<string, string[]>;
     page: number;
@@ -225,17 +234,16 @@ interface SearchState {
 
 The `useFacet` hook is used to register and manage the state of a specific facet.
 
-| Parameter      | Value type                            | Description                                                        |
-|----------------|---------------------------------------|--------------------------------------------------------------------|
-| `facetKey`     | `string`                              | The key of the facet to manage.                                    |
-| `label`        | `string`                              | The human readable label for the facet.                            |
-| `getReadable`  | `((value: string) => string) \| null` | Callback function to get a human readable value for a given value. |
-| `defaultValue` | `string \| string[]`                  | The default value(s) for this facet.                               |
+| Parameter      | Value type           | Description                          |
+|----------------|----------------------|--------------------------------------|
+| `facetKey`     | `string`             | The key of the facet to manage.      |
+| `defaultValue` | `string \| string[]` | The default value(s) for this facet. |
 
-The hook returns two values:
+The hook returns three values:
 
-1. `string | string[]`: The current value(s) for this facet.
-2. `(value: string | string[]) => void`: A function to set the value(s) for this facet.
+1. `string`: The human-readable label for the facet.
+2. `string | string[]`: The current value(s) for this facet.
+3. `(value: string | string[]) => void`: A function to set the value(s) for this facet.
 
 ### Hook `useFacets`
 
@@ -284,7 +292,6 @@ items whenever the search state, the selected items, the text filter or the sort
 | Parameter      | Value type     | Description                                            |
 |----------------|----------------|--------------------------------------------------------|
 | `facetKey`     | `string`       | The key of the filter facet to manage.                 |
-| `label`        | `string`       | The human readable label for the filter facet.         |
 | `fetchItemsFn` | `FetchItemsFn` | Callback function to fetch all the filter facet items. |
 
 The hook returns an object `useFilterFacetReturn` with the items to display, the selected items and functions to
@@ -294,6 +301,7 @@ interact with the filter facet.
 type FetchItemsFn = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) => FilterFacetItem[] | Promise<FilterFacetItem[]>;
 
 interface useFilterFacetReturn {
+    label: string;
     items: FilterFacetItem[] | Promise<FilterFacetItem[]>;
     selected: Selected;
     onSelect: (selected: Selected) => void;
@@ -318,17 +326,17 @@ type Sort = 'asc' | 'desc' | 'hits';
 The `useRangeFacet` hook is used to register and manage the state of a range facet. It provides functionality to set and
 get the current range values.
 
-| Parameter  | Value type | Description                                   |
-|------------|------------|-----------------------------------------------|
-| `facetKey` | `string`   | The key of the range facet to manage.         |
-| `label`    | `string`   | The human readable label for the range facet. |
-| `min`      | `number`   | The minimum value of the range.               |
-| `max`      | `number`   | The maximum value of the range.               |
+| Parameter  | Value type | Description                           |
+|------------|------------|---------------------------------------|
+| `facetKey` | `string`   | The key of the range facet to manage. |
+| `min`      | `number`   | The minimum value of the range.       |
+| `max`      | `number`   | The maximum value of the range.       |
 
 The hook returns an object `useRangeFacetReturn` with the current range and a function to change the range.
 
 ```ts
 interface useRangeFacetReturn {
+    label: string;
     value?: [number, number];
     onChange: (min: number, max: number) => void;
 }
@@ -368,11 +376,6 @@ The `HookedSearchFacet` component is a wrapper around the `SearchFacet` componen
 manage the search state. It provides a search input field that allows users to filter search results based on a search
 term.
 
-| Parameter  | Value type | Required? | Default value | Description                                  |
-|------------|------------|-----------|---------------|----------------------------------------------|
-| `facetKey` | `string`   | ✓         |               | The key of the search facet to manage.       |
-| `label`    | `string`   | ✓         |               | The label displayed at the top of the facet. |
-
 ### Component `HookedFilterFacet`
 
 The `HookedFilterFacet` component is a wrapper around the `FilterFacet` component that uses the `useFilterFacet` hook
@@ -381,7 +384,6 @@ to manage the filter state. It provides a list of filter options that users can 
 | Parameter         | Value type     | Required? | Default value | Description                                                      |
 |-------------------|----------------|-----------|---------------|------------------------------------------------------------------|
 | `facetKey`        | `string`       | ✓         |               | The key of the filter facet to manage.                           |
-| `label`           | `string`       | ✓         |               | The human readable label for the filter facet.                   |
 | `infoText`        | `string`       |           |               | Optional text providing additional information about the facet.  |
 | `fetchItemsFn`    | `FetchItemsFn` | ✓         |               | Callback function to fetch all the filter facet items.           |
 | `maxInitialItems` | `number`       |           |               | The maximum number of items to show initially.                   |
@@ -412,7 +414,6 @@ manage the range state. It provides a range input that allows users to select a 
 | Parameter     | Value type | Required? | Default value | Description                                                     |
 |---------------|------------|-----------|---------------|-----------------------------------------------------------------|
 | `facetKey`    | `string`   | ✓         |               | The key of the range facet to manage.                           |
-| `label`       | `string`   | ✓         |               | The label displayed at the top of the facet.                    |
 | `infoText`    | `string`   |           |               | Optional text providing additional information about the facet. |
 | `min`         | `number`   | ✓         |               | The minimum of the allowed range.                               |
 | `max`         | `number`   | ✓         |               | The maximum of the allowed range.                               |
@@ -438,8 +439,9 @@ pagination controls for navigating through search results.
 The `HookedResultsView` component is a wrapper around the `ResultsView` component that uses the `useSearchResults` hook
 to fetch the search results.
 
-| Parameter         | Value type             | Required? | Default value | Description                                               |
-|-------------------|------------------------|-----------|---------------|-----------------------------------------------------------|
-| `idKey`           | `keyof R`              | ✓         |               | The key of the results that identifies a specific result. |
-| `ResultComponent` | `FunctionComponent<R>` | ✓         |               | The search result card component to render the results.   |
+| Parameter         | Value type             | Required? | Default value | Description                                                                      |
+|-------------------|------------------------|-----------|---------------|----------------------------------------------------------------------------------|
+| `idKey`           | `keyof R`              | ✓         |               | The key of the results that identifies a specific result.                        |
+| `mappper`         | `(result: R) => C`     |           |               | Mapper to map the obtained results to the params of the given `ResultComponent`. |
+| `ResultComponent` | `FunctionComponent<C>` | ✓         |               | The search result card component to render the results.                          |
 

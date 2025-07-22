@@ -15,7 +15,7 @@ export interface SearchState {
 
 export interface Facet {
     label: string;
-    getReadable: ((value: string) => string) | null;
+    getReadable?: (value: string) => string;
 }
 
 export interface SearchResults<R> {
@@ -33,8 +33,6 @@ export interface FacetedSearchStoreState<R> {
     searchFn: SearchFn<R>;
     pageSize: number;
     setQuery: (query?: string) => void;
-    setSearchLabel: (label: string) => void;
-    registerFacets: (facets: Facets) => void;
     updateFacetValues: (facets: FacetValues) => void;
     setFacetValue: (facetKey: string, val: string | string[]) => void;
     addFacetValue: (facetKey: string, val: string) => void;
@@ -46,7 +44,7 @@ export interface FacetedSearchStoreState<R> {
 
 export type FacetedSearchStore<R> = StoreApi<FacetedSearchStoreState<R>>;
 
-export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageSize?: number) {
+export default function createFacetedSearchStore<R>(facets: Facets, searchFn: SearchFn<R>, searchLabel?: string, pageSize?: number) {
     const store = createStore<FacetedSearchStoreState<R>>()(
         subscribeWithSelector(
             withUrlSync((set, get) => ({
@@ -54,8 +52,8 @@ export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageS
                     facetValues: {},
                     page: 1,
                 },
-                facets: {},
-                searchLabel: 'Search',
+                facets,
+                searchLabel: searchLabel || 'Search',
                 results: {
                     items: [],
                     total: 0,
@@ -68,24 +66,25 @@ export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageS
                     if (query === undefined || query === '') {
                         query = undefined;
                     }
-                    set((s) => ({state: {...s.state, query}}));
-                },
-
-                setSearchLabel: (label: string) => {
-                    set({searchLabel: label});
-                },
-
-                registerFacets: (facets: Facets) => {
-                    set({facets: {...facets}});
+                    set(s => ({state: {...s.state, query}}));
                 },
 
                 updateFacetValues: (facets: FacetValues) => {
-                    set({
+                    for (const key of Object.keys(facets)) {
+                        facets[key] = facets[key].filter(v => v !== '');
+
+                        if (facets[key].length === 0) {
+                            delete facets[key];
+                        }
+                    }
+
+                    set(s => ({
                         state: {
+                            query: s.state.query,
                             facetValues: {...facets},
                             page: 1,
                         },
-                    });
+                    }));
                 },
 
                 setFacetValue: (facetKey: string, val: string | string[]) => {
@@ -117,7 +116,7 @@ export default function createFacetedSearchStore<R>(searchFn: SearchFn<R>, pageS
                 },
 
                 setPage: (page) => {
-                    set((s) => ({state: {...s.state, page}}));
+                    set(s => ({state: {...s.state, page}}));
                 },
 
                 runSearch: () => {

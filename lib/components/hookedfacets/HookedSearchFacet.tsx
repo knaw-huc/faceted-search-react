@@ -1,14 +1,8 @@
 import {SearchFacet} from '../facets';
 import {useSearchFacet} from '../../hooks';
 
-interface HookedSearchFacetProps {
-    label: string;
-}
-
-export default function HookedSearchFacet({label}: HookedSearchFacetProps) {
-    const {query, onSearch, setSearchLabel} = useSearchFacet();
-
-    setSearchLabel(label);
+export default function HookedSearchFacet() {
+    const {query, onSearch} = useSearchFacet();
 
     return (
         <SearchFacet initialQuery={query || ''} onSearch={onSearch}/>

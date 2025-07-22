@@ -2,7 +2,7 @@ import {Facet, RangeFacet} from '../facets';
 import {FacetProps} from '../facets/Facet.tsx';
 import useRangeFacet from '../../hooks/useRangeFacet';
 
-interface HookedRangeFacetProps extends Omit<FacetProps, 'children'> {
+interface HookedRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     facetKey: string;
     min: number;
     max: number;
@@ -13,7 +13,6 @@ interface HookedRangeFacetProps extends Omit<FacetProps, 'children'> {
 
 export default function HookedRangeFacet({
                                              facetKey,
-                                             label,
                                              infoText,
                                              min,
                                              max,
@@ -23,7 +22,7 @@ export default function HookedRangeFacet({
                                              allowToggle = true,
                                              startOpen = true
                                          }: HookedRangeFacetProps) {
-    const {value, onChange} = useRangeFacet(facetKey, label, min, max);
+    const {label, value, onChange} = useRangeFacet(facetKey, min, max);
 
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>

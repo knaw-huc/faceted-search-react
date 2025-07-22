@@ -1,17 +1,17 @@
 import useQuery from './useQuery';
 
 interface useSearchFacetReturn {
+    label: string;
     query?: string;
     onSearch: (query: string) => void;
-    setSearchLabel: (label: string) => void;
 }
 
 export default function useSearchFacet(): useSearchFacetReturn {
-    const [query, setQuery, _searchLabel, setSearchLabel] = useQuery();
+    const [label, query, setQuery] = useQuery();
 
     return {
+        label,
         query,
-        onSearch: setQuery,
-        setSearchLabel
+        onSearch: setQuery
     };
 }

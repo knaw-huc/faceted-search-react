@@ -2,7 +2,7 @@ import {Facet, FilterFacet} from '../facets';
 import {FacetProps} from '../facets/Facet.tsx';
 import useFilterFacet, {FetchItemsFn} from '../../hooks/useFilterFacet';
 
-interface HookedFilterFacetProps extends Omit<FacetProps, 'children'> {
+interface HookedFilterFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     facetKey: string;
     fetchItemsFn: FetchItemsFn;
     maxInitialItems?: number;
@@ -14,7 +14,6 @@ interface HookedFilterFacetProps extends Omit<FacetProps, 'children'> {
 
 export default function HookedFilterFacet({
                                               facetKey,
-                                              label,
                                               infoText,
                                               fetchItemsFn,
                                               maxInitialItems,
@@ -25,7 +24,7 @@ export default function HookedFilterFacet({
                                               allowToggle = true,
                                               startOpen = true,
                                           }: HookedFilterFacetProps) {
-    const {items, selected, onSelect, onTextFilterChange, onSort} = useFilterFacet(facetKey, label, fetchItemsFn);
+    const {label, items, selected, onSelect, onTextFilterChange, onSort} = useFilterFacet(facetKey, fetchItemsFn);
 
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
