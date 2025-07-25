@@ -82,7 +82,7 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
     const id = useId();
 
     return (
-        <div className="pb-1 flex gap-2 justify-between items-center border- border-neutral-300 mt-2">
+        <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300 mt-2">
             {onTextFilterChange && <div className="pb-1 w-3/5 flex items-center">
                 <label htmlFor={id} className="hidden">Filter on facet items</label>
                 <input

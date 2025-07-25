@@ -7,6 +7,7 @@ import {libInjectCss} from 'vite-plugin-lib-inject-css';
 
 // https://vite.dev/config/
 export default defineConfig({
+    publicDir: 'themes',
     plugins: [
         react(),
         tailwindcss(),

@@ -13,3 +13,18 @@
     --color-support-003: #525252;
     --site-max-width: 1300px;
 }
+
+/* Define the variables again to make sure they all end up in the generated CSS */
+@layer base {
+    --color-light-grey-50: oklch(98.5% 0 0);
+    --color-light-grey-100: oklch(97% 0 0);
+    --color-light-grey-200: oklch(92.2% 0 0);
+    --color-light-grey-300: oklch(87% 0 0);
+    --color-brand-400: #a3a3a3;
+    --color-brand-500: #737373;
+    --color-brand-600: #525252;
+    --color-support-001: #525252;
+    --color-support-002: #525252;
+    --color-support-003: #525252;
+    --site-max-width: 1300px;
+}

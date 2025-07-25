@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {facetItemsList1, facetItemsList2, results, resultsBasic} from './data';
 import Layout from './components/Layout';
+import SiteHeader from './components/SiteHeader';
 import ContentWithAsides from './components/ContentWithAsides';
 import {
     Facet,
@@ -19,6 +20,12 @@ const selectedFacets = [
     {value: 'school', onRemove: () => console.log('Remove school')},
     {value: 'school', onRemove: () => console.log('Remove school')},
     {value: 'reis', onRemove: () => console.log('Remove reis')}
+];
+
+const navigation = [
+    {label: 'Home', href: '#'},
+    {label: 'About', href: '#'},
+    {label: 'Search', href: '#'}
 ];
 
 export default function Design() {
@@ -81,6 +88,8 @@ export default function Design() {
 
     return (
         <Layout>
+            <SiteHeader name="DEMO" navigation={navigation}/>
+
             <ContentWithAsides leftAside={<Facets/>}>
                 <h2 className="mb-4">Results</h2>
 
