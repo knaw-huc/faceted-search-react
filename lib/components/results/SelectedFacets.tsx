@@ -1,11 +1,14 @@
+import {ReactNode} from 'react';
+
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
     onClear: () => void;
 }
 
 export interface SelectedFacet {
-    facet?: string;
-    value: string;
+    key: string;
+    name?: string;
+    label: ReactNode;
     onRemove: () => void;
 }
 
@@ -18,8 +21,8 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
             </div>
 
             <div className="flex flex-row gap-2 flex-wrap items-start grow">
-                {selectedFacets.map((facet, idx) =>
-                    <SelectedFacetItem key={idx} {...facet}/>)}
+                {selectedFacets.map(facet =>
+                    <SelectedFacetItem {...facet}/>)}
             </div>
 
             <div>
@@ -33,7 +36,7 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
     );
 }
 
-function SelectedFacetItem({facet, value, onRemove}: SelectedFacet) {
+function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
     return (
         <div className="rounded bg-blue-100 text-blue-900 py-1 px-2 text-sm flex flex-row items-center">
             <span className="mr-1">
@@ -45,7 +48,7 @@ function SelectedFacetItem({facet, value, onRemove}: SelectedFacet) {
             </span>
 
             <span>
-                {facet && <span className="font-bold">{facet}: </span>}{value}
+                {name && <span className="font-bold">{name}: </span>}{label}
             </span>
 
             <button className="ml-2" aria-label="Klik om te verwijderen van zoekfilters" onClick={onRemove}>

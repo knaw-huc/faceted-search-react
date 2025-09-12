@@ -171,7 +171,7 @@ function FilterFacetItem({
         if (ref.current) {
             ref.current.indeterminate = state[itemKey] === 'indeterminate';
         }
-    }, [state]);
+    }, [itemKey, state]);
 
     function updateDown(itemKey: string, children: FilterFacetItem[] | undefined,
                         checked: boolean, newState: Selected) {

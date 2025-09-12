@@ -77,18 +77,16 @@ function parseSearchParamsToSearchState(): SearchState {
     const params = new URLSearchParams(window.location.search);
     const facetValues: FacetValues = {};
 
-    params.forEach((value, key) => {
-        if (['q', 'page', 'sort'].includes(key)) {
-            return;
+    for (const [key, value] of params.entries()) {
+        if (!['q', 'page', 'sort'].includes(key)) {
+            if (facetValues[key]) {
+                facetValues[key].push(value);
+            }
+            else {
+                facetValues[key] = [value];
+            }
         }
-
-        if (facetValues[key]) {
-            facetValues[key].push(value);
-        }
-        else {
-            facetValues[key] = [value];
-        }
-    });
+    }
 
     return {
         query: params.get('q') || undefined,

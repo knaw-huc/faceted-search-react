@@ -15,7 +15,7 @@ export interface SearchState {
 
 export interface Facet {
     label: string;
-    getReadable?: (value: string) => string;
+    getReadable?: (value: string) => Promise<string>;
 }
 
 export interface SearchResults<R> {
