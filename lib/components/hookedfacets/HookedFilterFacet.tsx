@@ -1,6 +1,6 @@
 import {Facet, FilterFacet} from '../facets';
-import {FacetProps} from '../facets/Facet.tsx';
-import useFilterFacet, {FetchItemsFn} from '../../hooks/useFilterFacet';
+import {FacetProps} from 'components/facets/Facet';
+import useFilterFacet, {FetchItemsFn} from 'hooks/useFilterFacet';
 
 interface HookedFilterFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     facetKey: string;

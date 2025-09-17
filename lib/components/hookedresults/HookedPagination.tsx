@@ -1,6 +1,7 @@
 import {Suspense} from 'react';
-import {Pagination} from '../results';
-import {usePagination, useSearchResults} from '../../hooks';
+import {Pagination} from 'components/results';
+import usePagination from 'hooks/usePagination';
+import useSearchResults from 'hooks/useSearchResults';
 
 export default function HookedPagination() {
     return (

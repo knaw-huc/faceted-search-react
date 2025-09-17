@@ -1,6 +1,6 @@
-import {Facet, RangeFacet} from '../facets';
-import {FacetProps} from '../facets/Facet.tsx';
-import useRangeFacet from '../../hooks/useRangeFacet';
+import {Facet, RangeFacet} from 'components/facets';
+import {FacetProps} from 'components/facets/Facet';
+import useRangeFacet from 'hooks/useRangeFacet';
 
 interface HookedRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     facetKey: string;

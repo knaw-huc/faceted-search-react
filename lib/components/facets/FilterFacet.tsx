@@ -1,11 +1,11 @@
 import {Suspense, use, useEffect, useId, useRef, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
-import GhostLines from '../utils/GhostLines.tsx';
-import iconSortAz from '../../assets/icon-sort-az.svg';
-import iconSortZa from '../../assets/icon-sort-za.svg';
-import iconSort09 from '../../assets/icon-sort-09.svg';
-import iconDoubleArrowDown from '../../assets/icon-double-arrow-down.svg';
+import GhostLines from 'components/utils/GhostLines';
+import iconSortAz from 'assets/icon-sort-az.svg';
+import iconSortZa from 'assets/icon-sort-za.svg';
+import iconSort09 from 'assets/icon-sort-09.svg';
+import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
 
 type SelectedState = boolean | 'indeterminate';
 export type Selected = { [itemKey: string]: SelectedState };

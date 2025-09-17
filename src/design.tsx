@@ -13,13 +13,14 @@ import {
     ResultCardSubResults,
     ResultsView,
     SearchFacet,
+    Selected,
     SelectedFacets
 } from '../lib';
 
 const selectedFacets = [
-    {value: 'school', onRemove: () => console.log('Remove school')},
-    {value: 'school', onRemove: () => console.log('Remove school')},
-    {value: 'reis', onRemove: () => console.log('Remove reis')}
+    {key: 'school', label: 'school', onRemove: () => console.log('Remove school')},
+    {key: 'school', label: 'school', onRemove: () => console.log('Remove school')},
+    {key: 'reis', label: 'reis', onRemove: () => console.log('Remove reis')}
 ];
 
 const navigation = [
@@ -29,14 +30,14 @@ const navigation = [
 ];
 
 export default function Design() {
-    const [facetItemsList1State, setFacetItemsList1State] = useState({
+    const [facetItemsList1State, setFacetItemsList1State] = useState<Selected>({
         'assum': false,
         'berends': false,
         'bertens': false,
         'blankhart': false
     });
 
-    const [facetItemsList2State, setFacetItemsList2State] = useState({
+    const [facetItemsList2State, setFacetItemsList2State] = useState<Selected>({
         'abidjan': false,
         'accra': false,
         'europa': false,
@@ -63,7 +64,7 @@ export default function Design() {
                                  selected={facetItemsList1State}
                                  onTextFilterChange={value => console.log('Name text filter', value)}
                                  onSort={type => console.log('Name sort', type)}
-                                 onSelect={state => setFacetItemsList1State(state as any)}/>
+                                 onSelect={state => setFacetItemsList1State(state)}/>
                 </Facet>
 
                 <Facet label="Location" infoText="Info about this facet.">
@@ -71,7 +72,7 @@ export default function Design() {
                                  selected={facetItemsList2State}
                                  onTextFilterChange={value => console.log('Location text filter', value)}
                                  onSort={type => console.log('Location sort', type)}
-                                 onSelect={state => setFacetItemsList2State(state as any)}/>
+                                 onSelect={state => setFacetItemsList2State(state)}/>
                 </Facet>
 
                 <Facet label="Organisation" infoText="Info about this facet.">
@@ -80,7 +81,7 @@ export default function Design() {
                                  maxInitialItems={3}
                                  onTextFilterChange={value => console.log('Organisation text filter', value)}
                                  onSort={type => console.log('Organisation sort', type)}
-                                 onSelect={_ => console.log('Changed organisation')}/>
+                                 onSelect={() => console.log('Changed organisation')}/>
                 </Facet>
             </FacetsSection>
         );

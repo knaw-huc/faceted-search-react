@@ -1,7 +1,7 @@
 import {createStore} from 'zustand';
 import {StoreApi} from 'zustand/vanilla';
 import {subscribeWithSelector} from 'zustand/middleware'
-import withUrlSync from './withUrlSync.ts';
+import withUrlSync from './withUrlSync';
 
 export type Facets = Record<string, Facet>;
 export type FacetValues = Record<string, string[]>;
@@ -15,7 +15,7 @@ export interface SearchState {
 
 export interface Facet {
     label: string;
-    getReadable?: (value: string) => Promise<string>;
+    getReadable?: (value: string) => string | Promise<string>;
 }
 
 export interface SearchResults<R> {

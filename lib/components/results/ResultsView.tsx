@@ -1,5 +1,5 @@
 import {ReactNode, Suspense} from 'react';
-import Spinner from '../utils/Spinner.tsx';
+import Spinner from 'components/utils/Spinner';
 
 export default function ResultsView({children}: { children: ReactNode }) {
     return (

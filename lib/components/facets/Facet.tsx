@@ -1,5 +1,5 @@
 import {ReactNode, useState} from 'react';
-import iconArrowDown from '../../assets/icon-arrow-down.svg';
+import iconArrowDown from 'assets/icon-arrow-down.svg';
 
 export interface FacetProps {
     label: string;

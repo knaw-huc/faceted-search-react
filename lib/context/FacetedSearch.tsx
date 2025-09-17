@@ -1,5 +1,5 @@
 import {createContext, useRef, ReactNode} from 'react';
-import createFacetedSearchStore, {Facets, SearchFn, FacetedSearchStore} from '../store/FacetedSearchStore';
+import createFacetedSearchStore, {Facets, SearchFn, FacetedSearchStore} from 'store/FacetedSearchStore';
 
 interface FacetedSearchParams<R> {
     facets: Facets;

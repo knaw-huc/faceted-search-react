@@ -1,6 +1,6 @@
 import {FunctionComponent, Key} from 'react';
-import {ResultsView} from '../results';
-import {useSearchResults} from '../../hooks';
+import {ResultsView} from 'components/results';
+import useSearchResults from 'hooks/useSearchResults';
 
 export default function HookedResultsView<R extends object, C extends object>({idKey, mapper, ResultComponent}: {
     idKey: keyof R,

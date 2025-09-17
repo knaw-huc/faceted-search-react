@@ -1,5 +1,5 @@
 import {StateCreator} from 'zustand';
-import {FacetedSearchStoreState, FacetValues, SearchState} from './FacetedSearchStore.ts';
+import {FacetedSearchStoreState, FacetValues, SearchState} from './FacetedSearchStore';
 
 type SearchStoreStateCreator<R> = StateCreator<FacetedSearchStoreState<R>>;
 

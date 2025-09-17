@@ -1,9 +1,11 @@
 import {Suspense, use} from 'react';
-import {SelectedFacets} from '../results';
-import {useQuery, useFacets} from '../../hooks';
-import Spinner from '../utils/Spinner.tsx';
+import {SelectedFacets} from 'components/results';
+import Spinner from 'components/utils/Spinner';
+import useQuery from 'hooks/useQuery';
+import useFacets from 'hooks/useFacets';
 
-const PromisedLabel = ({label}: { label: Promise<string> }) => use(label);
+const PromisedLabel = ({label}: { label: string | Promise<string> }) =>
+    label instanceof Promise ? use(label) : label;
 
 export default function HookedSelectedFacets() {
     const [label, query, setQuery] = useQuery();
