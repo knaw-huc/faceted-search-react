@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
 import dts from 'vite-plugin-dts';
-import {libInjectCss} from 'vite-plugin-lib-inject-css';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,7 +12,6 @@ export default defineConfig({
         tsconfigPaths(),
         react(),
         tailwindcss(),
-        libInjectCss(),
         dts({tsconfigPath: 'tsconfig.lib.json'}),
     ],
     build: {
@@ -28,5 +26,8 @@ export default defineConfig({
                 assetFileNames: '[name][extname]',
             }
         }
-    }
+    },
+    esbuild: {
+        minifyIdentifiers: false
+    },
 });
