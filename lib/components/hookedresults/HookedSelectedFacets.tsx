@@ -13,7 +13,7 @@ export default function HookedSelectedFacets() {
     const [facets, facetValues, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
 
     const selectedFacets = Object.entries(facetValues).flatMap(([name, values]) => values.flat().map(value => ({
-        key: `${name}__${value}`,
+        itemKey: `${name}__${value}`,
         name: facets[name].label,
         label: facets[name].getReadable ? (
             <Suspense fallback={<Spinner/>}>
@@ -25,7 +25,7 @@ export default function HookedSelectedFacets() {
 
     if (query) {
         selectedFacets.unshift({
-            key: 'q',
+            itemKey: 'q',
             name: label,
             label: query,
             onRemove: () => setQuery(undefined),

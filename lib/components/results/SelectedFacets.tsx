@@ -6,7 +6,7 @@ export interface SelectedFacetsProps {
 }
 
 export interface SelectedFacet {
-    key: string;
+    itemKey: string;
     name?: string;
     label: ReactNode;
     onRemove: () => void;
@@ -22,7 +22,7 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
 
             <div className="flex flex-row gap-2 flex-wrap items-start grow">
                 {selectedFacets.map(facet =>
-                    <SelectedFacetItem {...facet}/>)}
+                    <SelectedFacetItem key={facet.itemKey} {...facet}/>)}
             </div>
 
             <div>

@@ -7,20 +7,20 @@ import {
     Facet,
     FacetsSection,
     FilterFacet,
+    FilterFacetItems,
     Pagination,
     RangeFacet,
     ResultCardBasic,
     ResultCardSubResults,
     ResultsView,
     SearchFacet,
-    Selected,
     SelectedFacets
 } from '../lib';
 
 const selectedFacets = [
-    {key: 'school', label: 'school', onRemove: () => console.log('Remove school')},
-    {key: 'school', label: 'school', onRemove: () => console.log('Remove school')},
-    {key: 'reis', label: 'reis', onRemove: () => console.log('Remove reis')}
+    {itemKey: 'school', label: 'school', onRemove: () => console.log('Remove school')},
+    {itemKey: 'school', label: 'school', onRemove: () => console.log('Remove school')},
+    {itemKey: 'reis', label: 'reis', onRemove: () => console.log('Remove reis')}
 ];
 
 const navigation = [
@@ -30,24 +30,8 @@ const navigation = [
 ];
 
 export default function Design() {
-    const [facetItemsList1State, setFacetItemsList1State] = useState<Selected>({
-        'assum': false,
-        'berends': false,
-        'bertens': false,
-        'blankhart': false
-    });
-
-    const [facetItemsList2State, setFacetItemsList2State] = useState<Selected>({
-        'abidjan': false,
-        'accra': false,
-        'europa': false,
-        'benelux': false,
-        'nederland': false,
-        'amsterdam': false,
-        'jordaan': false,
-        'ankara': false,
-        'bagdad': false
-    });
+    const [facetItemsList1State, setFacetItemsList1State] = useState<Set<string>>(new Set());
+    const [facetItemsList2State, setFacetItemsList2State] = useState<Set<string>>(new Set());
 
     function Facets() {
         return (
@@ -60,28 +44,27 @@ export default function Design() {
                 </Facet>
 
                 <Facet label="Name" infoText="Info about this facet.">
-                    <FilterFacet items={facetItemsList1}
-                                 selected={facetItemsList1State}
-                                 onTextFilterChange={value => console.log('Name text filter', value)}
-                                 onSort={type => console.log('Name sort', type)}
-                                 onSelect={state => setFacetItemsList1State(state)}/>
+                    <FilterFacet onTextFilterChange={value => console.log('Name text filter', value)}
+                                 onSort={type => console.log('Name sort', type)}>
+                        <FilterFacetItems items={facetItemsList1} selected={facetItemsList1State}
+                                          onSelect={state => setFacetItemsList1State(state)}/>
+                    </FilterFacet>
                 </Facet>
 
                 <Facet label="Location" infoText="Info about this facet.">
-                    <FilterFacet items={facetItemsList2}
-                                 selected={facetItemsList2State}
-                                 onTextFilterChange={value => console.log('Location text filter', value)}
-                                 onSort={type => console.log('Location sort', type)}
-                                 onSelect={state => setFacetItemsList2State(state)}/>
+                    <FilterFacet onTextFilterChange={value => console.log('Location text filter', value)}
+                                 onSort={type => console.log('Location sort', type)}>
+                        <FilterFacetItems items={facetItemsList2} selected={facetItemsList2State}
+                                          onSelect={state => setFacetItemsList2State(state)}/>
+                    </FilterFacet>
                 </Facet>
 
                 <Facet label="Organisation" infoText="Info about this facet.">
-                    <FilterFacet items={facetItemsList1.concat(facetItemsList1)}
-                                 selected={{}}
-                                 maxInitialItems={3}
-                                 onTextFilterChange={value => console.log('Organisation text filter', value)}
-                                 onSort={type => console.log('Organisation sort', type)}
-                                 onSelect={() => console.log('Changed organisation')}/>
+                    <FilterFacet onTextFilterChange={value => console.log('Organisation text filter', value)}
+                                 onSort={type => console.log('Organisation sort', type)}>
+                        <FilterFacetItems items={facetItemsList1.concat(facetItemsList1)} maxInitialItems={3}
+                                          selected={new Set()} onSelect={() => console.log('Changed organisation')}/>
+                    </FilterFacet>
                 </Facet>
             </FacetsSection>
         );

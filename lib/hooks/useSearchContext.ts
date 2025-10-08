@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {useStore} from 'zustand/react';
+import {useZustand} from 'use-zustand';
 import {FacetedSearchContext} from '../context/FacetedSearch';
 import {FacetedSearchStoreState} from '../store/FacetedSearchStore';
 
@@ -9,5 +9,5 @@ export default function useSearchContext<R, T>(selector: (state: FacetedSearchSt
         throw new Error('Missing FacetedSearchContext.Provider in the tree');
     }
 
-    return useStore(store, selector);
+    return useZustand(store, selector);
 }

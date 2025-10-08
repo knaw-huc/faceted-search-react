@@ -1,4 +1,4 @@
-import {Suspense, use, useEffect, useId, useRef, useState} from 'react';
+import {ReactNode, Suspense, useEffect, useId, useMemo, useRef, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import GhostLines from 'components/utils/GhostLines';
@@ -7,19 +7,10 @@ import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
 
-type SelectedState = boolean | 'indeterminate';
-export type Selected = { [itemKey: string]: SelectedState };
 export type Sort = 'asc' | 'desc' | 'hits';
 
-export type FilterFacetProps = GeneralFilterFacetProps & FilterFacetFiltersProps;
-
-interface GeneralFilterFacetProps {
-    items: FilterFacetItem[] | Promise<FilterFacetItem[]>;
-    selected: Selected;
-    maxInitialItems?: number;
-    showAmount?: boolean;
-    itemsClosed?: boolean;
-    onSelect: (selected: Selected) => void;
+export interface FilterFacetProps extends FilterFacetFiltersProps {
+    children: ReactNode;
 }
 
 interface FilterFacetFiltersProps {
@@ -27,10 +18,19 @@ interface FilterFacetFiltersProps {
     onSort?: (type: Sort) => void;
 }
 
+export interface FilterFacetItemsProps {
+    items: FilterFacetItem[];
+    selected: Set<string>;
+    maxInitialItems?: number;
+    showAmount?: boolean;
+    itemsClosed?: boolean;
+    onSelect: (selected: Set<string>) => void;
+}
+
 interface FilterFacetItemProps extends FilterFacetItem {
-    state: Selected;
+    state: Set<string>;
     parents: Map<string, FilterFacetItem>;
-    onSelected: (selected: Selected) => void;
+    onSelected: (selected: Set<string>) => void;
     hasChildren: boolean;
     showAmount?: boolean;
     itemsClosed?: boolean;
@@ -55,24 +55,74 @@ function buildParents(items: FilterFacetItem[], parent?: FilterFacetItem, map = 
     return map;
 }
 
-export default function FilterFacet({
-                                        items,
-                                        selected,
-                                        maxInitialItems,
-                                        onSelect,
-                                        showAmount = true,
-                                        itemsClosed = false,
-                                        onTextFilterChange,
-                                        onSort
-                                    }: FilterFacetProps) {
+function updateDown(itemKey: string, children: FilterFacetItem[] | undefined, checked: boolean, state: Set<string>) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    checked ? state.add(itemKey) : state.delete(itemKey);
+
+    for (const child of children || []) {
+        updateDown(child.itemKey, child.children, false, state);
+    }
+}
+
+function updateUp(itemKey: string, state: Set<string>, parents: Map<string, FilterFacetItem>) {
+    const parent = parents.get(itemKey);
+    if (!parent || !parent.children)
+        return;
+
+    const allChecked = parent.children.every(child => state.has(child.itemKey));
+    if (allChecked) {
+        state.add(parent.itemKey);
+        for (const child of parent.children) {
+            state.delete(child.itemKey);
+        }
+    }
+    else if (state.has(parent.itemKey)) {
+        state.delete(parent.itemKey);
+        for (const child of parent.children) {
+            if (child.itemKey !== itemKey) {
+                state.add(child.itemKey);
+            }
+        }
+    }
+
+    updateUp(parent.itemKey, state, parents);
+}
+
+function isCheckedItem(itemKey: string, state: Set<string>, parents: Map<string, FilterFacetItem>): boolean {
+    if (state.has(itemKey)) {
+        return true;
+    }
+
+    const parent = parents.get(itemKey);
+    if (!parent)
+        return false;
+
+    return isCheckedItem(parent.itemKey, state, parents);
+}
+
+function isIndeterminateItem(children: FilterFacetItem[] | undefined, state: Set<string>): boolean {
+    if (!children || children.length === 0) {
+        return false;
+    }
+
+    const allChecked = children.every(s => state.has(s.itemKey));
+    const noneChecked = children.every(s => !state.has(s.itemKey));
+
+    if (!allChecked && !noneChecked) {
+        return true;
+    }
+
+    return children.some(child => isIndeterminateItem(child.children, state));
+}
+
+export default function FilterFacet({onTextFilterChange, onSort, children}: FilterFacetProps) {
     return (
         <>
             {(onTextFilterChange || onSort) &&
                 <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort}/>}
 
             <Suspense fallback={<GhostLines/>}>
-                <FilterFacetItems items={items} selected={selected} maxInitialItems={maxInitialItems}
-                                  onSelect={onSelect} showAmount={showAmount} itemsClosed={itemsClosed}/>
+                {children}
             </Suspense>
         </>
     );
@@ -94,19 +144,19 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
             {onSort && <div className="flex justify-end gap-1 w-2/5">
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order from A to Z" onClick={_ => onSort('asc')}>
+                    aria-label="Order from A to Z" onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order from Z to A" onClick={_ => onSort('desc')}>
+                    aria-label="Order from Z to A" onClick={() => onSort('desc')}>
                     <img src={iconSortZa} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order by the amount of results" onClick={_ => onSort('hits')}>
+                    aria-label="Order by the amount of results" onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}
@@ -114,24 +164,23 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
     );
 }
 
-function FilterFacetItems({
-                              items,
-                              selected,
-                              maxInitialItems,
-                              showAmount,
-                              itemsClosed,
-                              onSelect
-                          }: GeneralFilterFacetProps) {
-    const resolvedItems = items instanceof Promise ? use(items) : items;
-    const parents = buildParents(resolvedItems);
-    const hasChildren = resolvedItems.some(item => item.children && item.children.length > 0);
-    const [showAll, setShowAll] = useState(!(maxInitialItems && resolvedItems.length > maxInitialItems));
+export function FilterFacetItems({
+                                     items,
+                                     selected,
+                                     maxInitialItems,
+                                     showAmount,
+                                     itemsClosed,
+                                     onSelect
+                                 }: FilterFacetItemsProps) {
+    const parents = buildParents(items);
+    const hasChildren = items.some(item => item.children && item.children.length > 0);
+    const [showAll, setShowAll] = useState(!(maxInitialItems && items.length > maxInitialItems));
 
     return (
         <>
             <ScrollArea.Root className="relative overflow-hidden">
                 <ScrollArea.Viewport className="max-h-48 pr-4">
-                    {(showAll ? resolvedItems : resolvedItems.slice(0, maxInitialItems)).map(facetItem =>
+                    {(showAll ? items : items.slice(0, maxInitialItems)).map(facetItem =>
                         <FilterFacetItem key={facetItem.itemKey} {...facetItem}
                                          state={selected} parents={parents}
                                          onSelected={onSelect} hasChildren={hasChildren}
@@ -144,7 +193,7 @@ function FilterFacetItems({
                 </ScrollArea.Scrollbar>
             </ScrollArea.Root>
 
-            {maxInitialItems && resolvedItems.length > maxInitialItems &&
+            {maxInitialItems && items.length > maxInitialItems &&
                 <ToggleItems isOpen={showAll} toggle={() => setShowAll(showAll => !showAll)}/>}
         </>
     );
@@ -162,44 +211,24 @@ function FilterFacetItem({
                              showAmount = true,
                              itemsClosed = false
                          }: FilterFacetItemProps) {
-    const itemHasChildren = children && children.length > 0;
     const id = useId();
     const [isOpen, setIsOpen] = useState(!itemsClosed);
     const ref = useRef<HTMLInputElement>(null);
 
+    const itemHasChildren = children && children.length > 0;
+    const isChecked = useMemo(() => isCheckedItem(itemKey, state, parents), [itemKey, state, parents]);
+    const isIndeterminate = useMemo(() => isIndeterminateItem(children, state), [children, state]);
+
     useEffect(() => {
         if (ref.current) {
-            ref.current.indeterminate = state[itemKey] === 'indeterminate';
+            ref.current.indeterminate = isIndeterminate;
         }
-    }, [itemKey, state]);
-
-    function updateDown(itemKey: string, children: FilterFacetItem[] | undefined,
-                        checked: boolean, newState: Selected) {
-        newState[itemKey] = checked;
-        for (const child of children || []) {
-            updateDown(child.itemKey, child.children, checked, newState);
-        }
-    }
-
-    function updateUp(itemKey: string, newState: Selected) {
-        const parent = parents.get(itemKey);
-        if (!parent)
-            return;
-
-        const children = parent.children!;
-        const states = children.map(child => newState[child.itemKey]);
-        const allChecked = states.every(s => s === true);
-        const noneChecked = states.every(s => s === false);
-
-        newState[parent.itemKey] = !allChecked && !noneChecked ? 'indeterminate' : allChecked;
-
-        updateUp(parent.itemKey, newState);
-    }
+    }, [isIndeterminate]);
 
     function onChange(checked: boolean) {
-        const newState = {...state};
+        const newState = new Set(state);
         updateDown(itemKey, children, checked, newState);
-        updateUp(itemKey, newState);
+        updateUp(itemKey, newState, parents);
         onSelected(newState);
     }
 
@@ -207,12 +236,12 @@ function FilterFacetItem({
         <div className="flex flex-col justify-between w-full items-center">
             <div className="flex flex-row items-center w-full">
                 {itemHasChildren &&
-                    <button className="mr-2" onClick={_ => setIsOpen(isOpen => !isOpen)}>
+                    <button className="mr-2" onClick={() => setIsOpen(isOpen => !isOpen)}>
                         <ChevronIcon isOpen={isOpen}/>
                     </button>}
 
                 <input className={`w-4 h-4 mr-2 block ${!itemHasChildren && hasChildren ? 'ml-5' : ''}`}
-                       type="checkbox" id={id} name={itemKey} ref={ref} checked={Boolean(state[itemKey])}
+                       type="checkbox" id={id} name={itemKey} ref={ref} checked={isChecked}
                        onChange={e => onChange(e.target.checked)}/>
 
                 <label htmlFor={id} className="flex justify-between w-full">
