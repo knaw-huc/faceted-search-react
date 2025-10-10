@@ -31,7 +31,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
 
                 {moreItems > 0 && !showAllItems && <button
                     className="col-span-4 p-2 flex gap-2 justify-end last:border-b-0 border-neutral-200 items-center w-full text-sm hover:bg-neutral-100 text-neutral-600"
-                    onClick={_ => setShowAllItems(true)}>
+                    onClick={() => setShowAllItems(true)}>
                     See {moreItems} more reactions
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                          fill="currentColor" className="w-4 h-4 fill-neutral-600">

@@ -22,7 +22,7 @@ export default function SearchFacet({initialQuery, onSearch}: SearchFacetProps) 
                        onKeyUp={e => e.key === 'Enter' && onSearch(query)}/>
 
                 <button className="bg-(--color-support-001) py-1 px-3 rounded-r border border-(--color-support-001)"
-                        aria-label="Search" onClick={_ => onSearch(query)}>
+                        aria-label="Search" onClick={() => onSearch(query)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                          className="w-6 h-6 fill-white">
                         <path fillRule="evenodd"

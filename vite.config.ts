@@ -10,7 +10,7 @@ export default defineConfig({
     publicDir: 'themes',
     plugins: [
         tsconfigPaths(),
-        react(),
+        react({babel: {plugins: ['babel-plugin-react-compiler']}}),
         tailwindcss(),
         dts({tsconfigPath: 'tsconfig.lib.json'}),
     ],

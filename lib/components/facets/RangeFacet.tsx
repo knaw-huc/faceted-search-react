@@ -36,8 +36,8 @@ export default function RangeFacet({min, max, step, startMin = min, startMax = m
                     <Range className="bg-neutral-600 absolute h-full"/>
                 </Track>
 
-                {curMinMax.map((_, idx) =>
-                    <Thumb key={idx}
+                {['min', 'max'].map(key =>
+                    <Thumb key={key}
                            className="bg-white ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-2 focus-visible:ring-2 focus-visible:outline-hidden"/>
                 )}
             </Root>

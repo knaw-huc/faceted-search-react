@@ -1,27 +1,30 @@
-import {Suspense, use} from 'react';
+import {useMemo} from 'react';
 import {SelectedFacets} from 'components/results';
-import Spinner from 'components/utils/Spinner';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
-
-const PromisedLabel = ({label}: { label: string | Promise<string> }) =>
-    label instanceof Promise ? use(label) : label;
 
 export default function HookedSelectedFacets() {
     const [label, query, setQuery] = useQuery();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [facets, facetValues, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
+    const [facets, facetValues, facetValueLabels, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
 
-    const selectedFacets = Object.entries(facetValues).flatMap(([name, values]) => values.flat().map(value => ({
-        itemKey: `${name}__${value}`,
-        name: facets[name].label,
-        label: facets[name].getReadable ? (
-            <Suspense fallback={<Spinner/>}>
-                <PromisedLabel label={facets[name].getReadable(value)}/>
-            </Suspense>
-        ) : value,
-        onRemove: () => removeFacetValue(name, value),
-    })));
+    const selectedFacets = useMemo(() => Object.entries(facetValues).flatMap(([facetKey, values]) =>
+        values.flat().map(value => {
+            const facet = facets[facetKey];
+            const valueLabels = facetValueLabels[facetKey];
+
+            const label = facet.valueRenderer
+                ? facet.valueRenderer(value, valueLabels ? valueLabels[value] : undefined)
+                : (valueLabels ? valueLabels[value] || value : value);
+
+            return {
+                itemKey: `${facetKey}__${value}`,
+                name: facet?.label || facetKey,
+                label,
+                onRemove: () => removeFacetValue(facetKey, value),
+            };
+        })
+    ), [facets, facetValueLabels, facetValues, removeFacetValue]);
 
     if (query) {
         selectedFacets.unshift({

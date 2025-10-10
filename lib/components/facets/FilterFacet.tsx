@@ -55,16 +55,14 @@ function buildParents(items: FilterFacetItem[], parent?: FilterFacetItem, map = 
     return map;
 }
 
-function updateDown(itemKey: string, children: FilterFacetItem[] | undefined, checked: boolean, state: Set<string>) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    checked ? state.add(itemKey) : state.delete(itemKey);
-
+function updateDown(children: FilterFacetItem[] | undefined, state: Set<string>) {
     for (const child of children || []) {
-        updateDown(child.itemKey, child.children, false, state);
+        state.delete(child.itemKey);
+        updateDown(child.children, state);
     }
 }
 
-function updateUp(itemKey: string, state: Set<string>, parents: Map<string, FilterFacetItem>) {
+function updateUp(itemKey: string, parents: Map<string, FilterFacetItem>, state: Set<string>) {
     const parent = parents.get(itemKey);
     if (!parent || !parent.children)
         return;
@@ -85,7 +83,7 @@ function updateUp(itemKey: string, state: Set<string>, parents: Map<string, Filt
         }
     }
 
-    updateUp(parent.itemKey, state, parents);
+    updateUp(parent.itemKey, parents, state);
 }
 
 function isCheckedItem(itemKey: string, state: Set<string>, parents: Map<string, FilterFacetItem>): boolean {
@@ -179,7 +177,7 @@ export function FilterFacetItems({
     return (
         <>
             <ScrollArea.Root className="relative overflow-hidden">
-                <ScrollArea.Viewport className="max-h-48 pr-4">
+                <ScrollArea.Viewport className="max-h-80 pr-4">
                     {(showAll ? items : items.slice(0, maxInitialItems)).map(facetItem =>
                         <FilterFacetItem key={facetItem.itemKey} {...facetItem}
                                          state={selected} parents={parents}
@@ -189,7 +187,7 @@ export function FilterFacetItems({
 
                 <ScrollArea.Scrollbar orientation="vertical"
                                       className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]">
-                    <ScrollArea.Thumb className="relative flex-1 rounded-full bg-neutral-100"/>
+                    <ScrollArea.Thumb className="relative flex-1 rounded-full bg-(--color-support-002)"/>
                 </ScrollArea.Scrollbar>
             </ScrollArea.Root>
 
@@ -227,18 +225,21 @@ function FilterFacetItem({
 
     function onChange(checked: boolean) {
         const newState = new Set(state);
-        updateDown(itemKey, children, checked, newState);
-        updateUp(itemKey, newState, parents);
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        checked ? newState.add(itemKey) : newState.delete(itemKey);
+
+        updateDown(children, newState);
+        updateUp(itemKey, parents, newState);
+
         onSelected(newState);
     }
 
     return (
         <div className="flex flex-col justify-between w-full items-center">
             <div className="flex flex-row items-center w-full">
-                {itemHasChildren &&
-                    <button className="mr-2" onClick={() => setIsOpen(isOpen => !isOpen)}>
-                        <ChevronIcon isOpen={isOpen}/>
-                    </button>}
+                {itemHasChildren && <button className="mr-2" onClick={() => setIsOpen(isOpen => !isOpen)}>
+                    <ChevronIcon isOpen={isOpen}/>
+                </button>}
 
                 <input className={`w-4 h-4 mr-2 block ${!itemHasChildren && hasChildren ? 'ml-5' : ''}`}
                        type="checkbox" id={id} name={itemKey} ref={ref} checked={isChecked}
@@ -248,7 +249,7 @@ function FilterFacetItem({
                     <div className="grow">{label}</div>
                     {showAmount && <>
                         <div className="grow" aria-label="Amount of results"></div>
-                        <div className="text-sm text-neutral-500">{amount}</div>
+                        <div className="text-sm text-neutral-500">{amount.toLocaleString()}</div>
                     </>}
                 </label>
             </div>
@@ -276,8 +277,7 @@ function ChevronIcon({isOpen}: { isOpen: boolean }) {
 function ToggleItems({isOpen, toggle}: { isOpen: boolean, toggle: () => void }) {
     return (
         <div className="flex justify-end">
-            <button className="text-xs flex flex-row text-sky-700 items-center justify-start gap-1"
-                    onClick={toggle}>
+            <button className="text-xs flex flex-row items-center justify-start gap-1" onClick={toggle}>
                 All items
                 <img src={iconDoubleArrowDown} alt=""
                      className={`w-4 h-4 fill-bg-sky-700 ${isOpen ? 'rotate-180' : ''}`}/>

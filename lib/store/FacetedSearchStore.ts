@@ -5,6 +5,7 @@ import withUrlSync from './withUrlSync';
 
 export type Facets = Record<string, Facet>;
 export type FacetValues = Record<string, string[]>;
+export type FacetValueLabels = Record<string, string>;
 
 export interface SearchState {
     query?: string;
@@ -15,7 +16,7 @@ export interface SearchState {
 
 export interface Facet {
     label: string;
-    getReadable?: (value: string) => string | Promise<string>;
+    valueRenderer?: (value: string, valueLabel?: string) => string;
 }
 
 export interface SearchResults<R> {
@@ -29,6 +30,7 @@ export interface FacetedSearchStoreState<R> {
     state: SearchState;
     facets: Facets;
     searchLabel: string;
+    valueLabels: Record<string, FacetValueLabels>;
     results: SearchResults<R> | Promise<SearchResults<R>>;
     searchFn: SearchFn<R>;
     pageSize: number;
@@ -37,6 +39,7 @@ export interface FacetedSearchStoreState<R> {
     setFacetValue: (facetKey: string, val: string | string[]) => void;
     addFacetValue: (facetKey: string, val: string) => void;
     removeFacetValue: (facetKey: string, val: string) => void;
+    updateFacetValueLabels: (facetKey: string, valueLabels: Record<string, string>) => void;
     clearFacetValues: () => void;
     setPage: (page: number) => void;
     runSearch: () => void;
@@ -53,6 +56,10 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
                     page: 1,
                 },
                 facets,
+                valueLabels: Object.keys(facets).reduce<Record<string, FacetValueLabels>>((acc, key) => {
+                    acc[key] = {};
+                    return acc;
+                }, {}),
                 searchLabel: searchLabel || 'Search',
                 results: {
                     items: [],
@@ -109,6 +116,15 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
                         delete newFacets[facetKey];
                     }
                     get().updateFacetValues(newFacets);
+                },
+
+                updateFacetValueLabels: (facetKey: string, valueLabels: FacetValueLabels) => {
+                    set(s => ({
+                        valueLabels: {
+                            ...s.valueLabels,
+                            [facetKey]: valueLabels
+                        }
+                    }));
                 },
 
                 clearFacetValues: () => {

@@ -14,11 +14,13 @@ export const FacetedSearchContext = createContext<FacetedSearchStore<any> | null
 
 export default function FacetedSearch<R>({facets, searchFn, searchLabel, pageSize, children}: FacetedSearchParams<R>) {
     const store = useRef<FacetedSearchStore<R>>(null);
+    // eslint-disable-next-line react-hooks/refs
     if (!store.current) {
         store.current = createFacetedSearchStore(facets, searchFn, searchLabel, pageSize);
     }
 
     return (
+        // eslint-disable-next-line react-hooks/refs
         <FacetedSearchContext.Provider value={store.current}>
             {children}
         </FacetedSearchContext.Provider>

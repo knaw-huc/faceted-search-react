@@ -1,6 +1,7 @@
 export {default as useQuery} from './useQuery';
 export {default as useFacet} from './useFacet';
 export {default as useFacets} from './useFacets';
+export {default as useUpdateFacetValueLabels} from './useUpdateFacetValueLabels';
 export {default as useSearchFacet} from './useSearchFacet';
 export {default as useFilterFacet} from './useFilterFacet';
 export {default as useHookedFilterFacet} from './useHookedFilterFacet';

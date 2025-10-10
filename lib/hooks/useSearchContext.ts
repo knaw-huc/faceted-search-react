@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {useZustand} from 'use-zustand';
-import {FacetedSearchContext} from '../context/FacetedSearch';
-import {FacetedSearchStoreState} from '../store/FacetedSearchStore';
+import {FacetedSearchContext} from 'context/FacetedSearch';
+import {FacetedSearchStoreState} from 'store/FacetedSearchStore';
 
 export default function useSearchContext<R, T>(selector: (state: FacetedSearchStoreState<R>) => T): T {
     const store = useContext(FacetedSearchContext);

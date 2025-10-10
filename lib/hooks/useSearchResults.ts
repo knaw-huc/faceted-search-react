@@ -1,5 +1,5 @@
 import {use} from 'react';
-import {SearchResults} from '../store';
+import {SearchResults} from 'store/index';
 import useSearchContext from './useSearchContext';
 
 export default function useSearchResults<R>(): SearchResults<R> {

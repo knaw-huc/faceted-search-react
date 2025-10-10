@@ -8,7 +8,7 @@ export interface SiteHeaderProps {
 
 export default function SiteHeader({name, navigation}: SiteHeaderProps) {
     return (
-        <header className="py-2 px-4 w-full bg-(--color-brand-500) text-(--color-header-text)">
+        <header className="py-2 px-4 w-full bg-(--color-brand) text-(--color-header-text)">
             <div
                 className="mx-auto w-full flex flex-col md:flex-row md:items-center md:justify-between flex-wrap max-w-(--site-max-width)">
                 <div className="pr-8">

@@ -3,6 +3,12 @@ import {Pagination} from 'components/results';
 import usePagination from 'hooks/usePagination';
 import useSearchResults from 'hooks/useSearchResults';
 
+function getUrlForPage(page: number): string {
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page.toString());
+    return url.toString();
+}
+
 export default function HookedPagination() {
     return (
         <Suspense>
@@ -27,12 +33,6 @@ function SuspendedPagination() {
         [page]: getUrlForPage(page),
         ...Object.fromEntries(nextPages)
     };
-
-    function getUrlForPage(page: number): string {
-        const url = new URL(window.location.href);
-        url.searchParams.set('page', page.toString());
-        return url.toString();
-    }
 
     return (
         <Pagination current={page} prev={prev} next={next} pages={pages}/>

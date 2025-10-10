@@ -49,7 +49,7 @@ function FacetInfo({text}: { text: string }) {
             </button>
 
             <div
-                className="hidden peer-hover:flex hover:flex w-[250px] flex-col bg-neutral-800 text-white text-sm drop-shadow-lg absolute -translate-x-52 p-4 rounded-sm">
+                className="hidden peer-hover:flex hover:flex w-[250px] flex-col bg-neutral-800 text-white text-sm drop-shadow-lg absolute -translate-x-52 p-4 rounded-sm z-10">
                 {text}
             </div>
         </div>

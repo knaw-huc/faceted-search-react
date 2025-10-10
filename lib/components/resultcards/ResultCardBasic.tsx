@@ -20,7 +20,7 @@ export default function ResultCardBasic({title, link, description, tags}: Result
                 </div>}
 
                 {tags && tags.length > 0 && <div className="p-2 flex gap-2">
-                    {tags.map(tag => <div key={tag} className="bg-(--color-support-002) p-1 text-sm">
+                    {tags.map(tag => <div key={tag} className="bg-(--color-support-002) p-1 text-sm text-white">
                         {tag}
                     </div>)}
                 </div>}

@@ -42,7 +42,7 @@ type Facets = Record<string, Facet>;
 
 interface Facet {
    label: string;
-   getReadable?: (value: string) => string;
+   valueRenderer?: (value: string, valueLabel?: string) => string;
 }
 
 interface SearchState {

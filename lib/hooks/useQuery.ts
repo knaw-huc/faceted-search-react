@@ -1,12 +1,12 @@
 import useSearchContext from './useSearchContext';
 
-type UseQueryHook = [
+type UseQueryReturn = [
     string,
     string | undefined,
     (query?: string) => void,
 ];
 
-export default function useQuery(): UseQueryHook {
+export default function useQuery(): UseQueryReturn {
     const searchLabel = useSearchContext(s => s.searchLabel);
     const query = useSearchContext(s => s.state.query);
     const setQuery = useSearchContext(s => s.setQuery);
