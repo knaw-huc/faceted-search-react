@@ -22,3 +22,21 @@
     --color-support-003: #525252;
     --site-max-width: 1300px;
 }
+
+.barchart-bar {
+    height: 100%;
+}
+
+.barchart-bar text {
+    visibility: hidden;
+    font-weight: lighter;
+    z-index: -10;
+}
+
+.barchart-bar:hover text {
+    visibility: visible;
+}
+
+.barchart-bar:hover .barchart-bar-fill {
+    opacity: 1;
+}
