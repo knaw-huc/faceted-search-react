@@ -1,6 +1,8 @@
 import {Facet, RangeFacet} from 'components/facets';
 import {FacetProps} from 'components/facets/Facet';
 import useRangeFacet from 'hooks/useRangeFacet';
+import {ReactNode} from "react";
+import {default as FilterFacetContext} from 'context/FilterFacet';
 
 interface HookedRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     facetKey: string;
@@ -9,6 +11,7 @@ interface HookedRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {
     step: number;
     startMin?: number;
     startMax?: number;
+    children?: ReactNode;
 }
 
 export default function HookedRangeFacet({
@@ -19,6 +22,7 @@ export default function HookedRangeFacet({
                                              step,
                                              startMin,
                                              startMax,
+                                             children,
                                              allowToggle = true,
                                              startOpen = true
                                          }: HookedRangeFacetProps) {
@@ -26,6 +30,9 @@ export default function HookedRangeFacet({
 
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
+            <FilterFacetContext facetKey={facetKey}>
+                {children}
+            </FilterFacetContext>
             <RangeFacet min={min} max={max} step={step} onChange={onChange}
                         startMin={value ? value[0] : startMin} startMax={value ? value[1] : startMax}/>
         </Facet>
