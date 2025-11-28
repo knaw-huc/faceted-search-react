@@ -1,0 +1,19 @@
+.barchart-bar {
+    height: 100%;
+
+    text {
+        visibility: hidden;
+        font-weight: lighter;
+        z-index: -10;
+    }
+
+    &:hover {
+        text {
+            visibility: visible;
+        }
+
+        .barchart-bar-fill {
+            opacity: 1;
+        }
+    }
+}

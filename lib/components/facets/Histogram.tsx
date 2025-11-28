@@ -1,16 +1,22 @@
-import {FilterFacetItem} from "components/facets/FilterFacet.tsx";
-import * as d3 from "d3";
+import {scaleBand, scaleLinear} from 'd3-scale';
+import {extent} from 'd3-array';
+import classes from './Histogram.module.css';
 
-export function Histogram({items}: {items: FilterFacetItem[]}) {
+interface HistogramItem {
+    year: number;
+    amount: number;
+}
+
+export function Histogram({items}: {items: HistogramItem[]}) {
     items.sort((a, b) => {
-        if (a.itemKey > b.itemKey) return 1;
-        if (b.itemKey > a.itemKey) return -1;
+        if (a.year > b.year) return 1;
+        if (b.year > a.year) return -1;
         return 0;
     })
 
-    const data_years = items.map((item) => Number(item.itemKey));
+    const data_years = items.map((item) => item.year);
     const data_amounts = items.map((item) => item.amount);
-    const data = items.map((item) => ({x: Number(item.itemKey), y: item.amount}))
+    const data = items.map((item) => ({x: item.year, y: item.amount}))
 
     const width = 300;
     const height = 150;
@@ -20,16 +26,16 @@ export function Histogram({items}: {items: FilterFacetItem[]}) {
     const marginTop = 32;
     const marginBottom = 8;
 
-    const x = d3.scaleBand(data_years, [marginLeft, width - marginRight]).padding(0.01);
-    const y = d3.scaleLinear(d3.extent(data_amounts) as [number, number], [height - marginBottom, marginTop]);
+    const x = scaleBand(data_years, [marginLeft, width - marginRight]).padding(0.01);
+    const y = scaleLinear(extent(data_amounts) as [number, number], [height - marginBottom, marginTop]);
 
     return <>
         <svg width={width} height={height}>
             <g fill={"var(--color-support-001)"} stroke={"currentColor"} strokeWidth={"1.5"}>
                 {data.map((d, i) => (
-                    <g className={"barchart-bar"} key={i}>
+                    <g className={classes.barchartBar} key={i}>
                         <rect x={x(d.x)} y={marginTop} width={x.bandwidth()} height={height - marginBottom - marginTop} fill={"white"} stroke={"none"} opacity={0} />
-                        <rect className={"barchart-bar-fill"} x={x(d.x)} y={y(d.y)} width={x.bandwidth()} height={height - 4 - y(d.y)} opacity={0.8} />
+                        <rect className={classes.barchartBarFill} x={x(d.x)} y={y(d.y)} width={x.bandwidth()} height={height - 4 - y(d.y)} opacity={0.8} />
                         <text
                             x={marginLeft}
                             y={marginTop / 2}
