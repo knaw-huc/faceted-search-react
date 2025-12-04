@@ -33,7 +33,7 @@ export function Histogram({items}: {items: HistogramItem[]}) {
         <svg width={width} height={height}>
             <g fill={"var(--color-support-001)"} stroke={"currentColor"} strokeWidth={"1.5"}>
                 {data.map((d, i) => (
-                    <g className={classes.barchartBar} key={i}>
+                    <g className={classes['barchart-bar']} key={i}>
                         <rect x={x(d.x)} y={marginTop} width={x.bandwidth()} height={height - marginBottom - marginTop} fill={"white"} stroke={"none"} opacity={0} />
                         <rect className={classes.barchartBarFill} x={x(d.x)} y={y(d.y)} width={x.bandwidth()} height={height - 4 - y(d.y)} opacity={0.8} />
                         <text
