@@ -11,11 +11,13 @@ export type Sort = 'asc' | 'desc' | 'hits';
 
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     children: ReactNode;
+    sort?: Sort;
 }
 
 interface FilterFacetFiltersProps {
     onTextFilterChange?: (value: string) => void;
     onSort?: (type: Sort) => void;
+    sort?: Sort;
 }
 
 export interface FilterFacetItemsProps {
@@ -113,11 +115,11 @@ function isIndeterminateItem(children: FilterFacetItem[] | undefined, state: Set
     return children.some(child => isIndeterminateItem(child.children, state));
 }
 
-export default function FilterFacet({onTextFilterChange, onSort, children}: FilterFacetProps) {
+export default function FilterFacet({onTextFilterChange, onSort, children, sort}: FilterFacetProps) {
     return (
         <>
             {(onTextFilterChange || onSort) &&
-                <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort}/>}
+                <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort} sort={sort} />}
 
             <Suspense fallback={<GhostLines/>}>
                 {children}
@@ -126,7 +128,7 @@ export default function FilterFacet({onTextFilterChange, onSort, children}: Filt
     );
 }
 
-function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProps) {
+function FilterFacetFilters({onTextFilterChange, onSort, sort}: FilterFacetFiltersProps) {
     const id = useId();
 
     return (
@@ -141,19 +143,19 @@ function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProp
 
             {onSort && <div className="flex justify-end gap-1 w-2/5">
                 <button
-                    className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
+                    className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'asc' ? 'border': ''}`}
                     aria-label="Order from A to Z" onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
                 </button>
 
                 <button
-                    className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
+                    className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'desc' ? 'border': ''}`}
                     aria-label="Order from Z to A" onClick={() => onSort('desc')}>
                     <img src={iconSortZa} alt="" className="h-4"/>
                 </button>
 
                 <button
-                    className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
+                    className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'hits' ? 'border': ''}`}
                     aria-label="Order by the amount of results" onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>

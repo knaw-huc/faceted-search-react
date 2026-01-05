@@ -15,7 +15,7 @@ export interface useFilterFacetReturn {
 
 export default function useFilterFacet(facetKey: string): useFilterFacetReturn {
     const [filter, setFilter] = useState('');
-    const [sort, setSort] = useState<Sort>('asc');
+    const [sort, setSort] = useState<Sort>('hits');
     const [label, values, setValues] = useFacet(facetKey, []);
 
     const selected = new Set(Array.isArray(values) ? values : [values]);
