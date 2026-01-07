@@ -17,7 +17,7 @@ export default function Pagination({current, pages, prev, next, first, last}: Pa
     return (
         <div className="pb-20">
             <nav className="flex gap-4 w-full justify-center mt-10">
-                {first && <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 mr-4"
+                {first && <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200"
                              href={first}
                              title={intl.formatMessage(uiMessages.paginationFirstPage)}
                              aria-label={intl.formatMessage(uiMessages.paginationFirstPage)}>
@@ -43,7 +43,7 @@ export default function Pagination({current, pages, prev, next, first, last}: Pa
                         <ChevronRightIcon className='w-6 h-6 fill-neutral-900' />
                     </a>}
 
-                {last && <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 ml-4"
+                {last && <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200"
                             href={last}
                             title={intl.formatMessage(uiMessages.paginationLastPage)}
                             aria-label={intl.formatMessage(uiMessages.paginationLastPage)}>
