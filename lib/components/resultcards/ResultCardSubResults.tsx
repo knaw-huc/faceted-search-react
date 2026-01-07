@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import ResultCard from './ResultCard';
+import {useIntl} from "react-intl";
+import {uiMessages} from "../../i18n/messages.ts";
 
 export interface ResultCardSubResultsProps {
     title: string;
@@ -18,6 +20,7 @@ export interface ResultCardSubResultsItem {
 export default function ResultCardSubResults({title, link, items, maxInitialItemsShown}: ResultCardSubResultsProps) {
     const moreItems = maxInitialItemsShown ? Math.max(0, items.length - maxInitialItemsShown) : 0;
     const [showAllItems, setShowAllItems] = useState(moreItems == 0);
+    const intl = useIntl();
 
     return (
         <ResultCard>
@@ -32,7 +35,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
                 {moreItems > 0 && !showAllItems && <button
                     className="col-span-4 p-2 flex gap-2 justify-end last:border-b-0 border-neutral-200 items-center w-full text-sm hover:bg-neutral-100 text-neutral-600"
                     onClick={() => setShowAllItems(true)}>
-                    See {moreItems} more reactions
+                    {intl.formatMessage(uiMessages.seeNMoreItems, { moreItems})}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                          fill="currentColor" className="w-4 h-4 fill-neutral-600">
                         <path fillRule="evenodd"

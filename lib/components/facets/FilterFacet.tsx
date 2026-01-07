@@ -6,6 +6,8 @@ import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
+import {useIntl} from "react-intl";
+import {uiMessages} from "../../i18n/messages.ts";
 
 export type Sort = 'asc' | 'desc' | 'hits';
 
@@ -117,7 +119,7 @@ export default function FilterFacet({onTextFilterChange, onSort, children}: Filt
     return (
         <>
             {(onTextFilterChange || onSort) &&
-                <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort}/>}
+                <FilterFacetFilters onTextFilterChange={onTextFilterChange} onSort={onSort} />}
 
             <Suspense fallback={<GhostLines/>}>
                 {children}
@@ -128,33 +130,39 @@ export default function FilterFacet({onTextFilterChange, onSort, children}: Filt
 
 function FilterFacetFilters({onTextFilterChange, onSort}: FilterFacetFiltersProps) {
     const id = useId();
+    const intl = useIntl();
 
     return (
         <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300 mt-2">
             {onTextFilterChange && <div className="pb-1 w-3/5 flex items-center">
-                <label htmlFor={id} className="hidden">Filter on facet items</label>
+                <label htmlFor={id} className="hidden">{intl.formatMessage(uiMessages.filterOnFacetItems)}</label>
                 <input
                     className="py-1 px-3 text-xs w-full rounded border border-neutral-600 placeholder:italic text-neutral-700"
-                    type="search" id={id} placeholder="Type to filter"
+                    type="search" id={id} placeholder={intl.formatMessage(uiMessages.filterOnFacetItemsPlaceHolder)}
                     onChange={e => onTextFilterChange(e.target.value)}/>
             </div>}
 
             {onSort && <div className="flex justify-end gap-1 w-2/5">
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order from A to Z" onClick={() => onSort('asc')}>
+                    aria-label={intl.formatMessage(uiMessages.orderFromAToZ)}
+                    title={intl.formatMessage(uiMessages.orderFromAToZ)}
+                    onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order from Z to A" onClick={() => onSort('desc')}>
+                    aria-label={intl.formatMessage(uiMessages.orderFromZToA)} onClick={() => onSort('desc')}
+                    title={intl.formatMessage(uiMessages.orderFromZToA)}>
                     <img src={iconSortZa} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label="Order by the amount of results" onClick={() => onSort('hits')}>
+                    aria-label={intl.formatMessage(uiMessages.orderByAmountOfResults)}
+                    title={intl.formatMessage(uiMessages.orderByAmountOfResults)}
+                    onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}
@@ -212,6 +220,7 @@ function FilterFacetItem({
     const id = useId();
     const [isOpen, setIsOpen] = useState(!itemsClosed);
     const ref = useRef<HTMLInputElement>(null);
+    const intl = useIntl();
 
     const itemHasChildren = children && children.length > 0;
     const isChecked = useMemo(() => isCheckedItem(itemKey, state, parents), [itemKey, state, parents]);
@@ -248,7 +257,7 @@ function FilterFacetItem({
                 <label htmlFor={id} className="flex justify-between w-full">
                     <div className="grow">{label}</div>
                     {showAmount && <>
-                        <div className="grow" aria-label="Amount of results"></div>
+                        <div className="grow" aria-label={intl.formatMessage(uiMessages.amountOfResults)}></div>
                         <div className="text-sm text-neutral-500">{amount.toLocaleString()}</div>
                     </>}
                 </label>

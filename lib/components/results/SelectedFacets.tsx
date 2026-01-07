@@ -1,4 +1,6 @@
 import {ReactNode} from 'react';
+import {useIntl} from "react-intl";
+import {uiMessages} from "../../i18n/messages.ts";
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
@@ -13,11 +15,13 @@ export interface SelectedFacet {
 }
 
 export default function SelectedFacets({selectedFacets, onClear}: SelectedFacetsProps) {
+    const intl = useIntl();
+
     return (
         <section className="flex flex-row gap-2 my-4 justify-center max-h-20 overflow-auto"
                  aria-label="Geselecteerde filters">
             <div className="text-sm italic text-neutral-500 py-1 whitespace-nowrap">
-                Selected filters:
+                {intl.formatMessage(uiMessages.selectedFilters)}
             </div>
 
             <div className="flex flex-row gap-2 flex-wrap items-start grow">
@@ -29,7 +33,7 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
                 <button
                     className="rounded-full px-2 py-1 font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 whitespace-nowrap text-xs"
                     onClick={onClear}>
-                    Clear filters
+                    {intl.formatMessage(uiMessages.clearFilters)}
                 </button>
             </div>
         </section>
@@ -37,6 +41,8 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
 }
 
 function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
+    const intl = useIntl();
+
     return (
         <div className="rounded bg-(--color-support-002) text-white py-1 px-2 text-sm flex flex-row items-center">
             <span className="mr-1">
@@ -51,7 +57,8 @@ function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
                 {name && <span className="font-bold">{name}: </span>}{label}
             </span>
 
-            <button className="ml-2" aria-label="Klik om te verwijderen van zoekfilters" onClick={onRemove}>
+            <button className="ml-2" aria-label={intl.formatMessage(uiMessages.clickToRemoveFromSelectedFilters)}
+                    onClick={onRemove}>
                 &#10005;
             </button>
         </div>

@@ -1,0 +1,34 @@
+{
+  "@knaw-huc/faceted-search-react.skipLabelAndGoToNextFacet": "Skip {label} en ga naar het volgende filter",
+  "@knaw-huc/faceted-search-react.clickForFacetDescription": "Klik voor een filterbeschrijving",
+  "@knaw-huc/faceted-search-react.clickToCloseFacet": "Klik om het filter te sluiten",
+  "@knaw-huc/faceted-search-react.clickToOpenFacet": "Klik om het filter te openen",
+  "@knaw-huc/faceted-search-react.orderFromAToZ": "Sorteren (A-Z)",
+  "@knaw-huc/faceted-search-react.orderFromZToA": "Sorteren (Z-A)",
+  "@knaw-huc/faceted-search-react.orderByAmountOfResults": "Sorteren (Aantal hits)",
+  "@knaw-huc/faceted-search-react.amountOfResults": "Aantal hits",
+
+  "@knaw-huc/faceted-search-react.filterOnFacetItems": "Filter items",
+  "@knaw-huc/faceted-search-react.filterOnFacetItemsPlaceHolder": "Tik om te filteren...",
+
+  "@knaw-huc/faceted-search-react.search": "Zoeken",
+  "@knaw-huc/faceted-search-react.searchForText": "Zoeken naar tekst",
+
+  "@knaw-huc/faceted-search-react.selectedFilters": "Geselecteerde filters:",
+  "@knaw-huc/faceted-search-react.clickToRemoveFromSelectedFilters": "Klik om te verwijderen uit geselecteerde filters",
+  "@knaw-huc/faceted-search-react.clearFilters": "Verwijder filters",
+
+  "@knaw-huc/faceted-search-react.paginationFirstPage": "Naar eerste pagina",
+  "@knaw-huc/faceted-search-react.paginationPreviousPage": "Naar vorige pagina",
+  "@knaw-huc/faceted-search-react.paginationNextPage": "Naar volgende pagina",
+  "@knaw-huc/faceted-search-react.paginationLastPage": "Naar laatste pagina",
+  "@knaw-huc/faceted-search-react.paginationNthPage": "Naar  pagina {page}",
+
+  "@knaw-huc/faceted-search-react.seeNMoreItems": "Toon {moreItems} overige items",
+
+  "@knaw-huc/faceted-search-react.searchFilters": "Zoekfilters",
+
+  "@knaw-huc/faceted-search-react.rangeMinimum": "Minimum van bereik",
+  "@knaw-huc/faceted-search-react.rangeMaximum": "Maximum van bereik",
+  "@knaw-huc/faceted-search-react.changeRange": "Verander bereik"
+}

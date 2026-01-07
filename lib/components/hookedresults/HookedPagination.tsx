@@ -28,6 +28,9 @@ function SuspendedPagination() {
     const prev = prevPages.length > 0 ? prevPages[prevPages.length - 1][1] : undefined;
     const next = nextPages.length > 0 ? nextPages[0][1] : undefined;
 
+    const first = prevPages.length > 0 ? getUrlForPage(1) : undefined;
+    const last = nextPages.length > 0 ? getUrlForPage(totalPages) : undefined;
+
     const pages = {
         ...Object.fromEntries(prevPages),
         [page]: getUrlForPage(page),
@@ -35,6 +38,6 @@ function SuspendedPagination() {
     };
 
     return (
-        <Pagination current={page} prev={prev} next={next} pages={pages}/>
+        <Pagination current={page} prev={prev} next={next} pages={pages} first={first} last={last} />
     );
 }

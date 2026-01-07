@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {facetItemsList1, facetItemsList2, results, resultsBasic} from './data';
+import {facetItemsList1, facetItemsList2, histogramFacetItems, results, resultsBasic} from './data';
 import Layout from './components/Layout';
 import SiteHeader from './components/SiteHeader';
 import ContentWithAsides from './components/ContentWithAsides';
@@ -7,7 +7,7 @@ import {
     Facet,
     FacetsSection,
     FilterFacet,
-    FilterFacetItems,
+    FilterFacetItems, Histogram,
     Pagination,
     RangeFacet,
     ResultCardBasic,
@@ -66,6 +66,10 @@ export default function Design() {
                                           selected={new Set()} onSelect={() => console.log('Changed organisation')}/>
                     </FilterFacet>
                 </Facet>
+
+                <Facet label="Year" infoText="Info about this facet.">
+                    <Histogram items={histogramFacetItems} />
+                </Facet>
             </FacetsSection>
         );
     }
@@ -97,7 +101,9 @@ export default function Design() {
                     1: '#',
                     2: '#',
                     3: '#',
-                }}/>
+                    4: '#',
+                    5: '#'
+                }} first='#' last='#' />
             </ContentWithAsides>
         </Layout>
     )

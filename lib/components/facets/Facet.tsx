@@ -1,5 +1,7 @@
 import {ReactNode, useState} from 'react';
 import iconArrowDown from 'assets/icon-arrow-down.svg';
+import {useIntl} from "react-intl";
+import {uiMessages} from "../../i18n/messages.ts";
 
 export interface FacetProps {
     label: string;
@@ -11,6 +13,7 @@ export interface FacetProps {
 
 export default function Facet({label, infoText, startOpen = true, allowToggle = true, children}: FacetProps) {
     const [isOpen, setOpen] = useState(startOpen);
+    const intl = useIntl();
 
     return (
         <div className="mb-10 w-full max-w-[400px]" aria-label={`Facet for ${label}`}>
@@ -21,7 +24,7 @@ export default function Facet({label, infoText, startOpen = true, allowToggle = 
 
                 <div className="flex justify-end">
                     <a href="#next" className="sr-only">
-                        Skip {label} and go to next facet
+                        {intl.formatMessage(uiMessages.skipLabelAndGoToNextFacet, { label })}
                     </a>
 
                     {infoText && <FacetInfo text={infoText}/>}
@@ -36,11 +39,13 @@ export default function Facet({label, infoText, startOpen = true, allowToggle = 
 }
 
 function FacetInfo({text}: { text: string }) {
+    const intl = useIntl();
+
     return (
         <div className="relative">
             <button
                 className="peer p-1 rounded-full bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                aria-label="Click for a description about the facet">
+                aria-label={intl.formatMessage(uiMessages.clickForFacetDescription)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 stroke-neutral-500">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -57,10 +62,13 @@ function FacetInfo({text}: { text: string }) {
 }
 
 function ToggleShowHide({isOpen, onToggle}: { isOpen: boolean, onToggle: () => void }) {
+    const intl = useIntl();
     return (
         <button
             className="p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center translate-x-2"
-            aria-label={`Click to ${isOpen ? 'close' : 'open'} the facet`} onClick={onToggle}>
+            aria-label={isOpen ? intl.formatMessage(uiMessages.clickToCloseFacet) : intl.formatMessage(uiMessages.clickToOpenFacet)}
+            title={isOpen ? intl.formatMessage(uiMessages.clickToCloseFacet) : intl.formatMessage(uiMessages.clickToOpenFacet)}
+            onClick={onToggle}>
             <img src={iconArrowDown} alt="" className={`w-3 h-3 fill-neutral-900 ${!isOpen ? 'rotate-180' : ''}`}/>
         </button>
     );

@@ -445,3 +445,120 @@ to fetch the search results.
 | `mappper`         | `(result: R) => C`     |           |               | Mapper to map the obtained results to the params of the given `ResultComponent`. |
 | `ResultComponent` | `FunctionComponent<C>` | ✓         |               | The search result card component to render the results.                          |
 
+## Internationalization (I18N)
+
+This library is internationalized using react-intl. It is designed so that consuming applications own the i18n setup, 
+while the library provides stable message IDs and English defaults.
+
+This keeps the library reusable, avoids nested providers, and allows applications to override any label when needed.
+
+### Design principles
+
+The library does not render an ```<IntlProvider>```. Applications provide one top-level ```<IntlProvider>```.
+
+All library messages have:
+
+- A stable ID.
+- A default English message.
+
+Applications may override any subset of library messages. Missing messages automatically fall back to ```defaultMessage```.
+
+### Message IDs
+
+All message IDs are namespaced using the package name:
+
+```
+export const UI_NS = "@knaw-huc/faceted-search-react";
+
+export const uiId = (key: string) => `${UI_NS}.${key}`;
+```
+
+An example ID is:
+
+```
+@knaw-huc/faceted-search-react.search
+```
+
+### Defining messages in the library 
+
+Messages are defined using ```defineMessages``` and must include a ```defaultMessage```. Example:
+
+```
+import { defineMessages } from "react-intl";
+import { uiId } from "./uiId";
+
+export const uiMessages = defineMessages({
+
+   /* Facet.tsx */
+   skipLabelAndGoToNextFacet: { id: uiId('skipLabelAndGoToNextFacet'), defaultMessage: 'Skip {label} and go to next facet' },
+   clickForFacetDescription: { id: uiId('clickForFacetDescription'), defaultMessage: 'Click for facet description' },
+   clickToCloseFacet: { id: uiId('clickToCloseFacet'), defaultMessage: 'Click to close facet' },
+   ...
+
+});
+
+```
+
+### Using messages in components
+
+Components use useIntl() and formatMessage:
+
+```
+import { useIntl } from "react-intl";
+import { uiMessages } from "../i18n/messages";
+
+export function Component() {
+  const intl = useIntl();
+
+  return (
+    <button>
+      {intl.formatMessage(uiMessages.search)}
+    </button>
+  );
+} 
+```
+
+### Consuming the library in an application
+
+Applications may override any library message by using the **same ID**.
+
+```
+{
+  "@knaw-huc/faceted-search-react.search": "Zoeken",
+  "@knaw-huc/faceted-search-react.clearFilters": "Filters wissen"
+} 
+```
+
+Any library message **not present** in the app catalog will fall back to the library’s defaultMessage.
+
+
+### Placeholders contract
+
+Placeholders are handled as React-Intl does, and also part of the faceted-search-react **public API**.
+
+```
+"Skip {label} and go to next facet"
+```
+
+Applications overriding this message **must keep {label} intact**.
+
+⚠️ Renaming placeholders in the library is a **breaking change**.
+
+
+### Development warnings for missing translations
+
+Applications are encouraged to enable missing-translation warnings in development:
+
+```
+<IntlProvider
+  locale={locale}
+  messages={messages}
+  onError={(err) => {
+    if (err.code === "MISSING_TRANSLATION") {
+      console.warn(err.message);
+      return;
+    }
+    throw err;
+  }}
+>
+```

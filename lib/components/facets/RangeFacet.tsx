@@ -1,5 +1,7 @@
 import {useId, useState} from 'react';
 import {Root, Track, Range, Thumb} from '@radix-ui/react-slider';
+import {uiMessages} from "../../i18n/messages.ts";
+import {useIntl} from "react-intl";
 
 export interface RangeFacetProps {
     min: number;
@@ -11,6 +13,7 @@ export interface RangeFacetProps {
 }
 
 export default function RangeFacet({min, max, step, startMin = min, startMax = max, onChange}: RangeFacetProps) {
+    const intl = useIntl();
     const [curMinMax, setCurMinMax] = useState([startMin, startMax]);
 
     const minId = useId();
@@ -32,7 +35,9 @@ export default function RangeFacet({min, max, step, startMin = min, startMax = m
             <Root value={curMinMax} min={min} max={max} step={step}
                   onValueChange={setCurMinMax} onValueCommit={onValueCommit}
                   className="relative flex w-full touch-none items-center select-none">
-                <Track className="bg-neutral-200 relative h-2 rounded grow overflow-hidden w-full">
+                <Track className="bg-neutral-200 relative h-2 rounded grow overflow-hidden w-full"
+                       title={intl.formatMessage(uiMessages.changeRange)}
+                       aria-label={intl.formatMessage(uiMessages.changeRange)} >
                     <Range className="bg-neutral-600 absolute h-full"/>
                 </Track>
 
@@ -47,14 +52,18 @@ export default function RangeFacet({min, max, step, startMin = min, startMax = m
                     <label htmlFor={minId} className="text-sm font-bold">Min</label>
                     <input type="number" name="min" value={curMinMax[0]} id={minId}
                            onChange={e => onValueCommit([parseInt(e.target.value), curMinMax[1]])}
-                           className="w-32 text-left text-sm border border-neutral-200 p-1 rounded"/>
+                           className="w-32 text-left text-sm border border-neutral-200 p-1 rounded"
+                           title={intl.formatMessage(uiMessages.rangeMinimum)}
+                           aria-label={intl.formatMessage(uiMessages.rangeMinimum)} />
                 </div>
 
                 <div className="flex flex-col">
                     <label htmlFor={maxId} className="text-sm font-bold text-right">Max</label>
                     <input type="number" name="max" value={curMinMax[1]} id={maxId}
                            onChange={e => onValueCommit([curMinMax[0], parseInt(e.target.value)])}
-                           className="w-32 text-right text-sm border border-neutral-200 p-1 rounded"/>
+                           className="w-32 text-right text-sm border border-neutral-200 p-1 rounded"
+                           title={intl.formatMessage(uiMessages.rangeMaximum)}
+                           aria-label={intl.formatMessage(uiMessages.rangeMaximum)} />
                 </div>
             </div>
         </div>
