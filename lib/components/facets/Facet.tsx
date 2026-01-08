@@ -16,7 +16,7 @@ export default function Facet({label, infoText, startOpen = true, allowToggle = 
     const intl = useIntl();
 
     return (
-        <div className="mb-10 w-full max-w-[400px]" aria-label={`Facet for ${label}`}>
+        <div className="mb-10 w-full max-w-[400px]" aria-label={intl.formatMessage(uiMessages.facetLabel, { label })}>
             <div className="flex justify-between items-center mb-1">
                 <div className="font-semibold" tabIndex={0}>
                     {label}

@@ -7,6 +7,7 @@ import { uiId } from "./ids";
 export const uiMessages = defineMessages({
 
     /* Facet.tsx */
+    facetLabel: { id: uiId('facetLabel'), defaultMessage: 'Facet for {label}' },
     skipLabelAndGoToNextFacet: { id: uiId('skipLabelAndGoToNextFacet'), defaultMessage: 'Skip {label} and go to next facet' },
     clickForFacetDescription: { id: uiId('clickForFacetDescription'), defaultMessage: 'Click for facet description' },
     clickToCloseFacet: { id: uiId('clickToCloseFacet'), defaultMessage: 'Click to close facet' },
