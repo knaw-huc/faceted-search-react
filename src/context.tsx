@@ -8,7 +8,7 @@ import {
     FacetsSection,
     FacetedSearch,
     HookedSearchFacet,
-    HookedRangeFacet,
+    HookedNumericRangeFacet,
     HookedFilterFacet,
     HookedFilterFacetItems,
     HookedSelectedFacets,
@@ -64,7 +64,7 @@ function AllFacets() {
     return (
         <FacetsSection>
             <HookedSearchFacet/>
-            <HookedRangeFacet facetKey="range" min={0} max={1000} step={1}/>
+            <HookedNumericRangeFacet facetKey="range" min={0} max={1000} step={1}/>
             <HookedFilterFacet facetKey="name" infoText="Info about this facet.">
                 <FacetItems items={facetItemsList1}/>
             </HookedFilterFacet>
