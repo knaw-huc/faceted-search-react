@@ -41,8 +41,8 @@ results to show per page.
 type Facets = Record<string, Facet>;
 
 interface Facet {
-   label: string;
-   valueRenderer?: (value: string, valueLabel?: string) => string;
+    label: string;
+    valueRenderer?: (value: string, valueLabel?: string) => string;
 }
 
 interface SearchState {
@@ -127,8 +127,8 @@ type Sort = 'asc' | 'desc' | 'hits';
 
 ### Component `RangeFacet`
 
-The `RangeFacet` component is designed to display a range filter that allows users to select a range of values. The
-component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other facets.
+The `RangeFacet` component is designed to display a range filter that allows users to select a range of numeric values.
+The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other facets.
 
 | Parameter  | Value type                           | Required? | Default value | Description                                |
 |------------|--------------------------------------|-----------|---------------|--------------------------------------------|
@@ -324,7 +324,7 @@ type Sort = 'asc' | 'desc' | 'hits';
 ### Hook `useRangeFacet`
 
 The `useRangeFacet` hook is used to register and manage the state of a range facet. It provides functionality to set and
-get the current range values.
+get the current numeric range values.
 
 | Parameter  | Value type | Description                           |
 |------------|------------|---------------------------------------|
@@ -409,7 +409,7 @@ interface FilterFacetItem {
 ### Component `HookedRangeFacet`
 
 The `HookedRangeFacet` component is a wrapper around the `RangeFacet` component that uses the `useRangeFacet` hook to
-manage the range state. It provides a range input that allows users to select a range of values.
+manage the range state. It provides a range input that allows users to select a range of numeric values.
 
 | Parameter     | Value type | Required? | Default value | Description                                                     |
 |---------------|------------|-----------|---------------|-----------------------------------------------------------------|
@@ -454,12 +454,11 @@ customize them to support any language.
 
 The `FacetedSearch` component accepts three i18n-related props:
 
-| Parameter      | Value type               | Required?    | Default value | Description                                                       |
-|----------------|--------------------------|--------------|---------------|-------------------------------------------------------------------|
-| `translate`    | `TranslateFn`            |              |               | Custom translate function from your i18n library. Takes precedence if provided. |
-| `translations` | `Record<string, string>` |              |               | Object to override specific translation keys. Merged with defaults. |
-| `locale`       | `string / Intl.Locale`   |              | 'en'          | Locale string or Intl.Locale object.                              |
-
+| Parameter      | Value type               | Required? | Default value | Description                                                                     |
+|----------------|--------------------------|-----------|---------------|---------------------------------------------------------------------------------|
+| `translate`    | `TranslateFn`            |           |               | Custom translate function from your i18n library. Takes precedence if provided. |
+| `translations` | `Record<string, string>` |           |               | Object to override specific translation keys. Merged with defaults.             |
+| `locale`       | `string / Intl.Locale`   |           | 'en'          | Locale string or Intl.Locale object.                                            |
 
 ```ts
 type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
@@ -470,6 +469,7 @@ type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
 If you're using an i18n library like `react-intl` or `i18next`, you can pass your own translate function:
 
 **With react-intl:**
+
 ```tsx
 import {useIntl} from 'react-intl';
 
@@ -488,6 +488,7 @@ function App() {
 ```
 
 **With i18next:**
+
 ```tsx
 import {useTranslation} from 'react-i18next';
 
@@ -527,32 +528,32 @@ function App() {
 
 The following translation keys are available for customization:
 
-| Key                    | Default Value                              | Used In             |
-|------------------------|--------------------------------------------|---------------------|
-| `search.label`         | Search for text                            | SearchFacet         |
-| `search.button.aria`   | Search                                     | SearchFacet         |
-| `filter.label`         | Filter on facet items                      | FilterFacet         |
-| `filter.placeholder`   | Type to filter                             | FilterFacet         |
-| `filter.sort.asc`      | Order from A to Z                          | FilterFacet         |
-| `filter.sort.desc`     | Order from Z to A                          | FilterFacet         |
-| `filter.sort.hits`     | Order by the amount of results             | FilterFacet         |
-| `filter.amount.aria`   | Amount of results                          | FilterFacet         |
-| `filter.showAll`       | All items                                  | FilterFacet         |
-| `facet.aria`           | Facet for {{label}}                        | Facet               |
-| `facet.info.aria`      | Click for a description about the facet    | Facet               |
-| `facet.toggle.open`    | Click to open the facet                    | Facet               |
-| `facet.toggle.close`   | Click to close the facet                   | Facet               |
-| `facet.skip`           | Skip {{label}} and go to next facet        | Facet               |
-| `facets.toggle`        | Search filters                             | FacetsSection       |
-| `pagination.previous`  | Previous                                   | Pagination          |
-| `pagination.next`      | Next                                       | Pagination          |
-| `selected.aria`        | Selected filters                           | SelectedFacets      |
-| `selected.label`       | Selected filters:                          | SelectedFacets      |
-| `selected.remove.aria` | Click to remove from search filters        | SelectedFacets      |
-| `selected.clear`       | Clear filters                              | SelectedFacets      |
-| `range.min`            | Min                                        | RangeFacet          |
-| `range.max`            | Max                                        | RangeFacet          |
-| `results.seeMore`      | See {{count}} more reactions               | ResultCardSubResults|
+| Key                    | Default Value                           | Used In              |
+|------------------------|-----------------------------------------|----------------------|
+| `search.label`         | Search for text                         | SearchFacet          |
+| `search.button.aria`   | Search                                  | SearchFacet          |
+| `filter.label`         | Filter on facet items                   | FilterFacet          |
+| `filter.placeholder`   | Type to filter                          | FilterFacet          |
+| `filter.sort.asc`      | Order from A to Z                       | FilterFacet          |
+| `filter.sort.desc`     | Order from Z to A                       | FilterFacet          |
+| `filter.sort.hits`     | Order by the amount of results          | FilterFacet          |
+| `filter.amount.aria`   | Amount of results                       | FilterFacet          |
+| `filter.showAll`       | All items                               | FilterFacet          |
+| `facet.aria`           | Facet for {{label}}                     | Facet                |
+| `facet.info.aria`      | Click for a description about the facet | Facet                |
+| `facet.toggle.open`    | Click to open the facet                 | Facet                |
+| `facet.toggle.close`   | Click to close the facet                | Facet                |
+| `facet.skip`           | Skip {{label}} and go to next facet     | Facet                |
+| `facets.toggle`        | Search filters                          | FacetsSection        |
+| `pagination.previous`  | Previous                                | Pagination           |
+| `pagination.next`      | Next                                    | Pagination           |
+| `selected.aria`        | Selected filters                        | SelectedFacets       |
+| `selected.label`       | Selected filters:                       | SelectedFacets       |
+| `selected.remove.aria` | Click to remove from search filters     | SelectedFacets       |
+| `selected.clear`       | Clear filters                           | SelectedFacets       |
+| `range.min`            | Min                                     | RangeFacet           |
+| `range.max`            | Max                                     | RangeFacet           |
+| `results.seeMore`      | See {{count}} more reactions            | ResultCardSubResults |
 
 ### Interpolation
 
@@ -566,5 +567,6 @@ When using a custom translate function, ensure it handles these interpolation pl
 ### Default Behavior
 
 When no i18n configuration is provided:
+
 - All strings default to English
 - The library works out of the box without any setup required

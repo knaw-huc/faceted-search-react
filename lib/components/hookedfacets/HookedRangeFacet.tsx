@@ -1,7 +1,7 @@
+import {ReactNode} from 'react';
 import {Facet, RangeFacet} from 'components/facets';
 import {FacetProps} from 'components/facets/Facet';
 import useRangeFacet from 'hooks/useRangeFacet';
-import {ReactNode} from "react";
 import FilterFacetContext from 'context/FilterFacet';
 
 interface HookedRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {

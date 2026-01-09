@@ -1,11 +1,11 @@
-import {ReactNode, Suspense, useEffect, useId, useMemo, useRef, useState} from 'react';
-import {ChevronDownIcon, ChevronRightIcon} from '@heroicons/react/24/solid';
-import * as ScrollArea from '@radix-ui/react-scroll-area';
+import {ReactNode, Suspense, useId, useMemo, useState} from 'react';
+import {ChevronDownIcon, ChevronRightIcon, ChevronDoubleDownIcon} from '@heroicons/react/24/solid';
+import {ScrollArea} from '@base-ui/react/scroll-area';
+import {Button, Checkbox} from 'react-aria-components';
 import GhostLines from 'components/utils/GhostLines';
 import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
-import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
 import useTranslate from 'hooks/useTranslate';
 
 export type Sort = 'asc' | 'desc' | 'hits';
@@ -75,8 +75,7 @@ function updateUp(itemKey: string, parents: Map<string, FilterFacetItem>, state:
         for (const child of parent.children) {
             state.delete(child.itemKey);
         }
-    }
-    else if (state.has(parent.itemKey)) {
+    } else if (state.has(parent.itemKey)) {
         state.delete(parent.itemKey);
         for (const child of parent.children) {
             if (child.itemKey !== itemKey) {
@@ -133,7 +132,7 @@ function FilterFacetFilters({onTextFilterChange, onSort, sort}: FilterFacetFilte
     const {t} = useTranslate();
 
     return (
-        <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300 mt-2">
+        <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300">
             {onTextFilterChange && <div className="pb-1 w-3/5 flex items-center">
                 <label htmlFor={id} className="hidden">{t('filter.label')}</label>
                 <input
@@ -143,23 +142,23 @@ function FilterFacetFilters({onTextFilterChange, onSort, sort}: FilterFacetFilte
             </div>}
 
             {onSort && <div className="flex justify-end gap-1 w-2/5">
-                <button
+                <Button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'asc' ? 'border': ''}`}
                     aria-label={t('filter.sort.asc')} onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
-                </button>
+                </Button>
 
-                <button
+                <Button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'desc' ? 'border': ''}`}
                     aria-label={t('filter.sort.desc')} onClick={() => onSort('desc')}>
                     <img src={iconSortZa} alt="" className="h-4"/>
-                </button>
+                </Button>
 
-                <button
+                <Button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'hits' ? 'border': ''}`}
                     aria-label={t('filter.sort.hits')} onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
-                </button>
+                </Button>
             </div>}
         </div>
     );
@@ -189,7 +188,7 @@ export function FilterFacetItems({
                 </ScrollArea.Viewport>
 
                 <ScrollArea.Scrollbar orientation="vertical"
-                                      className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]">
+                                      className="flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-px">
                     <ScrollArea.Thumb className="relative flex-1 rounded-full bg-(--color-support-002)"/>
                 </ScrollArea.Scrollbar>
             </ScrollArea.Root>
@@ -212,20 +211,13 @@ function FilterFacetItem({
                              showAmount = true,
                              itemsClosed = false
                          }: FilterFacetItemProps) {
-    const id = useId();
+    const itemHasChildren = children && children.length > 0;
+
     const [isOpen, setIsOpen] = useState(!itemsClosed);
-    const ref = useRef<HTMLInputElement>(null);
     const {t} = useTranslate();
 
-    const itemHasChildren = children && children.length > 0;
     const isChecked = useMemo(() => isCheckedItem(itemKey, state, parents), [itemKey, state, parents]);
     const isIndeterminate = useMemo(() => isIndeterminateItem(children, state), [children, state]);
-
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.indeterminate = isIndeterminate;
-        }
-    }, [isIndeterminate]);
 
     function onChange(checked: boolean) {
         const newState = new Set(state);
@@ -241,21 +233,23 @@ function FilterFacetItem({
     return (
         <div className="flex flex-col justify-between w-full items-center">
             <div className="flex flex-row items-center w-full">
-                {itemHasChildren && <button className="mr-2" onClick={() => setIsOpen(isOpen => !isOpen)}>
+                {itemHasChildren && <Button className="mr-2" onClick={() => setIsOpen(isOpen => !isOpen)}>
                     <ChevronIcon isOpen={isOpen}/>
-                </button>}
+                </Button>}
 
-                <input className={`w-4 h-4 mr-2 block ${!itemHasChildren && hasChildren ? 'ml-5' : ''}`}
-                       type="checkbox" id={id} name={itemKey} ref={ref} checked={isChecked}
-                       onChange={e => onChange(e.target.checked)}/>
+                <Checkbox className="flex flex-row items-center w-full" name={itemKey} isSelected={isChecked}
+                          isIndeterminate={isIndeterminate} onChange={onChange}>
+                    <CheckboxIndicator isSelected={isChecked} isIndeterminate={isIndeterminate}
+                                       className={!itemHasChildren && hasChildren ? 'ml-5 mr-2' : 'mr-2'}/>
 
-                <label htmlFor={id} className="flex justify-between w-full">
-                    <div className="grow">{label}</div>
-                    {showAmount && <>
-                        <div className="grow" aria-label={t('filter.amount.aria')}></div>
-                        <div className="text-sm text-neutral-500">{amount.toLocaleString()}</div>
-                    </>}
-                </label>
+                    <div className="flex justify-between w-full">
+                        <div className="grow">{label}</div>
+                        {showAmount && <>
+                            <div className="grow" aria-label={t('filter.amount.aria')}></div>
+                            <div className="text-sm text-neutral-500">{amount.toLocaleString()}</div>
+                        </>}
+                    </div>
+                </Checkbox>
             </div>
 
             {itemHasChildren && <div className={`w-full ${isOpen ? 'block' : 'hidden'}`}>
@@ -267,6 +261,25 @@ function FilterFacetItem({
                                          showAmount={showAmount} itemsClosed={itemsClosed}/>)}
                 </div>
             </div>}
+        </div>
+    );
+}
+
+function CheckboxIndicator({isSelected, isIndeterminate, className}: {
+    isSelected: boolean,
+    isIndeterminate: boolean,
+    className?: string
+}) {
+    return (
+        <div
+            className={`${className || ''} w-4 h-4 shrink-0 box-border flex items-center justify-center rounded-sm border border-neutral-600 ${isSelected || isIndeterminate ? 'bg-(--color-support-002)' : ''}`}>
+            {(isSelected || isIndeterminate) &&
+                <svg viewBox="0 0 18 18" aria-hidden="true" key={isIndeterminate ? 'indeterminate' : 'check'}
+                     fill="none" stroke="white" strokeWidth="3px" className="w-3 h-3">
+                    {isIndeterminate
+                        ? <rect x={3} y={8} width={12} height={1}/>
+                        : <polyline points="2 9 7 14 16 4"/>}
+                </svg>}
         </div>
     );
 }
@@ -285,8 +298,7 @@ function ToggleItems({isOpen, toggle}: { isOpen: boolean, toggle: () => void }) 
         <div className="flex justify-end">
             <button className="text-xs flex flex-row items-center justify-start gap-1" onClick={toggle}>
                 {t('filter.showAll')}
-                <img src={iconDoubleArrowDown} alt=""
-                     className={`w-4 h-4 fill-bg-sky-700 ${isOpen ? 'rotate-180' : ''}`}/>
+                <ChevronDoubleDownIcon className={`w-4 h-4 fill-bg-sky-700 ${isOpen ? 'rotate-180' : ''}`}/>
             </button>
         </div>
     );

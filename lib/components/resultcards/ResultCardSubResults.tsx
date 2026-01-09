@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {Button} from "react-aria-components";
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import ResultCard from './ResultCard';
 import useTranslate from 'hooks/useTranslate';
@@ -35,8 +36,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
                     className="col-span-4 p-2 flex gap-2 justify-end last:border-b-0 border-neutral-200 items-center w-full text-sm hover:bg-neutral-100 text-neutral-600"
                     onClick={() => setShowAllItems(true)}>
                     {t('results.seeMore', {count: moreItems})}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         fill="currentColor" className="w-4 h-4 fill-neutral-600">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 fill-neutral-600">
                         <path fillRule="evenodd"
                               d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
                               clipRule="evenodd"/>
@@ -49,7 +49,7 @@ export default function ResultCardSubResults({title, link, items, maxInitialItem
 
 function ResultCardSubResultsItem({columns, mainColumnIndex, onClick}: ResultCardSubResultsItem) {
     return (
-        <button
+        <Button
             className="grid grid-cols-subgrid col-span-4 p-2 border-b last:border-b-0 border-neutral-200  items-center w-full text-left hover:bg-neutral-100"
             onClick={onClick}>
             {columns.map((column, idx) =>
@@ -61,6 +61,6 @@ function ResultCardSubResultsItem({columns, mainColumnIndex, onClick}: ResultCar
             <div className="flex justify-end">
                 <ChevronRightIcon className="w-6 h-6 fill-neutral-900"/>
             </div>
-        </button>
+        </Button>
     );
 }
