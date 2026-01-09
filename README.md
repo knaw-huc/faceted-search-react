@@ -125,10 +125,11 @@ type Selected = { [itemKey: string]: SelectedState };
 type Sort = 'asc' | 'desc' | 'hits';
 ```
 
-### Component `RangeFacet`
+### Component `NumericRangeFacet`
 
-The `RangeFacet` component is designed to display a range filter that allows users to select a range of numeric values.
-The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other facets.
+The `NumericRangeFacet` component is designed to display a range filter that allows users to select a range of numeric
+values. The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other
+facets.
 
 | Parameter  | Value type                           | Required? | Default value | Description                                |
 |------------|--------------------------------------|-----------|---------------|--------------------------------------------|
@@ -138,6 +139,20 @@ The component is designed to be used within a `FacetsSection` and a `Facet` and 
 | `startMin` | `number`                             |           | `min`         | The initial minimum value.                 |
 | `startMax` | `number`                             |           | `max`         | The initial maximum value.                 |
 | `onChange` | `(min: number, max: number) => void` | ✓         |               | Callback function to handle range changes. |
+
+### Component `DateRangeFacet`
+
+The `DateRangeFacet` component is designed to display a range filter that allows users to select a range of date
+values. The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other
+facets.
+
+| Parameter  | Value type                           | Required? | Default value | Description                                |
+|------------|--------------------------------------|-----------|---------------|--------------------------------------------|
+| `min`      | `string` `(ISO 8601)`                | ✓         |               | The minimum date of the allowed range.     |
+| `max`      | `string` `(ISO 8601)`                | ✓         |               | The maximum date of the allowed range.     |
+| `startMin` | `string` `(ISO 8601)`                |           | `min`         | The initial minimum date value.            |
+| `startMax` | `string` `(ISO 8601)`                |           | `max`         | The initial maximum date value.            |
+| `onChange` | `(min: string, max: string) => void` | ✓         |               | Callback function to handle range changes. |
 
 ### Component `SelectedFacets`
 
@@ -321,10 +336,10 @@ type SelectedState = boolean | 'indeterminate';
 type Sort = 'asc' | 'desc' | 'hits';
 ```
 
-### Hook `useRangeFacet`
+### Hook `useNumericRangeFacet`
 
-The `useRangeFacet` hook is used to register and manage the state of a range facet. It provides functionality to set and
-get the current numeric range values.
+The `useNumericRangeFacet` hook is used to register and manage the state of a numeric range facet. It provides
+functionality to set and get the current numeric range values.
 
 | Parameter  | Value type | Description                           |
 |------------|------------|---------------------------------------|
@@ -339,6 +354,27 @@ interface useRangeFacetReturn {
     label: string;
     value?: [number, number];
     onChange: (min: number, max: number) => void;
+}
+```
+
+### Hook `useDateRangeFacet`
+
+The `useDateRangeFacet` hook is used to register and manage the state of a numeric range facet. It provides
+functionality to set and get the current numeric range values.
+
+| Parameter  | Value type            | Description                           |
+|------------|-----------------------|---------------------------------------|
+| `facetKey` | `string`              | The key of the range facet to manage. |
+| `min`      | `string` `(ISO 8601)` | The minimum date value of the range.  |
+| `max`      | `string` `(ISO 8601)` | The maximum date value of the range.  |
+
+The hook returns an object `useDateRangeFacetReturn` with the current range and a function to change the range.
+
+```ts
+interface useDateRangeFacetReturn {
+    label: string;
+    value?: [string, string];
+    onChange: (min: string, max: string) => void;
 }
 ```
 
@@ -406,10 +442,11 @@ interface FilterFacetItem {
 }
 ```
 
-### Component `HookedRangeFacet`
+### Component `HookedNumericRangeFacet`
 
-The `HookedRangeFacet` component is a wrapper around the `RangeFacet` component that uses the `useRangeFacet` hook to
-manage the range state. It provides a range input that allows users to select a range of numeric values.
+The `HookedNumericRangeFacet` component is a wrapper around the `NumericRangeFacet` component that uses the
+`useNumericRangeFacet` hook to manage the numeric range state. It provides a range input that allows users to select a
+range of numeric values.
 
 | Parameter     | Value type | Required? | Default value | Description                                                     |
 |---------------|------------|-----------|---------------|-----------------------------------------------------------------|
@@ -422,6 +459,23 @@ manage the range state. It provides a range input that allows users to select a 
 | `startMax`    | `number`   |           | `max`         | The initial maximum value.                                      |
 | `allowToggle` | `boolean`  |           | `true`        | Allows toggling the visibility of the facet content.            |
 | `startOpen`   | `boolean`  |           | `true`        | Determines whether the facet starts in an open state.           |
+
+### Component `HookedDateRangeFacet`
+
+The `HookedDateRangeFacet` component is a wrapper around the `DateRangeFacet` component that uses the
+`useDateRangeFacet` hook to manage the date range state. It provides a range input that allows users to select a
+range of dates.
+
+| Parameter     | Value type            | Required? | Default value | Description                                                     |
+|---------------|-----------------------|-----------|---------------|-----------------------------------------------------------------|
+| `facetKey`    | `string`              | ✓         |               | The key of the range facet to manage.                           |
+| `infoText`    | `string`              |           |               | Optional text providing additional information about the facet. |
+| `min`         | `string` `(ISO 8601)` | ✓         |               | The minimum date of the allowed range.                          |
+| `max`         | `string` `(ISO 8601)` | ✓         |               | The maximum date of the allowed range.                          |
+| `startMin`    | `string` `(ISO 8601)` |           | `min`         | The initial minimum date value.                                 |
+| `startMax`    | `string` `(ISO 8601)` |           | `max`         | The initial maximum date value.                                 |
+| `allowToggle` | `boolean`             |           | `true`        | Allows toggling the visibility of the facet content.            |
+| `startOpen`   | `boolean`             |           | `true`        | Determines whether the facet starts in an open state.           |
 
 ### Component `HookedSelectedFacets`
 

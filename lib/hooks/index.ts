@@ -5,7 +5,8 @@ export {default as useUpdateFacetValueLabels} from './useUpdateFacetValueLabels'
 export {default as useSearchFacet} from './useSearchFacet';
 export {default as useFilterFacet} from './useFilterFacet';
 export {default as useHookedFilterFacet} from './useHookedFilterFacet';
-export {default as useRangeFacet} from './useRangeFacet';
+export {default as useNumericRangeFacet} from './useNumericRangeFacet';
+export {default as useDateRangeFacet} from './useDateRangeFacet';
 export {default as usePagination} from './usePagination';
 export {default as useSearchResults} from './useSearchResults';
 export {default as useSearchState} from './useSearchState';
