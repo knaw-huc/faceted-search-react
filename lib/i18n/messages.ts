@@ -1,10 +1,9 @@
-import { defineMessages } from "react-intl";
 import { uiId } from "./ids";
 
 /**
  * These are library-tied messages and meant to be overridden by applications using the faceted-search-react library
  */
-export const uiMessages = defineMessages({
+export const uiMessages = {
 
     /* Facet.tsx */
     facetLabel: { id: uiId('facetLabel'), defaultMessage: 'Facet for {label}' },
@@ -47,4 +46,4 @@ export const uiMessages = defineMessages({
     rangeMinimum: { id: uiId('rangeMinimum'), defaultMessage: 'Range minimum' },
     rangeMaximum: { id: uiId('rangeMaximum'), defaultMessage: 'Range maximum' },
     changeRange: { id: uiId('changeRange'), defaultMessage: 'Change range' },
-});
+};

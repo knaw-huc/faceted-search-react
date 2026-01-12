@@ -21,7 +21,7 @@ export default function Pagination({current, pages, prev, next, first, last}: Pa
                              href={first}
                              title={intl.formatMessage(uiMessages.paginationFirstPage)}
                              aria-label={intl.formatMessage(uiMessages.paginationFirstPage)}>
-                    <ChevronDoubleLeftIcon className='w-6 h-6 fill-neutral-900' />
+                    <ChevronDoubleLeftIcon className='w-3 h-3 fill-neutral-900' />
                 </a>}
 
                 {prev &&
@@ -29,7 +29,7 @@ export default function Pagination({current, pages, prev, next, first, last}: Pa
                        href={prev}
                        title={intl.formatMessage(uiMessages.paginationPreviousPage)}
                        aria-label={intl.formatMessage(uiMessages.paginationPreviousPage)}>
-                        <ChevronLeftIcon className='w-6 h-6 fill-neutral-900' />
+                        <ChevronLeftIcon className='w-3 h-3 fill-neutral-900' />
                     </a>}
 
                 {Object.entries(pages).map(([page, href]) =>
@@ -40,14 +40,14 @@ export default function Pagination({current, pages, prev, next, first, last}: Pa
                        href={next}
                        title={intl.formatMessage(uiMessages.paginationNextPage)}
                        aria-label={intl.formatMessage(uiMessages.paginationNextPage)}>
-                        <ChevronRightIcon className='w-6 h-6 fill-neutral-900' />
+                        <ChevronRightIcon className='w-3 h-3 fill-neutral-900' />
                     </a>}
 
                 {last && <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200"
                             href={last}
                             title={intl.formatMessage(uiMessages.paginationLastPage)}
                             aria-label={intl.formatMessage(uiMessages.paginationLastPage)}>
-                    <ChevronDoubleRightIcon className='w-6 h-6 fill-neutral-900' />
+                    <ChevronDoubleRightIcon className='w-3 h-3 fill-neutral-900' />
                 </a>}
             </nav>
         </div>

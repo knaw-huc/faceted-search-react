@@ -16,7 +16,7 @@ export default function Facet({label, infoText, startOpen = true, allowToggle = 
     const intl = useIntl();
 
     return (
-        <div className="mb-10 w-full max-w-[400px]" aria-label={intl.formatMessage(uiMessages.facetLabel, { label })}>
+        <div className="mb-6 w-full max-w-[400px]" aria-label={intl.formatMessage(uiMessages.facetLabel, { label })}>
             <div className="flex justify-between items-center mb-1">
                 <div className="font-semibold" tabIndex={0}>
                     {label}
@@ -69,7 +69,7 @@ function ToggleShowHide({isOpen, onToggle}: { isOpen: boolean, onToggle: () => v
             aria-label={isOpen ? intl.formatMessage(uiMessages.clickToCloseFacet) : intl.formatMessage(uiMessages.clickToOpenFacet)}
             title={isOpen ? intl.formatMessage(uiMessages.clickToCloseFacet) : intl.formatMessage(uiMessages.clickToOpenFacet)}
             onClick={onToggle}>
-            <img src={iconArrowDown} alt="" className={`w-3 h-3 fill-neutral-900 ${!isOpen ? 'rotate-180' : ''}`}/>
+            <img src={iconArrowDown} alt="" className={`w-2 h-2 fill-neutral-900 ${!isOpen ? 'rotate-180' : ''}`}/>
         </button>
     );
 }
