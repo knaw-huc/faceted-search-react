@@ -1,18 +1,20 @@
 import {useId, useState} from 'react';
+import {TranslateFn} from "../../store/FacetedSearchStore.ts";
 
 export interface SearchFacetProps {
     initialQuery?: string;
     onSearch: (query: string) => void;
+    translate: TranslateFn;
 }
 
-export default function SearchFacet({initialQuery, onSearch}: SearchFacetProps) {
+export default function SearchFacet({initialQuery, onSearch, translate}: SearchFacetProps) {
     const id = useId();
     const [query, setQuery] = useState(initialQuery || '');
 
     return (
         <div className="mb-6">
             <label htmlFor={id} className="font-semibold block pb-1">
-                Search for text
+                {translate ? translate('searchFacet:label') : 'Search for text'}
             </label>
 
             <div className="flex flex-row w-full">

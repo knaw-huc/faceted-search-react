@@ -9,3 +9,4 @@ export {default as useRangeFacet} from './useRangeFacet';
 export {default as usePagination} from './usePagination';
 export {default as useSearchResults} from './useSearchResults';
 export {default as useSearchState} from './useSearchState';
+export {default as useTranslate} from './useTranslate';

@@ -42,12 +42,18 @@ async function searchFn(state: SearchState) {
     };
 }
 
+function translateFn(key: string, opts?: Record<string, unknown>) {
+    console.log('Translate called', key, opts ?? 'No opts');
+
+    return 'translate(' + key + ')';
+}
+
 export default function Context() {
     const pageSize = 5;
 
     return (
         <Layout>
-            <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
+            <FacetedSearch facets={facets} searchFn={searchFn} translateFn={translateFn} searchLabel="Search" pageSize={pageSize}>
                 <ContentWithAsides leftAside={<AllFacets/>}>
                     <h2 className="mb-4">Results</h2>
 

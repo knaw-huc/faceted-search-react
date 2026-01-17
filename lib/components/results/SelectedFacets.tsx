@@ -1,8 +1,12 @@
 import {ReactNode} from 'react';
+import {TranslateFn} from "../../store/FacetedSearchStore.ts";
+
+export type SelectedFacetsLabelContent = Record<string, string>;
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
     onClear: () => void;
+    translate?: TranslateFn;
 }
 
 export interface SelectedFacet {
@@ -12,12 +16,12 @@ export interface SelectedFacet {
     onRemove: () => void;
 }
 
-export default function SelectedFacets({selectedFacets, onClear}: SelectedFacetsProps) {
+export default function SelectedFacets({selectedFacets, onClear, translate}: SelectedFacetsProps) {
     return (
         <section className="flex flex-row gap-2 my-4 justify-center max-h-20 overflow-auto"
                  aria-label="Geselecteerde filters">
             <div className="text-sm italic text-neutral-500 py-1 whitespace-nowrap">
-                Selected filters:
+                {translate ? translate('selectedFacets:selectedFilters') : 'Selected filters:'}
             </div>
 
             <div className="flex flex-row gap-2 flex-wrap items-start grow">
@@ -29,7 +33,7 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
                 <button
                     className="rounded-full px-2 py-1 font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 whitespace-nowrap text-xs"
                     onClick={onClear}>
-                    Clear filters
+                    {translate ? translate('selectedFacets:clearFilters') : 'Clear filters'}
                 </button>
             </div>
         </section>

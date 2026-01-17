@@ -3,6 +3,7 @@ import {Facet, FilterFacet, FilterFacetItem, FilterFacetItems} from 'components/
 import {FacetProps} from 'components/facets/Facet';
 import {default as FilterFacetContext} from 'context/FilterFacet';
 import {useFilterFacetContext} from 'hooks/useFilterFacet';
+import {useTranslate} from "../../hooks";
 
 interface HookedFilterFacetProps extends Omit<FacetProps, 'label'> {
     facetKey: string;
@@ -35,11 +36,13 @@ function HookedFilterFacetInner({
                                     children
                                 }: Omit<HookedFilterFacetProps, 'facetKey'>) {
     const {label, onTextFilterChange, onSort} = useFilterFacetContext();
+    const translate = useTranslate();
 
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
             <FilterFacet onTextFilterChange={allowFilter ? onTextFilterChange : undefined}
-                         onSort={allowSort ? onSort : undefined}>
+                         onSort={allowSort ? onSort : undefined}
+                         translate={translate}>
                 {children}
             </FilterFacet>
         </Facet>
