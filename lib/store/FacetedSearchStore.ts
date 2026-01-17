@@ -35,7 +35,6 @@ export interface FacetedSearchStoreState<R> {
     valueLabels: Record<string, FacetValueLabels>;
     results: SearchResults<R> | Promise<SearchResults<R>>;
     searchFn: SearchFn<R>;
-    translateFn: TranslateFn;
     pageSize: number;
     setQuery: (query?: string) => void;
     updateFacetValues: (facets: FacetValues) => void;
@@ -46,6 +45,7 @@ export interface FacetedSearchStoreState<R> {
     clearFacetValues: () => void;
     setPage: (page: number) => void;
     runSearch: () => void;
+    translateFn: TranslateFn;
 }
 
 export type FacetedSearchStore<R> = StoreApi<FacetedSearchStoreState<R>>;
@@ -69,7 +69,7 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
                     total: 0,
                 },
                 searchFn,
-                translateFn,
+                translateFn: translateFn,
                 pageSize: pageSize || 10,
 
                 setQuery: (query?: string) => {

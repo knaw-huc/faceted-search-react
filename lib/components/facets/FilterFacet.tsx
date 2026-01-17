@@ -6,21 +6,19 @@ import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
-import {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../store/FacetedSearchStore.ts";
 
 export type Sort = 'asc' | 'desc' | 'hits';
 
-export type FilterFacetLabelContent = Record<string, string>;
-
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     children: ReactNode;
-    translate?: TranslateFn;
+    translate: TranslateFn;
 }
 
 interface FilterFacetFiltersProps {
     onTextFilterChange?: (value: string) => void;
     onSort?: (type: Sort) => void;
-    translate?: TranslateFn;
+    translate: TranslateFn;
 }
 
 export interface FilterFacetItemsProps {
@@ -140,26 +138,26 @@ function FilterFacetFilters({onTextFilterChange, onSort, translate}: FilterFacet
                 <label htmlFor={id} className="hidden">{translate ? translate('filterFacet:filterOnFacetItems') : 'Filter on facet items'}</label>
                 <input
                     className="py-1 px-3 text-xs w-full rounded border border-neutral-600 placeholder:italic text-neutral-700"
-                    type="search" id={id} placeholder={translate ? translate('filterFacet:placeHolder') : 'Type to filter'}
+                    type="search" id={id} placeholder={translate ? translate('faceted-search-react.filter.facet.placeHolder') : 'Type to filter'}
                     onChange={e => onTextFilterChange(e.target.value)}/>
             </div>}
 
             {onSort && <div className="flex justify-end gap-1 w-2/5">
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label={translate ? translate('filterFacet:orderAsc') : 'Order from A to Z'} onClick={() => onSort('asc')}>
+                    aria-label={translate ? translate('faceted-search-react.filter.facet.orderAsc') : 'Order from A to Z'} onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label={translate ? translate('filterFacet:orderDesc') : 'Order from Z to A'} onClick={() => onSort('desc')}>
+                    aria-label={translate ? translate('faceted-search-react.filter.facet.orderDesc') : 'Order from Z to A'} onClick={() => onSort('desc')}>
                     <img src={iconSortZa} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label={translate ? translate('filterFacet:orderHits') : 'Order by amount of results'} onClick={() => onSort('hits')}>
+                    aria-label={translate ? translate('faceted.search-react.filter.facet.orderHits') : 'Order by amount of results'} onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}

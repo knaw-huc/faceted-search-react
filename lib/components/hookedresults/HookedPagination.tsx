@@ -2,7 +2,7 @@ import {Suspense} from 'react';
 import {Pagination} from 'components/results';
 import usePagination from 'hooks/usePagination';
 import useSearchResults from 'hooks/useSearchResults';
-import {useTranslate} from "../../hooks";
+import useTranslate from "../../hooks/useTranslate.ts";
 
 function getUrlForPage(page: number): string {
     const url = new URL(window.location.href);

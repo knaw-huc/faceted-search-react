@@ -3,7 +3,7 @@ import {Facet, FilterFacet, FilterFacetItem, FilterFacetItems} from 'components/
 import {FacetProps} from 'components/facets/Facet';
 import {default as FilterFacetContext} from 'context/FilterFacet';
 import {useFilterFacetContext} from 'hooks/useFilterFacet';
-import {useTranslate} from "../../hooks";
+import useTranslate from "../../hooks/useTranslate.ts";
 
 interface HookedFilterFacetProps extends Omit<FacetProps, 'label'> {
     facetKey: string;

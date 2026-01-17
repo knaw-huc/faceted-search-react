@@ -1,5 +1,5 @@
 import {useId, useState} from 'react';
-import {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../store/FacetedSearchStore.ts";
 
 export interface SearchFacetProps {
     initialQuery?: string;
@@ -14,7 +14,7 @@ export default function SearchFacet({initialQuery, onSearch, translate}: SearchF
     return (
         <div className="mb-6">
             <label htmlFor={id} className="font-semibold block pb-1">
-                {translate ? translate('searchFacet:label') : 'Search for text'}
+                {translate ? translate('faceted-search-react.search.facet.label') : 'Search for text'}
             </label>
 
             <div className="flex flex-row w-full">

@@ -2,7 +2,7 @@ import {useMemo} from 'react';
 import {SelectedFacets} from 'components/results';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
-import {useTranslate} from "../../hooks";
+import useTranslate from "../../hooks/useTranslate.ts";
 
 export default function HookedSelectedFacets() {
     const [label, query, setQuery] = useQuery();

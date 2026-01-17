@@ -5,10 +5,10 @@ import {TranslateFn} from "../store/FacetedSearchStore.ts";
 interface FacetedSearchParams<R> {
     facets: Facets;
     searchFn: SearchFn<R>;
+    children: ReactNode;
     translateFn: TranslateFn;
     searchLabel?: string;
     pageSize?: number;
-    children: ReactNode;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components, @typescript-eslint/no-explicit-any

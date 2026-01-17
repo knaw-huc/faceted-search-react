@@ -17,7 +17,7 @@ export default function Pagination({current, pages, prev, next, translate}: Pagi
                 {prev &&
                     <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 mr-4"
                        href={prev}>
-                        {translate? translate('pagination:previousPage') : 'Previous'}
+                        {translate ? translate('faceted-search-react.pagination.previousPage') : 'Previous'}
                     </a>}
 
                 {Object.entries(pages).map(([page, href]) =>
@@ -26,7 +26,7 @@ export default function Pagination({current, pages, prev, next, translate}: Pagi
                 {next &&
                     <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 ml-4"
                        href={next}>
-                        {translate ? translate('pagination:nextPage') : 'Next'}
+                        {translate ? translate('faceted-search.react.pagination.nextPage') : 'Next'}
                     </a>}
             </nav>
         </div>
