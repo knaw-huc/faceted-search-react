@@ -1,12 +1,10 @@
 import {createContext, useRef, ReactNode} from 'react';
 import createFacetedSearchStore, {Facets, SearchFn, FacetedSearchStore} from 'store/FacetedSearchStore';
-import {TranslateFn} from "../store/FacetedSearchStore.ts";
 
 interface FacetedSearchParams<R> {
     facets: Facets;
     searchFn: SearchFn<R>;
     children: ReactNode;
-    translateFn: TranslateFn;
     searchLabel?: string;
     pageSize?: number;
 }
@@ -14,17 +12,18 @@ interface FacetedSearchParams<R> {
 // eslint-disable-next-line react-refresh/only-export-components, @typescript-eslint/no-explicit-any
 export const FacetedSearchContext = createContext<FacetedSearchStore<any> | null>(null);
 
-export default function FacetedSearch<R>({facets, searchFn, translateFn, searchLabel, pageSize, children}: FacetedSearchParams<R>) {
+export default function FacetedSearch<R>({facets, searchFn, searchLabel, pageSize, children}: FacetedSearchParams<R>) {
     const store = useRef<FacetedSearchStore<R>>(null);
     // eslint-disable-next-line react-hooks/refs
     if (!store.current) {
-        store.current = createFacetedSearchStore(facets, searchFn, translateFn, searchLabel, pageSize);
+        store.current = createFacetedSearchStore(facets, searchFn, searchLabel, pageSize);
     }
 
     return (
         // eslint-disable-next-line react-hooks/refs
         <FacetedSearchContext.Provider value={store.current}>
             {children}
+
         </FacetedSearchContext.Provider>
     );
 }

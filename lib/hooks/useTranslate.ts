@@ -1,6 +1,10 @@
-import useSearchContext from "hooks/useSearchContext.ts";
-import {TranslateFn} from "store/FacetedSearchStore.ts";
+import {useContext} from 'react';
+import {I18nContext, TranslateFn} from '../context/I18nContext';
 
 export default function useTranslate(): TranslateFn {
-    return useSearchContext((s) => s.translateFn);
+    const translate = useContext(I18nContext);
+    if (!translate) {
+        return (key: string) => key;
+    }
+    return translate;
 }

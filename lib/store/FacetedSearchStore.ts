@@ -26,8 +26,6 @@ export interface SearchResults<R> {
 
 export type SearchFn<R> = (state: SearchState) => SearchResults<R> | Promise<SearchResults<R>>;
 
-export type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
-
 export interface FacetedSearchStoreState<R> {
     state: SearchState;
     facets: Facets;
@@ -45,12 +43,11 @@ export interface FacetedSearchStoreState<R> {
     clearFacetValues: () => void;
     setPage: (page: number) => void;
     runSearch: () => void;
-    translateFn: TranslateFn;
 }
 
 export type FacetedSearchStore<R> = StoreApi<FacetedSearchStoreState<R>>;
 
-export default function createFacetedSearchStore<R>(facets: Facets, searchFn: SearchFn<R>, translateFn: TranslateFn, searchLabel?: string, pageSize?: number) {
+export default function createFacetedSearchStore<R>(facets: Facets, searchFn: SearchFn<R>, searchLabel?: string, pageSize?: number) {
     const store = createStore<FacetedSearchStoreState<R>>()(
         subscribeWithSelector(
             withUrlSync((set, get) => ({
@@ -69,7 +66,6 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
                     total: 0,
                 },
                 searchFn,
-                translateFn: translateFn,
                 pageSize: pageSize || 10,
 
                 setQuery: (query?: string) => {

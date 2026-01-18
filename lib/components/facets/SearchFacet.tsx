@@ -1,10 +1,10 @@
 import {useId, useState} from 'react';
-import type {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../context/I18nContext";
 
 export interface SearchFacetProps {
     initialQuery?: string;
     onSearch: (query: string) => void;
-    translate: TranslateFn;
+    translate?: TranslateFn;
 }
 
 export default function SearchFacet({initialQuery, onSearch, translate}: SearchFacetProps) {

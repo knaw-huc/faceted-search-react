@@ -6,19 +6,19 @@ import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
-import type {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../context/I18nContext";
 
 export type Sort = 'asc' | 'desc' | 'hits';
 
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     children: ReactNode;
-    translate: TranslateFn;
+    translate?: TranslateFn;
 }
 
 interface FilterFacetFiltersProps {
     onTextFilterChange?: (value: string) => void;
     onSort?: (type: Sort) => void;
-    translate: TranslateFn;
+    translate?: TranslateFn;
 }
 
 export interface FilterFacetItemsProps {

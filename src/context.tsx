@@ -17,7 +17,7 @@ import {
     HookedPagination,
     getReadableRange,
     useHookedFilterFacet,
-    useSearchState,
+    useSearchState, I18nProvider,
 } from '../lib';
 
 const facets: Facets = {
@@ -53,22 +53,24 @@ export default function Context() {
 
     return (
         <Layout>
-            <FacetedSearch facets={facets} searchFn={searchFn} translateFn={translateFn} searchLabel="Search" pageSize={pageSize}>
-                <ContentWithAsides leftAside={<AllFacets/>}>
-                    <h2 className="mb-4">Results</h2>
+            <I18nProvider translate={translateFn}>
+                <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
+                    <ContentWithAsides leftAside={<AllFacets/>}>
+                        <h2 className="mb-4">Results</h2>
 
-                    <HookedSelectedFacets/>
-                    <HookedResultsView idKey="title" ResultComponent={ResultCardBasic}/>
-                    <HookedPagination/>
-                </ContentWithAsides>
-            </FacetedSearch>
+                        <HookedSelectedFacets/>
+                        <HookedResultsView idKey="title" ResultComponent={ResultCardBasic}/>
+                        <HookedPagination/>
+                    </ContentWithAsides>
+                </FacetedSearch>
+            </I18nProvider>
         </Layout>
     )
 }
 
 function AllFacets() {
     return (
-        <FacetsSection>
+        <FacetsSection translate={translateFn}>
             <HookedSearchFacet/>
             <HookedRangeFacet facetKey="range" min={0} max={1000} step={1}/>
             <HookedFilterFacet facetKey="name" infoText="Info about this facet.">

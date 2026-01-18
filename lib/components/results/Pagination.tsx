@@ -1,4 +1,4 @@
-import {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../context/I18nContext";
 
 export type PaginationLabelContent = Record<string, string>;
 

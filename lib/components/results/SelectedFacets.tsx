@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import type {TranslateFn} from "../../store/FacetedSearchStore.ts";
+import type {TranslateFn} from "../../context/I18nContext";
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
