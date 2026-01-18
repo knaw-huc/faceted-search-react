@@ -157,7 +157,7 @@ function FilterFacetFilters({onTextFilterChange, onSort, translate}: FilterFacet
 
                 <button
                     className="py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center"
-                    aria-label={translate ? translate('faceted.search-react.filter.facet.orderHits') : 'Order by amount of results'} onClick={() => onSort('hits')}>
+                    aria-label={translate ? translate('faceted-search-react.filter.facet.orderHits') : 'Order by amount of results'} onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}
