@@ -17,7 +17,7 @@ import {
     HookedPagination,
     getReadableRange,
     useHookedFilterFacet,
-    useSearchState, I18nProvider,
+    useSearchState,
 } from '../lib';
 
 const facets: Facets = {
@@ -42,35 +42,27 @@ async function searchFn(state: SearchState) {
     };
 }
 
-function translateFn(key: string, opts?: Record<string, unknown>) {
-    console.log('Translate called', key, opts ?? 'No opts');
-
-    return 'translate(' + key + ')';
-}
-
 export default function Context() {
     const pageSize = 5;
 
     return (
         <Layout>
-            <I18nProvider translate={translateFn}>
-                <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
-                    <ContentWithAsides leftAside={<AllFacets/>}>
-                        <h2 className="mb-4">Results</h2>
+            <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
+                <ContentWithAsides leftAside={<AllFacets/>}>
+                    <h2 className="mb-4">Results</h2>
 
-                        <HookedSelectedFacets/>
-                        <HookedResultsView idKey="title" ResultComponent={ResultCardBasic}/>
-                        <HookedPagination/>
-                    </ContentWithAsides>
-                </FacetedSearch>
-            </I18nProvider>
+                    <HookedSelectedFacets/>
+                    <HookedResultsView idKey="title" ResultComponent={ResultCardBasic}/>
+                    <HookedPagination/>
+                </ContentWithAsides>
+            </FacetedSearch>
         </Layout>
     )
 }
 
 function AllFacets() {
     return (
-        <FacetsSection translate={translateFn}>
+        <FacetsSection>
             <HookedSearchFacet/>
             <HookedRangeFacet facetKey="range" min={0} max={1000} step={1}/>
             <HookedFilterFacet facetKey="name" infoText="Info about this facet.">

@@ -1,10 +1,9 @@
 import {ReactNode} from 'react';
-import type {TranslateFn} from "../../context/I18nContext";
+import {useTranslate} from "../../hooks";
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
     onClear: () => void;
-    translate?: TranslateFn;
 }
 
 export interface SelectedFacet {
@@ -14,12 +13,14 @@ export interface SelectedFacet {
     onRemove: () => void;
 }
 
-export default function SelectedFacets({selectedFacets, onClear, translate}: SelectedFacetsProps) {
+export default function SelectedFacets({selectedFacets, onClear}: SelectedFacetsProps) {
+    const {t} = useTranslate();
+
     return (
         <section className="flex flex-row gap-2 my-4 justify-center max-h-20 overflow-auto"
-                 aria-label="Geselecteerde filters">
+                 aria-label={t('selected.aria')}>
             <div className="text-sm italic text-neutral-500 py-1 whitespace-nowrap">
-                {translate ? translate('faceted-search-react.selected.facets.selectedFilters') : 'Selected filters:'}
+                {t('selected.label')}
             </div>
 
             <div className="flex flex-row gap-2 flex-wrap items-start grow">
@@ -31,7 +32,7 @@ export default function SelectedFacets({selectedFacets, onClear, translate}: Sel
                 <button
                     className="rounded-full px-2 py-1 font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 whitespace-nowrap text-xs"
                     onClick={onClear}>
-                    {translate ? translate('faceted-search-react.selected.facets.clearFilters') : 'Clear filters'}
+                    {t('selected.clear')}
                 </button>
             </div>
         </section>
@@ -39,6 +40,8 @@ export default function SelectedFacets({selectedFacets, onClear, translate}: Sel
 }
 
 function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
+    const {t} = useTranslate();
+
     return (
         <div className="rounded bg-(--color-support-002) text-white py-1 px-2 text-sm flex flex-row items-center">
             <span className="mr-1">
@@ -53,7 +56,7 @@ function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
                 {name && <span className="font-bold">{name}: </span>}{label}
             </span>
 
-            <button className="ml-2" aria-label="Klik om te verwijderen van zoekfilters" onClick={onRemove}>
+            <button className="ml-2" aria-label={t('selected.remove.aria')} onClick={onRemove}>
                 &#10005;
             </button>
         </div>

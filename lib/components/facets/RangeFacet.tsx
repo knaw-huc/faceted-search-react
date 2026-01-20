@@ -1,5 +1,6 @@
 import {useId, useState} from 'react';
 import {Root, Track, Range, Thumb} from '@radix-ui/react-slider';
+import {useTranslate} from "../../hooks";
 
 export interface RangeFacetProps {
     min: number;
@@ -12,6 +13,7 @@ export interface RangeFacetProps {
 
 export default function RangeFacet({min, max, step, startMin = min, startMax = max, onChange}: RangeFacetProps) {
     const [curMinMax, setCurMinMax] = useState([startMin, startMax]);
+    const {t} = useTranslate();
 
     const minId = useId();
     const maxId = useId();
@@ -44,14 +46,14 @@ export default function RangeFacet({min, max, step, startMin = min, startMax = m
 
             <div className="flex justify-between mt-2">
                 <div className="flex flex-col">
-                    <label htmlFor={minId} className="text-sm font-bold">Min</label>
+                    <label htmlFor={minId} className="text-sm font-bold">{t('range.min')}</label>
                     <input type="number" name="min" value={curMinMax[0]} id={minId}
                            onChange={e => onValueCommit([parseInt(e.target.value), curMinMax[1]])}
                            className="w-32 text-left text-sm border border-neutral-200 p-1 rounded"/>
                 </div>
 
                 <div className="flex flex-col">
-                    <label htmlFor={maxId} className="text-sm font-bold text-right">Max</label>
+                    <label htmlFor={maxId} className="text-sm font-bold text-right">{t('range.max')}</label>
                     <input type="number" name="max" value={curMinMax[1]} id={maxId}
                            onChange={e => onValueCommit([curMinMax[0], parseInt(e.target.value)])}
                            className="w-32 text-right text-sm border border-neutral-200 p-1 rounded"/>

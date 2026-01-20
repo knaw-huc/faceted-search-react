@@ -1,23 +1,22 @@
-import type {TranslateFn} from "../../context/I18nContext";
-
-export type PaginationLabelContent = Record<string, string>;
+import {useTranslate} from "../../hooks";
 
 export interface PaginationProps {
     current: number;
     pages: { [page: number]: string };
     prev?: string;
     next?: string;
-    translate?: TranslateFn;
 }
 
-export default function Pagination({current, pages, prev, next, translate}: PaginationProps) {
+export default function Pagination({current, pages, prev, next}: PaginationProps) {
+    const {t} = useTranslate();
+
     return (
         <div className="pb-20">
             <nav className="flex gap-4 w-full justify-center mt-10">
                 {prev &&
                     <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 mr-4"
                        href={prev}>
-                        {translate ? translate('faceted-search-react.pagination.previousPage') : 'Previous'}
+                        {t('pagination.previous')}
                     </a>}
 
                 {Object.entries(pages).map(([page, href]) =>
@@ -26,7 +25,7 @@ export default function Pagination({current, pages, prev, next, translate}: Pagi
                 {next &&
                     <a className="rounded-full px-3 py-2 text-sm font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 ml-4"
                        href={next}>
-                        {translate ? translate('faceted-search-react.pagination.nextPage') : 'Next'}
+                        {t('pagination.next')}
                     </a>}
             </nav>
         </div>

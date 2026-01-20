@@ -1,2 +1,4 @@
 export {default as FacetedSearch} from './FacetedSearch';
-export {I18nProvider, type TranslateFn} from './I18nContext';
+export type {I18nProvider, defaultTranslations} from './I18nContext';
+export type {TranslateFn, TranslationKey} from './I18nContext';
+
