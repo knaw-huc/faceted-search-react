@@ -2,13 +2,11 @@ import {useMemo} from 'react';
 import {SelectedFacets} from 'components/results';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
-import useTranslate from "../../hooks/useTranslate.ts";
 
 export default function HookedSelectedFacets() {
     const [label, query, setQuery] = useQuery();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [facets, facetValues, facetValueLabels, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
-    const translate = useTranslate();
 
     const selectedFacets = useMemo(() => Object.entries(facetValues).flatMap(([facetKey, values]) =>
         values.flat().map(value => {
@@ -38,6 +36,6 @@ export default function HookedSelectedFacets() {
     }
 
     return (
-        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets} translate={translate}/>
+        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets} />
     );
 }

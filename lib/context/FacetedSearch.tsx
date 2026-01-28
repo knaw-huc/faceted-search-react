@@ -7,14 +7,7 @@ interface FacetedSearchParams<R> {
     searchFn: SearchFn<R>;
     searchLabel?: string;
     pageSize?: number;
-    /**
-     * Custom translate function from your i18n library (react-intl, i18next, your own homegrown solution etc.)
-     * If provided, this takes precedence over the translations prop
-     */
     translate?: TranslateFn;
-    /**
-     * Partial translations object to override specific key. Will be merged with default English translations.
-     */
     translations?: Partial<Record<string, string>>;
     children: ReactNode;
 }
