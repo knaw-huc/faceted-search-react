@@ -11,7 +11,6 @@ export type Sort = 'asc' | 'desc' | 'hits';
 
 export interface FilterFacetProps extends FilterFacetFiltersProps {
     children: ReactNode;
-    sort?: Sort;
 }
 
 interface FilterFacetFiltersProps {
