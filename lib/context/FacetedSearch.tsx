@@ -8,14 +8,15 @@ interface FacetedSearchParams<R> {
     searchLabel?: string;
     pageSize?: number;
     translate?: TranslateFn;
-    translations?: Partial<Record<string, string>>;
+    translations?: Record<string, string>;
+    locale?: string | Intl.Locale;
     children: ReactNode;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components, @typescript-eslint/no-explicit-any
 export const FacetedSearchContext = createContext<FacetedSearchStore<any> | null>(null);
 
-export default function FacetedSearch<R>({facets, searchFn, searchLabel, pageSize, translate, translations, children}: FacetedSearchParams<R>) {
+export default function FacetedSearch<R>({facets, searchFn, searchLabel, pageSize, translate, translations, locale, children}: FacetedSearchParams<R>) {
     const store = useRef<FacetedSearchStore<R>>(null);
     // eslint-disable-next-line react-hooks/refs
     if (!store.current) {
@@ -25,7 +26,7 @@ export default function FacetedSearch<R>({facets, searchFn, searchLabel, pageSiz
     return (
         // eslint-disable-next-line react-hooks/refs
         <FacetedSearchContext.Provider value={store.current}>
-            <I18nProvider translate={translate} translations={translations}>
+            <I18nProvider translate={translate} translations={translations} locale={locale}>
                 {children}
             </I18nProvider>
         </FacetedSearchContext.Provider>

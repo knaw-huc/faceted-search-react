@@ -452,12 +452,14 @@ customize them to support any language.
 
 ### Configuration
 
-The `FacetedSearch` component accepts two i18n-related props:
+The `FacetedSearch` component accepts three i18n-related props:
 
-| Parameter      | Value type                       | Required? | Default value | Description                                                                    |
-|----------------|----------------------------------|-----------|---------------|--------------------------------------------------------------------------------|
-| `translate`    | `TranslateFn`                    |           |               | Custom translate function from your i18n library. Takes precedence if provided.|
-| `translations` | `Partial<Record<string, string>>`|           |               | Object to override specific translation keys. Merged with defaults.            |
+| Parameter      | Value type               | Required?    | Default value | Description                                                       |
+|----------------|--------------------------|--------------|---------------|-------------------------------------------------------------------|
+| `translate`    | `TranslateFn`            |              |               | Custom translate function from your i18n library. Takes precedence if provided. |
+| `translations` | `Record<string, string>` |              |               | Object to override specific translation keys. Merged with defaults. |
+| `locale`       | `string / Intl.Locale`   |              | 'en'          | Locale string or Intl.Locale object.                              |
+
 
 ```ts
 type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
@@ -475,9 +477,10 @@ function App() {
     const intl = useIntl();
     const translate = (key: string, options?: Record<string, unknown>) =>
         intl.formatMessage({id: key}, options);
+    const locale = myLocale();
 
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} translate={translate}>
+        <FacetedSearch facets={facets} searchFn={searchFn} translate={translate} locale={locale}>
             <YourAppComponents/>
         </FacetedSearch>
     );
@@ -490,9 +493,10 @@ import {useTranslation} from 'react-i18next';
 
 function App() {
     const {t} = useTranslation();
+    const locale = myLocale();
 
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} translate={t}>
+        <FacetedSearch facets={facets} searchFn={searchFn} translate={t} locale={locale}>
             <YourAppComponents/>
         </FacetedSearch>
     );

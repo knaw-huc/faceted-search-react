@@ -6,7 +6,7 @@ import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export type Sort = 'asc' | 'desc' | 'hits';
 

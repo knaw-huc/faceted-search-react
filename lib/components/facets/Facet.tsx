@@ -1,6 +1,6 @@
 import {ReactNode, useState} from 'react';
 import iconArrowDown from 'assets/icon-arrow-down.svg';
-import useTranslate from "../../hooks/useTranslate.ts";
+import useTranslate from 'hooks/useTranslate';
 
 export interface FacetProps {
     label: string;

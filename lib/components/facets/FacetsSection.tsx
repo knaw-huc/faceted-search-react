@@ -1,5 +1,5 @@
 import {ReactNode, useState} from 'react';
-import useTranslate from "../../hooks/useTranslate.ts";
+import useTranslate from 'hooks/useTranslate';
 
 export default function FacetsSection({children}: { children: ReactNode }) {
     const [showFacets, setShowFacets] = useState(false);

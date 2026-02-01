@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];

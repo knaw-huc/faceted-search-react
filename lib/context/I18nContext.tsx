@@ -1,4 +1,5 @@
-import {Context, createContext, ReactNode, useCallback} from 'react';
+import {Context, createContext, ReactNode, useCallback, useMemo} from 'react';
+import defaultTranslations from './defaultTranslations.json';
 
 /**
  * Translation function type - compatible with most i18n libraries
@@ -8,57 +9,13 @@ import {Context, createContext, ReactNode, useCallback} from 'react';
 export type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
 
 /**
- * Default English translations for all library strings
- */
-export const defaultTranslations: Record<string, string> = {
-    // SearchFacet
-    'search.label': 'Search for text',
-    'search.button.aria': 'Search',
-
-    // FilterFacet
-    'filter.label': 'Filter on facet items',
-    'filter.placeholder': 'Type to filter',
-    'filter.sort.asc': 'Order from A to Z',
-    'filter.sort.desc': 'Order from Z to A',
-    'filter.sort.hits': 'Order by the amount of results',
-    'filter.amount.aria': 'Amount of results',
-    'filter.showAll': 'All items',
-
-    // Facet
-    'facet.aria': 'Facet for {{label}}',
-    'facet.info.aria': 'Click for a description about the facet',
-    'facet.toggle.open': 'Click to open the facet',
-    'facet.toggle.close': 'Click to close the facet',
-    'facet.skip': 'Skip {{label}} and go to next facet',
-
-    // FacetsSection
-    'facets.toggle': 'Search filters',
-
-    // Pagination
-    'pagination.previous': 'Previous',
-    'pagination.next': 'Next',
-
-    // SelectedFacets
-    'selected.aria': 'Selected filters',
-    'selected.label': 'Selected filters:',
-    'selected.remove.aria': 'Click to remove from search filters',
-    'selected.clear': 'Clear filters',
-
-    // RangeFacet
-    'range.min': 'Min',
-    'range.max': 'Max',
-
-    // ResultCardSubResults
-    'results.seeMore': 'See {{count}} more reactions',
-};
-
-/**
  * Type for translation keys - provides autocomplete
  */
 export type TranslationKey = keyof typeof defaultTranslations;
 
 interface I18nContextValue {
     translate: TranslateFn;
+    locale: Intl.Locale;
 }
 
 interface I18nProviderProps {
@@ -72,10 +29,12 @@ interface I18nProviderProps {
      * Will be merged with default English translations
      */
     translations?: Partial<Record<string, string>>;
+    locale?: string | Intl.Locale;
     children: ReactNode;
 }
 
-export const I18nContext: Context<I18nContextValue | undefined> = createContext<I18nContextValue | undefined>(undefined);
+export const I18nContext: Context<I18nContextValue | undefined> =
+                    createContext<I18nContextValue | undefined>(undefined);
 
 /**
  * Simple interpolation function for {{key}} placeholders
@@ -98,7 +57,12 @@ export function createTranslateFn(translations: Record<string, string>): Transla
     };
 }
 
-export function I18nProvider({translate, translations, children}: I18nProviderProps) {
+export function I18nProvider({translate, translations, locale = 'en', children}: I18nProviderProps) {
+    const localeObj = useMemo(
+        () => locale instanceof Intl.Locale ? locale : new Intl.Locale(locale),
+        [locale]
+    );
+
     // Merge default translations with custom ones (custom values override defaults)
     const mergedTranslations: Record<string, string> = {
         ...defaultTranslations,
@@ -119,7 +83,7 @@ export function I18nProvider({translate, translations, children}: I18nProviderPr
     );
 
     return (
-        <I18nContext.Provider value={{translate: translateFn}}>
+        <I18nContext.Provider value={{translate: translateFn, locale: localeObj}}>
             {children}
         </I18nContext.Provider>
     );

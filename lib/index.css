@@ -15,10 +15,12 @@
     }
 
     /* Define the variables again to make sure they all end up in the generated CSS */
-    --color-brand: #0b3f8e;
-    --color-header-text: #fff;
-    --color-support-001: #525252;
-    --color-support-002: #525252;
-    --color-support-003: #525252;
-    --site-max-width: 1300px;
+    :root {
+        --color-brand: #0b3f8e;
+        --color-header-text: #fff;
+        --color-support-001: #525252;
+        --color-support-002: #525252;
+        --color-support-003: #525252;
+        --site-max-width: 1300px;
+    }
 }

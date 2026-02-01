@@ -1,4 +1,4 @@
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export interface PaginationProps {
     current: number;

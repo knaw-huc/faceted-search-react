@@ -1,4 +1,5 @@
-import {createTranslateFn, defaultTranslations, I18nContext, TranslateFn} from "../context/I18nContext.tsx";
+import {createTranslateFn, I18nContext, TranslateFn} from "context/I18nContext";
+import defaultTranslations from 'context/defaultTranslations.json';
 import {useCallback, useContext} from "react";
 
 /**

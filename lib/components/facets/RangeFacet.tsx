@@ -1,6 +1,6 @@
 import {useId, useState} from 'react';
 import {Root, Track, Range, Thumb} from '@radix-ui/react-slider';
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export interface RangeFacetProps {
     min: number;

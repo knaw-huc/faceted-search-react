@@ -1,5 +1,5 @@
 import {useId, useState} from 'react';
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export interface SearchFacetProps {
     initialQuery?: string;

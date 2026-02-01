@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import ResultCard from './ResultCard';
-import {useTranslate} from "../../hooks";
+import useTranslate from 'hooks/useTranslate';
 
 export interface ResultCardSubResultsProps {
     title: string;
