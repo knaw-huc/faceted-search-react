@@ -63,23 +63,22 @@ export function I18nProvider({translate, translations, locale = 'en', children}:
         [locale]
     );
 
-    // Merge default translations with custom ones (custom values override defaults)
-    const mergedTranslations: Record<string, string> = {
-        ...defaultTranslations,
-        ...Object.fromEntries(
-            Object.entries(translations ?? {}).filter((entry): entry is [string, string] => entry[1] !== undefined)
-        )
-    };
-
     // Use custom translate function if provided, otherwise use merged translations
     const translateFn = useCallback(
         (key: string, options?: Record<string, unknown>) => {
             if (translate) {
                 return translate(key, options);
             }
+            // Merge default translations with custom ones (custom values override defaults)
+            const mergedTranslations: Record<string, string> = {
+                ...defaultTranslations,
+                ...Object.fromEntries(
+                    Object.entries(translations ?? {}).filter((entry): entry is [string, string] => entry[1] !== undefined)
+                )
+            };
             return createTranslateFn(mergedTranslations)(key, options);
         },
-        [translate, mergedTranslations]
+        [translate, translations]
     );
 
     return (
