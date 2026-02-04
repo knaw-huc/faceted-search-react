@@ -1,4 +1,5 @@
 import {useId, useState} from 'react';
+import useTranslate from 'hooks/useTranslate';
 
 export interface SearchFacetProps {
     initialQuery?: string;
@@ -8,11 +9,12 @@ export interface SearchFacetProps {
 export default function SearchFacet({initialQuery, onSearch}: SearchFacetProps) {
     const id = useId();
     const [query, setQuery] = useState(initialQuery || '');
+    const {t} = useTranslate();
 
     return (
         <div className="mb-6">
             <label htmlFor={id} className="font-semibold block pb-1">
-                Search for text
+                {t('search.label')}
             </label>
 
             <div className="flex flex-row w-full">
@@ -22,7 +24,7 @@ export default function SearchFacet({initialQuery, onSearch}: SearchFacetProps) 
                        onKeyUp={e => e.key === 'Enter' && onSearch(query)}/>
 
                 <button className="bg-(--color-support-001) py-1 px-3 rounded-r border border-(--color-support-001)"
-                        aria-label="Search" onClick={() => onSearch(query)}>
+                        aria-label={t('search.button.aria')} onClick={() => onSearch(query)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                          className="w-6 h-6 fill-white">
                         <path fillRule="evenodd"

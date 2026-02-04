@@ -5,6 +5,6 @@ export default function HookedSearchFacet() {
     const {query, onSearch} = useSearchFacet();
 
     return (
-        <SearchFacet initialQuery={query || ''} onSearch={onSearch}/>
+        <SearchFacet initialQuery={query || ''} onSearch={onSearch} />
     );
 }

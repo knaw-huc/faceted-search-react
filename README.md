@@ -445,3 +445,126 @@ to fetch the search results.
 | `mappper`         | `(result: R) => C`     |           |               | Mapper to map the obtained results to the params of the given `ResultComponent`. |
 | `ResultComponent` | `FunctionComponent<C>` | ✓         |               | The search result card component to render the results.                          |
 
+## Internationalization (i18n)
+
+The library includes built-in support for internationalization. By default, all UI strings are in English, but you can
+customize them to support any language.
+
+### Configuration
+
+The `FacetedSearch` component accepts three i18n-related props:
+
+| Parameter      | Value type               | Required?    | Default value | Description                                                       |
+|----------------|--------------------------|--------------|---------------|-------------------------------------------------------------------|
+| `translate`    | `TranslateFn`            |              |               | Custom translate function from your i18n library. Takes precedence if provided. |
+| `translations` | `Record<string, string>` |              |               | Object to override specific translation keys. Merged with defaults. |
+| `locale`       | `string / Intl.Locale`   |              | 'en'          | Locale string or Intl.Locale object.                              |
+
+
+```ts
+type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
+```
+
+### Using a Custom Translation Function
+
+If you're using an i18n library like `react-intl` or `i18next`, you can pass your own translate function:
+
+**With react-intl:**
+```tsx
+import {useIntl} from 'react-intl';
+
+function App() {
+    const intl = useIntl();
+    const translate = (key: string, options?: Record<string, unknown>) =>
+        intl.formatMessage({id: key}, options);
+    const locale = myLocale();
+
+    return (
+        <FacetedSearch facets={facets} searchFn={searchFn} translate={translate} locale={locale}>
+            <YourAppComponents/>
+        </FacetedSearch>
+    );
+}
+```
+
+**With i18next:**
+```tsx
+import {useTranslation} from 'react-i18next';
+
+function App() {
+    const {t} = useTranslation();
+    const locale = myLocale();
+
+    return (
+        <FacetedSearch facets={facets} searchFn={searchFn} translate={t} locale={locale}>
+            <YourAppComponents/>
+        </FacetedSearch>
+    );
+}
+```
+
+### Using the Translations Object
+
+For simple customizations without an external i18n library, you can override specific keys:
+
+```tsx
+const myTranslations = {
+    'search.label': 'Zoek naar tekst',
+    'pagination.previous': 'Vorige',
+    'pagination.next': 'Volgende',
+};
+
+function App() {
+    return (
+        <FacetedSearch facets={facets} searchFn={searchFn} translations={myTranslations}>
+            <YourAppComponents/>
+        </FacetedSearch>
+    );
+}
+```
+
+### Available Translation Keys
+
+The following translation keys are available for customization:
+
+| Key                    | Default Value                              | Used In             |
+|------------------------|--------------------------------------------|---------------------|
+| `search.label`         | Search for text                            | SearchFacet         |
+| `search.button.aria`   | Search                                     | SearchFacet         |
+| `filter.label`         | Filter on facet items                      | FilterFacet         |
+| `filter.placeholder`   | Type to filter                             | FilterFacet         |
+| `filter.sort.asc`      | Order from A to Z                          | FilterFacet         |
+| `filter.sort.desc`     | Order from Z to A                          | FilterFacet         |
+| `filter.sort.hits`     | Order by the amount of results             | FilterFacet         |
+| `filter.amount.aria`   | Amount of results                          | FilterFacet         |
+| `filter.showAll`       | All items                                  | FilterFacet         |
+| `facet.aria`           | Facet for {{label}}                        | Facet               |
+| `facet.info.aria`      | Click for a description about the facet    | Facet               |
+| `facet.toggle.open`    | Click to open the facet                    | Facet               |
+| `facet.toggle.close`   | Click to close the facet                   | Facet               |
+| `facet.skip`           | Skip {{label}} and go to next facet        | Facet               |
+| `facets.toggle`        | Search filters                             | FacetsSection       |
+| `pagination.previous`  | Previous                                   | Pagination          |
+| `pagination.next`      | Next                                       | Pagination          |
+| `selected.aria`        | Selected filters                           | SelectedFacets      |
+| `selected.label`       | Selected filters:                          | SelectedFacets      |
+| `selected.remove.aria` | Click to remove from search filters        | SelectedFacets      |
+| `selected.clear`       | Clear filters                              | SelectedFacets      |
+| `range.min`            | Min                                        | RangeFacet          |
+| `range.max`            | Max                                        | RangeFacet          |
+| `results.seeMore`      | See {{count}} more reactions               | ResultCardSubResults|
+
+### Interpolation
+
+Some translation keys support interpolation using the `{{variable}}` syntax:
+
+- `facet.aria` and `facet.skip` use `{{label}}` for the facet label
+- `results.seeMore` uses `{{count}}` for the number of additional items
+
+When using a custom translate function, ensure it handles these interpolation placeholders appropriately.
+
+### Default Behavior
+
+When no i18n configuration is provided:
+- All strings default to English
+- The library works out of the box without any setup required

@@ -36,6 +36,6 @@ export default function HookedSelectedFacets() {
     }
 
     return (
-        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets}/>
+        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets} />
     );
 }

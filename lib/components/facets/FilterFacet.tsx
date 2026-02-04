@@ -6,6 +6,7 @@ import iconSortAz from 'assets/icon-sort-az.svg';
 import iconSortZa from 'assets/icon-sort-za.svg';
 import iconSort09 from 'assets/icon-sort-09.svg';
 import iconDoubleArrowDown from 'assets/icon-double-arrow-down.svg';
+import useTranslate from 'hooks/useTranslate';
 
 export type Sort = 'asc' | 'desc' | 'hits';
 
@@ -129,33 +130,34 @@ export default function FilterFacet({onTextFilterChange, onSort, children, sort}
 
 function FilterFacetFilters({onTextFilterChange, onSort, sort}: FilterFacetFiltersProps) {
     const id = useId();
+    const {t} = useTranslate();
 
     return (
         <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300 mt-2">
             {onTextFilterChange && <div className="pb-1 w-3/5 flex items-center">
-                <label htmlFor={id} className="hidden">Filter on facet items</label>
+                <label htmlFor={id} className="hidden">{t('filter.label')}</label>
                 <input
                     className="py-1 px-3 text-xs w-full rounded border border-neutral-600 placeholder:italic text-neutral-700"
-                    type="search" id={id} placeholder="Type to filter"
+                    type="search" id={id} placeholder={t('filter.placeholder')}
                     onChange={e => onTextFilterChange(e.target.value)}/>
             </div>}
 
             {onSort && <div className="flex justify-end gap-1 w-2/5">
                 <button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'asc' ? 'border': ''}`}
-                    aria-label="Order from A to Z" onClick={() => onSort('asc')}>
+                    aria-label={t('filter.sort.asc')} onClick={() => onSort('asc')}>
                     <img src={iconSortAz} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'desc' ? 'border': ''}`}
-                    aria-label="Order from Z to A" onClick={() => onSort('desc')}>
+                    aria-label={t('filter.sort.desc')} onClick={() => onSort('desc')}>
                     <img src={iconSortZa} alt="" className="h-4"/>
                 </button>
 
                 <button
                     className={`py-1 px-2 text-xs rounded bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center ${sort === 'hits' ? 'border': ''}`}
-                    aria-label="Order by the amount of results" onClick={() => onSort('hits')}>
+                    aria-label={t('filter.sort.hits')} onClick={() => onSort('hits')}>
                     <img src={iconSort09} alt="" className="h-4"/>
                 </button>
             </div>}
@@ -213,6 +215,7 @@ function FilterFacetItem({
     const id = useId();
     const [isOpen, setIsOpen] = useState(!itemsClosed);
     const ref = useRef<HTMLInputElement>(null);
+    const {t} = useTranslate();
 
     const itemHasChildren = children && children.length > 0;
     const isChecked = useMemo(() => isCheckedItem(itemKey, state, parents), [itemKey, state, parents]);
@@ -249,7 +252,7 @@ function FilterFacetItem({
                 <label htmlFor={id} className="flex justify-between w-full">
                     <div className="grow">{label}</div>
                     {showAmount && <>
-                        <div className="grow" aria-label="Amount of results"></div>
+                        <div className="grow" aria-label={t('filter.amount.aria')}></div>
                         <div className="text-sm text-neutral-500">{amount.toLocaleString()}</div>
                     </>}
                 </label>
@@ -276,10 +279,12 @@ function ChevronIcon({isOpen}: { isOpen: boolean }) {
 }
 
 function ToggleItems({isOpen, toggle}: { isOpen: boolean, toggle: () => void }) {
+    const {t} = useTranslate();
+
     return (
         <div className="flex justify-end">
             <button className="text-xs flex flex-row items-center justify-start gap-1" onClick={toggle}>
-                All items
+                {t('filter.showAll')}
                 <img src={iconDoubleArrowDown} alt=""
                      className={`w-4 h-4 fill-bg-sky-700 ${isOpen ? 'rotate-180' : ''}`}/>
             </button>

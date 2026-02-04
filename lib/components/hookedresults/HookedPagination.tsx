@@ -35,6 +35,6 @@ function SuspendedPagination() {
     };
 
     return (
-        <Pagination current={page} prev={prev} next={next} pages={pages}/>
+        <Pagination current={page} prev={prev} next={next} pages={pages} />
     );
 }

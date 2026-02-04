@@ -36,7 +36,7 @@ export default function Design() {
     function Facets() {
         return (
             <FacetsSection>
-                <SearchFacet onSearch={query => console.log('Search query', query)}/>
+                <SearchFacet onSearch={query => console.log('Search query', query)} />
 
                 <Facet label="Range">
                     <RangeFacet min={0} max={1000} step={1}
@@ -77,7 +77,8 @@ export default function Design() {
             <ContentWithAsides leftAside={<Facets/>}>
                 <h2 className="mb-4">Results</h2>
 
-                <SelectedFacets selectedFacets={selectedFacets} onClear={() => console.log('Clear facets')}/>
+                <SelectedFacets selectedFacets={selectedFacets}
+                                onClear={() => console.log('Clear facets')} />
 
                 <div className="flex flex-col gap-4">
                     <ResultsView>
@@ -97,7 +98,7 @@ export default function Design() {
                     1: '#',
                     2: '#',
                     3: '#',
-                }}/>
+                }} />
             </ContentWithAsides>
         </Layout>
     )
