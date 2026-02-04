@@ -45,7 +45,7 @@ export default function Design() {
 
                 <Facet label="Name" infoText="Info about this facet.">
                     <FilterFacet onTextFilterChange={value => console.log('Name text filter', value)}
-                                 onSort={type => console.log('Name sort', type)}>
+                                 onSort={type => console.log('Name sort', type)} sort={'hits'}>
                         <FilterFacetItems items={facetItemsList1} selected={facetItemsList1State}
                                           onSelect={state => setFacetItemsList1State(state)}/>
                     </FilterFacet>
@@ -53,7 +53,7 @@ export default function Design() {
 
                 <Facet label="Location" infoText="Info about this facet.">
                     <FilterFacet onTextFilterChange={value => console.log('Location text filter', value)}
-                                 onSort={type => console.log('Location sort', type)}>
+                                 onSort={type => console.log('Location sort', type)} sort={'asc'}>
                         <FilterFacetItems items={facetItemsList2} selected={facetItemsList2State}
                                           onSelect={state => setFacetItemsList2State(state)}/>
                     </FilterFacet>
@@ -61,7 +61,7 @@ export default function Design() {
 
                 <Facet label="Organisation" infoText="Info about this facet.">
                     <FilterFacet onTextFilterChange={value => console.log('Organisation text filter', value)}
-                                 onSort={type => console.log('Organisation sort', type)}>
+                                 onSort={type => console.log('Organisation sort', type)} sort={'desc'}>
                         <FilterFacetItems items={facetItemsList1.concat(facetItemsList1)} maxInitialItems={3}
                                           selected={new Set()} onSelect={() => console.log('Changed organisation')}/>
                     </FilterFacet>
