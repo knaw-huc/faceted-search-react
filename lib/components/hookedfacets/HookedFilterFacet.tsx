@@ -34,12 +34,12 @@ function HookedFilterFacetInner({
                                     startOpen = true,
                                     children
                                 }: Omit<HookedFilterFacetProps, 'facetKey'>) {
-    const {label, onTextFilterChange, onSort} = useFilterFacetContext();
+    const {label, onTextFilterChange, onSort, sort} = useFilterFacetContext();
 
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
             <FilterFacet onTextFilterChange={allowFilter ? onTextFilterChange : undefined}
-                         onSort={allowSort ? onSort : undefined}>
+                         onSort={allowSort ? onSort : undefined} sort={sort}>
                 {children}
             </FilterFacet>
         </Facet>
