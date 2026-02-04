@@ -1,4 +1,5 @@
 import {ReactNode} from 'react';
+import {Button} from "react-aria-components";
 import useTranslate from 'hooks/useTranslate';
 
 export interface SelectedFacetsProps {
@@ -29,11 +30,11 @@ export default function SelectedFacets({selectedFacets, onClear}: SelectedFacets
             </div>
 
             <div>
-                <button
+                <Button
                     className="rounded-full px-2 py-1 font-bold no-underline inline-flex items-center gap-1 transition bg-neutral-100 hover:bg-neutral-200 whitespace-nowrap text-xs"
                     onClick={onClear}>
                     {t('selected.clear')}
-                </button>
+                </Button>
             </div>
         </section>
     );
@@ -45,8 +46,8 @@ function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
     return (
         <div className="rounded bg-(--color-support-002) text-white py-1 px-2 text-sm flex flex-row items-center">
             <span className="mr-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                     strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 stroke-white">
+                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+                     className="w-4 h-4 stroke-white">
                     <path strokeLinecap="round" strokeLinejoin="round"
                           d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
                 </svg>
@@ -56,9 +57,9 @@ function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
                 {name && <span className="font-bold">{name}: </span>}{label}
             </span>
 
-            <button className="ml-2" aria-label={t('selected.remove.aria')} onClick={onRemove}>
+            <Button className="ml-2" aria-label={t('selected.remove.aria')} onClick={onRemove}>
                 &#10005;
-            </button>
+            </Button>
         </div>
     );
 }
