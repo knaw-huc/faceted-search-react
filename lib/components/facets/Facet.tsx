@@ -21,7 +21,7 @@ export interface FacetProps {
 
 export default function Facet({label, infoText, startOpen = true, allowToggle = true, children}: FacetProps) {
     return (
-        <Disclosure className="mb-10 w-full max-w-[400px]" aria-label={`Facet for ${label}`}
+        <Disclosure className="mb-10 w-full max-w-100" aria-label={`Facet for ${label}`}
                     isDisabled={!allowToggle} defaultExpanded={startOpen}>
             <FacetHeader label={label} infoText={infoText} allowToggle={allowToggle}/>
 
@@ -51,7 +51,7 @@ function FacetHeader({label, infoText, allowToggle}: { label: string, infoText?:
 
                 {allowToggle &&
                     <Button slot="trigger"
-                            aria-label={isOpen ? t('facet.toggle.close') : t('facet.toggle.open')}
+                            aria-label={isExpanded ? t('facet.toggle.close') : t('facet.toggle.open')}
                             className="p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 transition flex items-center justify-center translate-x-2">
                         <ChevronDownIcon className={`w-3 h-3 fill-neutral-900 ${!isExpanded ? 'rotate-180' : ''}`}/>
                     </Button>}
@@ -76,7 +76,7 @@ function FacetInfo({text}: { text: string }) {
             </Button>
 
             <Tooltip offset={4}
-                     className="w-[250px] flex-col bg-neutral-800 text-white text-sm drop-shadow-lg p-4 rounded-sm">
+                     className="w-62.5 flex-col bg-neutral-800 text-white text-sm drop-shadow-lg p-4 rounded-sm">
                 <OverlayArrow>
                     <svg width={8} height={8} viewBox="0 0 8 8"
                          className="block fill-neutral-800 stroke-neutral-800 group-placement-bottom:rotate-180 group-placement-left:-rotate-90 group-placement-right:rotate-90">
