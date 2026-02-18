@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {startTransition, useState} from 'react';
 import useTranslate from 'hooks/useTranslate';
 import RangeSlider from './RangeSlider';
 import RangeInput from './RangeInput';
@@ -26,12 +26,16 @@ export default function NumericRangeFacet({
 
     function onRangeChange(min: number, max: number) {
         setCurMinMax([min, max]);
-        onChange(min, max);
+        onRangeChangeCommit(min, max);
+    }
+
+    function onRangeChangeCommit(min: number, max: number) {
+        startTransition(() => onChange(min, max));
     }
 
     return (
         <RangeSlider min={min} max={max} step={step} curMinMax={curMinMax}
-                     setCurMinMax={setCurMinMax} onChange={onChange}>
+                     setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit}>
             <RangeInput
                 fromElement={<NumberInputSlot label={t('range.min')} min={min} max={curMinMax[1]} step={step}
                                               current={curMinMax[0]}
