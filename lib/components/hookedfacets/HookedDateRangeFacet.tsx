@@ -29,7 +29,7 @@ export default function HookedDateRangeFacet({
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
             {children}
             <DateRangeFacet min={min} max={max} onChange={onChange}
-                            startMin={value ? value[0] : startMin} startMax={value ? value[1] : startMax}/>
+                            curMin={value ? value[0] : startMin} curMax={value ? value[1] : startMax}/>
         </Facet>
     );
 }

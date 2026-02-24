@@ -31,7 +31,7 @@ export default function HookedNumericRangeFacet({
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
             {children}
             <NumericRangeFacet min={min} max={max} step={step} onChange={onChange}
-                               startMin={value ? value[0] : startMin} startMax={value ? value[1] : startMax}/>
+                               curMin={value ? value[0] : startMin} curMax={value ? value[1] : startMax}/>
         </Facet>
     );
 }

@@ -1,4 +1,4 @@
-import {startTransition, useState} from 'react';
+import {startTransition, useEffect, useState} from 'react';
 import {DateRangePicker, I18nProvider} from 'react-aria-components';
 import {CalendarDate, parseDate} from '@internationalized/date';
 import {CalendarIcon} from '@heroicons/react/16/solid';
@@ -10,23 +10,28 @@ import PopoverCalendar from './PopoverCalendar';
 export interface DateRangeFacetProps {
     min: string;
     max: string;
-    startMin?: string;
-    startMax?: string;
+    curMin?: string;
+    curMax?: string;
     onChange: (min: string, max: string) => void;
 }
 
 export default function DateRangeFacet({
                                            min,
                                            max,
-                                           startMin = min,
-                                           startMax = max,
+                                           curMin = min,
+                                           curMax = max,
                                            onChange
                                        }: DateRangeFacetProps) {
     const minDate = parseDate(min);
     const maxDate = parseDate(max);
     const days = getDateDiff(minDate, maxDate);
 
-    const [curMinMax, setCurMinMax] = useState<[CalendarDate, CalendarDate]>(() => [parseDate(startMin), parseDate(startMax)]);
+    const [curMinMax, setCurMinMax] = useState<[CalendarDate, CalendarDate]>(() => [parseDate(curMin), parseDate(curMax)]);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setCurMinMax([parseDate(curMin), parseDate(curMax)]);
+    }, [curMin, curMax]);
 
     const curMinMaxDays: [number, number] = [
         getDateDiff(minDate, curMinMax[0]),
