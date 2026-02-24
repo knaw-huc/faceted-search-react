@@ -36,7 +36,7 @@ function RangeSliderTrack() {
     return (
         <SliderTrack className="bg-neutral-200 h-2 rounded mx-3">
             {({state}) => <>
-                <div className="bg-(--color-support-002) absolute h-full w-(--size) start-(--start,0)"
+                <div className="bg-(--color-support-002) absolute h-full w-(--size) inset-s-(--start,0)"
                      style={{
                          '--start': state.getThumbPercent(0) * 100 + '%',
                          '--size': (state.getThumbPercent(1) - state.getThumbPercent(0)) * 100 + '%'

@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {startTransition, useMemo} from 'react';
 import {SelectedFacets} from 'components/results';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
@@ -21,7 +21,7 @@ export default function HookedSelectedFacets() {
                 itemKey: `${facetKey}__${value}`,
                 name: facet?.label || facetKey,
                 label,
-                onRemove: () => removeFacetValue(facetKey, value),
+                onRemove: () => startTransition(() => removeFacetValue(facetKey, value)),
             };
         })
     ), [facets, facetValueLabels, facetValues, removeFacetValue]);
@@ -31,7 +31,7 @@ export default function HookedSelectedFacets() {
             itemKey: 'q',
             name: label,
             label: query,
-            onRemove: () => setQuery(undefined),
+            onRemove: () => startTransition(() => setQuery(undefined)),
         });
     }
 

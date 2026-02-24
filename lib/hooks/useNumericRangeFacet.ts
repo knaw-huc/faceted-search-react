@@ -10,7 +10,7 @@ export default function useNumericRangeFacet(facetKey: string, min: number, max:
     const [label, values, setValues] = useFacet(facetKey, '');
 
     const value = values[0];
-    const hasValues = !value.includes(':');
+    const hasValues = value.includes(':');
     const [minValue, maxValue] = value.split(':').map(Number);
 
     return {
