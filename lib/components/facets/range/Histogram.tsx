@@ -6,7 +6,6 @@ import {useRef, useState} from "react";
 interface HistogramItem {
     year: number | string;
     amount: number;
-    interval: string;
 }
 
 export function Histogram({items}: {items: HistogramItem[]}) {
