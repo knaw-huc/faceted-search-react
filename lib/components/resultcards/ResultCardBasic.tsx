@@ -1,4 +1,5 @@
 import ResultCard from './ResultCard';
+import DOMPurify from 'dompurify';
 
 export interface ResultCardBasicProps {
     title: string;
@@ -16,7 +17,8 @@ export default function ResultCardBasic({title, link, description, tags}: Result
                 </div>
 
                 {description && <div className="p-2 text-neutral-700">
-                    {description}
+                    {/*{description}*/}
+                    <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
                 </div>}
 
                 {tags && tags.length > 0 && <div className="p-2 flex gap-2">

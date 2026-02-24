@@ -1,18 +1,23 @@
 import {scaleBand, scaleLinear} from 'd3-scale';
 import {extent} from 'd3-array';
 import classes from './Histogram.module.css';
+import {useRef, useState} from "react";
 
 interface HistogramItem {
-    year: number;
+    year: number | string;
     amount: number;
+    interval: string;
 }
 
 export function Histogram({items}: {items: HistogramItem[]}) {
-    items.sort((a, b) => {
-        if (a.year > b.year) return 1;
-        if (b.year > a.year) return -1;
-        return 0;
-    })
+    const [tooltipData, setTooltipData] = useState({
+        label: "",
+        x: 0,
+        y: 0,
+        visible: false,
+    });
+
+    const svgRef = useRef<SVGSVGElement>(null);
 
     const data_years = items.map((item) => item.year);
     const data_amounts = items.map((item) => item.amount);
@@ -26,29 +31,36 @@ export function Histogram({items}: {items: HistogramItem[]}) {
     const marginTop = 32;
     const marginBottom = 8;
 
-    const x = scaleBand(data_years, [marginLeft, width - marginRight]).padding(0.01);
+    const x = scaleBand(data_years, [marginLeft, width - marginRight]).padding(0);
     const y = scaleLinear(extent(data_amounts) as [number, number], [height - marginBottom, marginTop]);
 
     return <>
-        <svg width={width} height={height}>
-            <g fill={"var(--color-support-001)"} stroke={"currentColor"} strokeWidth={"1.5"}>
-                {data.map((d, i) => (
-                    <g className={classes['barchart-bar']} key={i}>
-                        <rect x={x(d.x)} y={marginTop} width={x.bandwidth()} height={height - marginBottom - marginTop} fill={"white"} stroke={"none"} opacity={0} />
-                        <rect className={classes.barchartBarFill} x={x(d.x)} y={y(d.y)} width={x.bandwidth()} height={height - 4 - y(d.y)} opacity={0.8} />
-                        <text
-                            x={marginLeft}
-                            y={marginTop / 2}
-                            textAnchor={"start"}
-                            alignmentBaseline={"central"}
-                            fontSize={12}
-                            fill={"currentColor"}
-                        >
-                            {d.x}: {d.y}
-                        </text>
-                    </g>
-                ))}
-            </g>
-        </svg>
+        <div className={"mx-2 pb-2"}>
+            <svg onMouseLeave={() => setTooltipData({...tooltipData, visible: false})} ref={svgRef} width={"100%"} height={height} viewBox={"0 0 " + width + " " + height}>
+                <g fill={"var(--color-support-001)"} stroke={"currentColor"} strokeWidth={"1"}>
+                    {data.map((d, i) => (
+                        <g onMouseEnter={() => {
+                            const bounding = svgRef.current!.getBoundingClientRect();
+                            const tx = (x(d.x) as number) + bounding.left;
+                            const ty = y(d.y) + bounding.top - 50;
+                            setTooltipData({
+                                x: tx,
+                                y: ty,
+                                visible: true,
+                                label: d.x.toString() + ": " + d.y
+                        })}} className={classes['barchart-bar']} key={i}>
+                            <rect className={classes['barchart-bar-background']} x={Math.floor(x(d.x) as number)} y={marginTop} width={Math.ceil(x.bandwidth())} height={height - marginTop} stroke={"none"} opacity={1} />
+                            <rect className={classes['barchart-bar-fill']} x={Math.floor(x(d.x) as number)} y={Math.round(y(d.y))} width={Math.ceil(x.bandwidth())} height={Math.round(height - y(d.y))} opacity={0.8} strokeOpacity={0} />
+                        </g>
+                    ))}
+                </g>
+            </svg>
+            <div hidden={!tooltipData.visible} className={classes.tooltip} style={{
+                top: tooltipData.y,
+                left: tooltipData.x,
+            }}>
+                {tooltipData.label}
+            </div>
+        </div>
     </>
 }

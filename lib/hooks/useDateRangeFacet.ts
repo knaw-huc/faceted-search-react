@@ -17,7 +17,7 @@ export default function useDateRangeFacet(facetKey: string, min: string, max: st
         label,
         value: hasValues ? [
             minValue.length === 0 ? min : minValue,
-            maxValue.length === 0 ? max : maxValue
+            maxValue?.length === 0 ? max : maxValue
         ] : undefined,
         onChange: (min: string, max: string) => setValues(`${min}:${max}`),
     };
