@@ -3,12 +3,12 @@ import {extent} from 'd3-array';
 import classes from './Histogram.module.css';
 import {useRef, useState} from "react";
 
-interface HistogramItem {
+export interface HistogramItem {
     year: number | string;
     amount: number;
 }
 
-export function Histogram({items}: {items: HistogramItem[]}) {
+export default function Histogram({items}: {items: HistogramItem[]}) {
     const [tooltipData, setTooltipData] = useState({
         label: "",
         x: 0,

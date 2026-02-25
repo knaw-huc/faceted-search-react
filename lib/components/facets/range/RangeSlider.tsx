@@ -1,17 +1,28 @@
 import {CSSProperties, ReactNode} from 'react';
 import {Slider, SliderTrack, SliderThumb} from 'react-aria-components';
+import Histogram, {HistogramItem} from './Histogram';
 
 export interface RangeSliderProps {
     min: number;
     max: number;
     step: number;
+    items?: HistogramItem[];
     curMinMax: [number, number];
     setCurMinMax: (minMax: [number, number]) => void;
     onChange: (min: number, max: number) => void;
     children: ReactNode;
 }
 
-export default function RangeSlider({min, max, step, curMinMax, setCurMinMax, onChange, children}: RangeSliderProps) {
+export default function RangeSlider({
+                                        min,
+                                        max,
+                                        step,
+                                        items,
+                                        curMinMax,
+                                        setCurMinMax,
+                                        onChange,
+                                        children
+                                    }: RangeSliderProps) {
     function onValueCommit(value: [number, number]) {
         if (value[0] < min) {
             value[0] = min;
@@ -26,6 +37,7 @@ export default function RangeSlider({min, max, step, curMinMax, setCurMinMax, on
     return (
         <Slider aria-label="Range slider" value={curMinMax} minValue={min} maxValue={max} step={step}
                 onChange={setCurMinMax} onChangeEnd={onValueCommit}>
+            {items && <Histogram items={items}/>}
             <RangeSliderTrack/>
             {children}
         </Slider>

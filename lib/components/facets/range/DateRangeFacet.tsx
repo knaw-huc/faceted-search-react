@@ -6,10 +6,12 @@ import RangeSlider from './RangeSlider';
 import RangeInput from './RangeInput';
 import DateInputSlot from './DateInputSlot';
 import PopoverCalendar from './PopoverCalendar';
+import {HistogramItem} from './Histogram';
 
 export interface DateRangeFacetProps {
     min: string;
     max: string;
+    items?: HistogramItem[];
     curMin?: string;
     curMax?: string;
     onChange: (min: string, max: string) => void;
@@ -18,6 +20,7 @@ export interface DateRangeFacetProps {
 export default function DateRangeFacet({
                                            min,
                                            max,
+                                           items,
                                            curMin = min,
                                            curMax = max,
                                            onChange
@@ -53,7 +56,7 @@ export default function DateRangeFacet({
     }
 
     return (
-        <RangeSlider min={0} max={days} step={1} curMinMax={curMinMaxDays}
+        <RangeSlider min={0} max={days} step={1} items={items} curMinMax={curMinMaxDays}
                      setCurMinMax={([min, max]) => setCurMinMax(getMinMax(min, max))}
                      onChange={onRangeChangeDays}>
             <I18nProvider locale="en-US">

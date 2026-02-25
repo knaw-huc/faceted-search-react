@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import {Facet, NumericRangeFacet} from 'components/facets';
+import {Facet, NumericRangeFacet, HistogramItem} from 'components/facets';
 import {FacetProps} from 'components/facets/Facet';
 import useNumericRangeFacet from 'hooks/useNumericRangeFacet';
 
@@ -8,6 +8,7 @@ interface HookedNumericRangeFacetProps extends Omit<FacetProps, 'label' | 'child
     min: number;
     max: number;
     step: number;
+    items?: HistogramItem[];
     startMin?: number;
     startMax?: number;
     children?: ReactNode;
@@ -19,6 +20,7 @@ export default function HookedNumericRangeFacet({
                                                     min,
                                                     max,
                                                     step,
+                                                    items,
                                                     startMin,
                                                     startMax,
                                                     children,
@@ -30,7 +32,7 @@ export default function HookedNumericRangeFacet({
     return (
         <Facet label={label} infoText={infoText} startOpen={startOpen} allowToggle={allowToggle}>
             {children}
-            <NumericRangeFacet min={min} max={max} step={step} onChange={onChange}
+            <NumericRangeFacet min={min} max={max} step={step} items={items} onChange={onChange}
                                curMin={value ? value[0] : startMin} curMax={value ? value[1] : startMax}/>
         </Facet>
     );
