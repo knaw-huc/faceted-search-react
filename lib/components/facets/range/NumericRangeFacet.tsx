@@ -1,25 +1,30 @@
 import {startTransition, useEffect, useState} from 'react';
 import useTranslate from 'hooks/useTranslate';
-import RangeSlider from './RangeSlider';
+import RangeSlider, {Term} from './RangeSlider';
 import RangeInput from './RangeInput';
 import NumberInputSlot from './NumberInputSlot';
-import {HistogramItem} from './Histogram';
 
 export interface NumericRangeFacetProps {
     min: number;
     max: number;
     step: number;
-    items?: HistogramItem[];
+    terms?: Term[];
     curMin?: number;
     curMax?: number;
     onChange: (min: number, max: number) => void;
 }
 
+export interface NumericRange extends Range {
+    start: number;
+    end: number;
+}
+
+
 export default function NumericRangeFacet({
                                               min,
                                               max,
                                               step,
-                                              items,
+                                              terms,
                                               curMin = min,
                                               curMax = max,
                                               onChange
@@ -42,7 +47,7 @@ export default function NumericRangeFacet({
     }
 
     return (
-        <RangeSlider min={min} max={max} step={step} items={items} curMinMax={curMinMax}
+        <RangeSlider min={min} max={max} step={step} terms={terms} curMinMax={curMinMax}
                      setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit}>
             <RangeInput
                 fromElement={<NumberInputSlot label={t('range.min')} min={min} max={curMinMax[1]} step={step}

@@ -2,6 +2,7 @@ import {scaleBand, scaleLinear} from 'd3-scale';
 import {extent} from 'd3-array';
 import classes from './Histogram.module.css';
 import {useRef, useState} from "react";
+import {Term} from "./RangeSlider";
 
 const width = 300;
 const height = 150;
@@ -11,49 +12,38 @@ const marginRight = 0;
 const marginTop = 32;
 const marginBottom = 8;
 
-export interface HistogramItem {
-    year: number | string;
-    amount: number;
-}
-
 interface TooltipData {
     x: number;
     y: number;
-    label: string;
-    visible: boolean;
+    term: Term | null;
 }
 
-export default function Histogram({items}: { items: HistogramItem[] }) {
-    const [tooltipData, setTooltipData] = useState<TooltipData>({
-        label: "",
-        x: 0,
-        y: 0,
-        visible: false,
-    });
+export default function Histogram({terms}: { terms: Term[] }) {
+    const [tooltipData, setTooltipData] = useState<TooltipData>({x: 0, y: 0, term: null});
 
     return (
         <div className="mx-3">
-            <HistogramVisualization items={items} setTooltipData={setTooltipData}/>
+            <HistogramVisualization terms={terms} setTooltipData={setTooltipData}/>
             <Tooltip {...tooltipData}/>
         </div>
     );
 }
 
-function HistogramVisualization({items, setTooltipData}: {
-    items: HistogramItem[],
+function HistogramVisualization({terms, setTooltipData}: {
+    terms: Term[],
     setTooltipData: (value: TooltipData | ((prev: TooltipData) => TooltipData)) => void
 }) {
     const svgRef = useRef<SVGSVGElement>(null);
 
-    const data_years = items.map((item) => item.year);
-    const data_amounts = items.map((item) => item.amount);
-    const data = items.map((item) => ({x: item.year, y: item.amount}))
+    const data_years = terms.map((item) => item.start);
+    const data_amounts = terms.map((item) => item.count);
+    const data = terms.map((item) => ({x: item.start, y: item.count}))
 
     const x = scaleBand(data_years, [marginLeft, width - marginRight]).padding(0);
     const y = scaleLinear(extent(data_amounts) as [number, number], [height - marginBottom, marginTop]);
 
     return (
-        <svg onMouseLeave={() => setTooltipData(tooltipData => ({...tooltipData, visible: false}))} ref={svgRef}
+        <svg onMouseLeave={() => setTooltipData(tooltipData => ({...tooltipData, term: null}))} ref={svgRef}
              width={"100%"} height={height} viewBox={"0 0 " + width + " " + height}>
             <g fill={"var(--color-support-001)"} stroke={"currentColor"} strokeWidth={"1"}>
                 {data.map((d) => (
@@ -64,8 +54,7 @@ function HistogramVisualization({items, setTooltipData}: {
                         setTooltipData({
                             x: tx,
                             y: ty,
-                            visible: true,
-                            label: d.x.toString() + ": " + d.y
+                            term: terms[data_years.indexOf(d.x)]
                         })
                     }} className={classes['barchart-bar']} key={`${d.x}-${d.y}`}>
                         <rect className={classes['barchart-bar-background']} x={Math.floor(x(d.x) as number)}
@@ -81,10 +70,10 @@ function HistogramVisualization({items, setTooltipData}: {
     );
 }
 
-function Tooltip({label, visible, x, y}: TooltipData) {
+function Tooltip({x, y, term}: TooltipData) {
     return (
-        <div hidden={!visible} className={classes.tooltip} style={{top: y, left: x}}>
-            {label}
+        <div hidden={term === null} className={classes.tooltip} style={{top: y, left: x}}>
+            {term?.start} : {term?.count}
         </div>
     );
 }

@@ -2,16 +2,15 @@ import {startTransition, useEffect, useState} from 'react';
 import {DateRangePicker, I18nProvider} from 'react-aria-components';
 import {CalendarDate, parseDate} from '@internationalized/date';
 import {CalendarIcon} from '@heroicons/react/16/solid';
-import RangeSlider from './RangeSlider';
+import RangeSlider, {Term} from './RangeSlider';
 import RangeInput from './RangeInput';
 import DateInputSlot from './DateInputSlot';
 import PopoverCalendar from './PopoverCalendar';
-import {HistogramItem} from './Histogram';
 
 export interface DateRangeFacetProps {
     min: string;
     max: string;
-    items?: HistogramItem[];
+    terms?: Term[];
     curMin?: string;
     curMax?: string;
     onChange: (min: string, max: string) => void;
@@ -20,7 +19,7 @@ export interface DateRangeFacetProps {
 export default function DateRangeFacet({
                                            min,
                                            max,
-                                           items,
+                                           terms,
                                            curMin = min,
                                            curMax = max,
                                            onChange
@@ -56,7 +55,7 @@ export default function DateRangeFacet({
     }
 
     return (
-        <RangeSlider min={0} max={days} step={1} items={items} curMinMax={curMinMaxDays}
+        <RangeSlider min={0} max={days} step={1} terms={terms} curMinMax={curMinMaxDays}
                      setCurMinMax={([min, max]) => setCurMinMax(getMinMax(min, max))}
                      onChange={onRangeChangeDays}>
             <I18nProvider locale="en-US">
