@@ -3,7 +3,7 @@ import {extent} from 'd3-array';
 import classes from './Histogram.module.css';
 import {useRef, useState} from "react";
 import {Term} from "./RangeSlider";
-import {CalendarDate} from "@internationalized/date";
+import {CalendarDate, getLocalTimeZone} from "@internationalized/date";
 
 const width = 300;
 const height = 150;
@@ -40,8 +40,8 @@ function isActive(term: Term, selection: Selection): boolean {
     function inRange(val: number | Date): boolean {
         let start, end;
         if (val instanceof Date) {
-            start = (selection.start as CalendarDate).toDate();
-            end = (selection.end as CalendarDate).toDate();
+            start = (selection.start as CalendarDate).toDate(getLocalTimeZone());
+            end = (selection.end as CalendarDate).toDate(getLocalTimeZone());
         } else {
             start = selection.start;
             end = selection.end;
