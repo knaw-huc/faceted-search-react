@@ -48,7 +48,7 @@ export default function NumericRangeFacet({
 
     return (
         <RangeSlider min={min} max={max} step={step} terms={terms} curMinMax={curMinMax}
-                     setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit}>
+                     setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit} rawMinMax={curMinMax} >
             <RangeInput
                 fromElement={<NumberInputSlot label={t('range.min')} min={min} max={curMinMax[1]} step={step}
                                               current={curMinMax[0]}

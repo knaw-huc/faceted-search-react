@@ -55,7 +55,7 @@ export default function DateRangeFacet({
     }
 
     return (
-        <RangeSlider min={0} max={days} step={1} terms={terms} curMinMax={curMinMaxDays}
+        <RangeSlider min={0} max={days} step={1} terms={terms} curMinMax={curMinMaxDays} rawMinMax={curMinMax}
                      setCurMinMax={([min, max]) => setCurMinMax(getMinMax(min, max))}
                      onChange={onRangeChangeDays}>
             <I18nProvider locale="en-US">
