@@ -1,4 +1,3 @@
-import {useMemo} from 'react';
 import {SelectedFacets} from 'components/results';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
@@ -8,7 +7,7 @@ export default function HookedSelectedFacets() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [facets, facetValues, facetValueLabels, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
 
-    const selectedFacets = useMemo(() => Object.entries(facetValues).flatMap(([facetKey, values]) =>
+    const selectedFacets = Object.entries(facetValues).flatMap(([facetKey, values]) =>
         values.flat().map(value => {
             const facet = facets[facetKey];
             const valueLabels = facetValueLabels[facetKey];
@@ -24,7 +23,7 @@ export default function HookedSelectedFacets() {
                 onRemove: () => removeFacetValue(facetKey, value),
             };
         })
-    ), [facets, facetValueLabels, facetValues, removeFacetValue]);
+    );
 
     if (query) {
         selectedFacets.unshift({
@@ -36,6 +35,6 @@ export default function HookedSelectedFacets() {
     }
 
     return (
-        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets} />
+        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets}/>
     );
 }
