@@ -46,7 +46,7 @@ function isActive(term: Term, selection: Selection): boolean {
             start = selection.start;
             end = selection.end;
         }
-        return val > start && val < end;
+        return val >= start && val <= end;
     }
 
     if (typeof term.start == 'string') {
