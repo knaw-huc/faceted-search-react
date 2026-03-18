@@ -1,16 +1,16 @@
 import useFacet from './useFacet';
 
-interface useRangeFacetReturn {
+interface useNumericRangeFacetReturn {
     label: string;
     value?: [number, number];
     onChange: (min: number, max: number) => void;
 }
 
-export default function useRangeFacet(facetKey: string, min: number, max: number): useRangeFacetReturn {
+export default function useNumericRangeFacet(facetKey: string, min: number, max: number): useNumericRangeFacetReturn {
     const [label, values, setValues] = useFacet(facetKey, '');
 
     const value = values[0];
-    const hasValues = !value.includes(':');
+    const hasValues = value.includes(':');
     const [minValue, maxValue] = value.split(':').map(Number);
 
     return {

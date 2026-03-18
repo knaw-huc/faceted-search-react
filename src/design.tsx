@@ -9,7 +9,8 @@ import {
     FilterFacet,
     FilterFacetItems,
     Pagination,
-    RangeFacet,
+    NumericRangeFacet,
+    DateRangeFacet,
     ResultCardBasic,
     ResultCardSubResults,
     ResultsView,
@@ -38,9 +39,14 @@ export default function Design() {
             <FacetsSection>
                 <SearchFacet onSearch={query => console.log('Search query', query)} />
 
-                <Facet label="Range">
-                    <RangeFacet min={0} max={1000} step={1}
-                                onChange={(min, max) => console.log('Range', min, max)}/>
+                <Facet label="Numeric range">
+                    <NumericRangeFacet min={0} max={1000} step={1}
+                                       onChange={(min, max) => console.log('Numeric range', min, max)}/>
+                </Facet>
+
+                <Facet label="Date range">
+                    <DateRangeFacet min="2020-01-01" max="2025-12-31"
+                                    onChange={(min, max) => console.log('Date range', min, max)}/>
                 </Facet>
 
                 <Facet label="Name" infoText="Info about this facet.">

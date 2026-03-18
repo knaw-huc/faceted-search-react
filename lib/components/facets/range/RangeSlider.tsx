@@ -1,17 +1,37 @@
 import {CSSProperties, ReactNode} from 'react';
 import {Slider, SliderTrack, SliderThumb} from 'react-aria-components';
+import Histogram from './Histogram';
+import {CalendarDate} from "@internationalized/date";
 
 export interface RangeSliderProps {
     min: number;
     max: number;
     step: number;
+    terms?: Term[];
     curMinMax: [number, number];
+    rawMinMax: [number | CalendarDate, number | CalendarDate];
     setCurMinMax: (minMax: [number, number]) => void;
     onChange: (min: number, max: number) => void;
     children: ReactNode;
 }
 
-export default function RangeSlider({min, max, step, curMinMax, setCurMinMax, onChange, children}: RangeSliderProps) {
+export interface Term {
+    start: number | string;
+    end: number | string;
+    count: number;
+}
+
+export default function RangeSlider({
+                                        min,
+                                        max,
+                                        step,
+                                        terms,
+                                        curMinMax,
+                                        rawMinMax,
+                                        setCurMinMax,
+                                        onChange,
+                                        children
+                                    }: RangeSliderProps) {
     function onValueCommit(value: [number, number]) {
         if (value[0] < min) {
             value[0] = min;
@@ -26,6 +46,7 @@ export default function RangeSlider({min, max, step, curMinMax, setCurMinMax, on
     return (
         <Slider aria-label="Range slider" value={curMinMax} minValue={min} maxValue={max} step={step}
                 onChange={setCurMinMax} onChangeEnd={onValueCommit}>
+            {terms && <Histogram terms={terms} selection={{start: rawMinMax[0], end: rawMinMax[1]}} />}
             <RangeSliderTrack/>
             {children}
         </Slider>
@@ -36,7 +57,7 @@ function RangeSliderTrack() {
     return (
         <SliderTrack className="bg-neutral-200 h-2 rounded mx-3">
             {({state}) => <>
-                <div className="bg-(--color-support-002) absolute h-full w-(--size) start-(--start,0)"
+                <div className="bg-(--color-support-002) absolute h-full w-(--size) inset-s-(--start,0)"
                      style={{
                          '--start': state.getThumbPercent(0) * 100 + '%',
                          '--size': (state.getThumbPercent(1) - state.getThumbPercent(0)) * 100 + '%'

@@ -11,6 +11,5 @@ export default function useQuery(): UseQueryReturn {
     const query = useSearchContext(s => s.state.query);
     const setQuery = useSearchContext(s => s.setQuery);
 
-
     return [searchLabel, query, setQuery];
 }

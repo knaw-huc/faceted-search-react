@@ -1,2 +1,3 @@
-export {default as RangeFacet} from './RangeFacet';
-export {Histogram} from './Histogram';
+export {default as NumericRangeFacet} from './NumericRangeFacet';
+export {default as DateRangeFacet} from './DateRangeFacet';
+export type {Term} from './RangeSlider';
