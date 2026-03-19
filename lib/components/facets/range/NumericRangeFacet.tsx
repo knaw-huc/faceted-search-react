@@ -14,12 +14,6 @@ export interface NumericRangeFacetProps {
     onChange: (min: number, max: number) => void;
 }
 
-export interface NumericRange extends Range {
-    start: number;
-    end: number;
-}
-
-
 export default function NumericRangeFacet({
                                               min,
                                               max,
@@ -48,7 +42,7 @@ export default function NumericRangeFacet({
 
     return (
         <RangeSlider min={min} max={max} step={step} terms={terms} curMinMax={curMinMax}
-                     setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit} rawMinMax={curMinMax} >
+                     setCurMinMax={setCurMinMax} onChange={onRangeChangeCommit} rawMinMax={curMinMax}>
             <RangeInput
                 fromElement={<NumberInputSlot label={t('range.min')} min={min} max={curMinMax[1]} step={step}
                                               current={curMinMax[0]}

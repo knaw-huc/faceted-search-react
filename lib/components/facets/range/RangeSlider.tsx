@@ -1,7 +1,8 @@
 import {CSSProperties, ReactNode} from 'react';
 import {Slider, SliderTrack, SliderThumb} from 'react-aria-components';
-import Histogram from './Histogram';
 import {CalendarDate} from "@internationalized/date";
+import useTranslate from 'hooks/useTranslate';
+import Histogram from './Histogram';
 
 export interface RangeSliderProps {
     min: number;
@@ -32,6 +33,8 @@ export default function RangeSlider({
                                         onChange,
                                         children
                                     }: RangeSliderProps) {
+    const {t} = useTranslate();
+
     function onValueCommit(value: [number, number]) {
         if (value[0] < min) {
             value[0] = min;
@@ -44,9 +47,10 @@ export default function RangeSlider({
     }
 
     return (
-        <Slider aria-label="Range slider" value={curMinMax} minValue={min} maxValue={max} step={step}
+        <Slider aria-label={t('range.slider.aria')}
+                value={curMinMax} minValue={min} maxValue={max} step={step}
                 onChange={setCurMinMax} onChangeEnd={onValueCommit}>
-            {terms && <Histogram terms={terms} selection={{start: rawMinMax[0], end: rawMinMax[1]}} />}
+            {terms && <Histogram terms={terms} selection={{start: rawMinMax[0], end: rawMinMax[1]}}/>}
             <RangeSliderTrack/>
             {children}
         </Slider>

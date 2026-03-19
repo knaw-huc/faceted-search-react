@@ -1,7 +1,7 @@
 import {resolve} from 'path';
 import {defineConfig} from 'vite';
-import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import react, {reactCompilerPreset} from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import dts from 'vite-plugin-dts';
 
@@ -9,8 +9,8 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
     publicDir: 'themes',
     plugins: [
-        tsconfigPaths(),
-        react({babel: {plugins: ['babel-plugin-react-compiler']}}),
+        react(),
+        babel({presets: [reactCompilerPreset()]}),
         tailwindcss(),
         dts({tsconfigPath: 'tsconfig.lib.json'}),
     ],
@@ -19,15 +19,19 @@ export default defineConfig({
             entry: resolve(__dirname, 'lib/index.ts'),
             formats: ['es'],
         },
-        rollupOptions: {
+        rolldownOptions: {
             external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime'],
             output: {
                 entryFileNames: '[name].js',
                 assetFileNames: '[name][extname]',
+                minify: {
+                    compress: true,
+                    mangle: false
+                }
             }
         }
     },
-    esbuild: {
-        minifyIdentifiers: false
+    resolve: {
+        tsconfigPaths: true
     }
 });

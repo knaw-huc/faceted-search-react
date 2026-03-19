@@ -1,4 +1,5 @@
-import {Context, createContext, ReactNode, useCallback, useMemo} from 'react';
+import {Context, createContext, ReactNode, useCallback} from 'react';
+import {I18nProvider as LocaleProvider} from 'react-aria-components';
 import defaultTranslations from './defaultTranslations.json';
 
 /**
@@ -15,7 +16,6 @@ export type TranslationKey = keyof typeof defaultTranslations;
 
 interface I18nContextValue {
     translate: TranslateFn;
-    locale: Intl.Locale;
 }
 
 interface I18nProviderProps {
@@ -58,11 +58,6 @@ export function createTranslateFn(translations: Record<string, string>): Transla
 }
 
 export function I18nProvider({translate, translations, locale = 'en', children}: I18nProviderProps) {
-    const localeObj = useMemo(
-        () => locale instanceof Intl.Locale ? locale : new Intl.Locale(locale),
-        [locale]
-    );
-
     // Use custom translate function if provided, otherwise use merged translations
     const translateFn = useCallback(
         (key: string, options?: Record<string, unknown>) => {
@@ -82,8 +77,10 @@ export function I18nProvider({translate, translations, locale = 'en', children}:
     );
 
     return (
-        <I18nContext.Provider value={{translate: translateFn, locale: localeObj}}>
-            {children}
+        <I18nContext.Provider value={{translate: translateFn}}>
+            <LocaleProvider locale={locale.toString()}>
+                {children}
+            </LocaleProvider>
         </I18nContext.Provider>
     );
 }

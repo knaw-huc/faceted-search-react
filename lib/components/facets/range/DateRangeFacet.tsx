@@ -1,7 +1,8 @@
 import {startTransition, useEffect, useState} from 'react';
-import {DateRangePicker, I18nProvider} from 'react-aria-components';
+import {DateRangePicker} from 'react-aria-components';
 import {CalendarDate, parseDate} from '@internationalized/date';
 import {CalendarIcon} from '@heroicons/react/16/solid';
+import useTranslate from 'hooks/useTranslate';
 import RangeSlider, {Term} from './RangeSlider';
 import RangeInput from './RangeInput';
 import DateInputSlot from './DateInputSlot';
@@ -29,6 +30,7 @@ export default function DateRangeFacet({
     const days = getDateDiff(minDate, maxDate);
 
     const [curMinMax, setCurMinMax] = useState<[CalendarDate, CalendarDate]>(() => [parseDate(curMin), parseDate(curMax)]);
+    const {t} = useTranslate();
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -58,19 +60,16 @@ export default function DateRangeFacet({
         <RangeSlider min={0} max={days} step={1} terms={terms} curMinMax={curMinMaxDays} rawMinMax={curMinMax}
                      setCurMinMax={([min, max]) => setCurMinMax(getMinMax(min, max))}
                      onChange={onRangeChangeDays}>
-            <I18nProvider locale="en-US">
-                <DateRangePicker className="flex flex-col gap-1" aria-label="Date range picker"
-                                 minValue={minDate} maxValue={maxDate}
-                                 value={{start: curMinMax[0], end: curMinMax[1]}}
-                                 onChange={range => range && onRangeChange(range)}>
-                    <RangeInput
-                        fromElement={<DateInputSlot slot="start"/>}
-                        toElement={<DateInputSlot slot="end"/>}
-                        buttonIcon={<CalendarIcon className="w-4 h-4"/>}/>
+            <DateRangePicker className="flex flex-col gap-1" aria-label={t('range.date.aria')}
+                             minValue={minDate} maxValue={maxDate} value={{start: curMinMax[0], end: curMinMax[1]}}
+                             onChange={range => range && onRangeChange(range)}>
+                <RangeInput
+                    fromElement={<DateInputSlot slot="start"/>}
+                    toElement={<DateInputSlot slot="end"/>}
+                    buttonIcon={<CalendarIcon className="w-4 h-4"/>}/>
 
-                    <PopoverCalendar min={minDate} max={maxDate}/>
-                </DateRangePicker>
-            </I18nProvider>
+                <PopoverCalendar min={minDate} max={maxDate}/>
+            </DateRangePicker>
         </RangeSlider>
     );
 }

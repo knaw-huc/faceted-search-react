@@ -28,6 +28,8 @@
 
   "range.min": "Min",
   "range.max": "Max",
+  "range.slider.aria": "Range slider",
+  "range.date.aria": "Date range picker",
 
   "results.seeMore": "See {{count}} more reactions"
 }
