@@ -1,6 +1,6 @@
 {
   "name": "@knaw-huc/faceted-search-react",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,13 +48,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@rolldown/plugin-babel": "^0.2.2",
     "@tailwindcss/vite": "^4.2.2",
     "@types/d3": "^7.4.3",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
+    "@vitejs/plugin-react": "^5.2.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -63,7 +62,8 @@
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.1",
-    "vite": "^8.0.1",
-    "vite-plugin-dts": "^4.5.4"
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.1.1"
   }
 }
