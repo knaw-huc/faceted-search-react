@@ -4,6 +4,10 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knaw-huc/faceted-search-react"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
