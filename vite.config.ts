@@ -4,7 +4,7 @@ import react, {reactCompilerPreset} from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import {esmExternalRequirePlugin} from 'rolldown/plugins';
 import tailwindcss from '@tailwindcss/vite';
-import dts from 'vite-plugin-dts';
+import dts from 'unplugin-dts/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
