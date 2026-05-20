@@ -1,31 +1,26 @@
-import {FunctionComponent, Key} from 'react';
+import {Fragment, Key, ReactNode} from 'react';
 import {ResultsView} from 'components/results';
 import useSearchResults from 'hooks/useSearchResults';
 
-export default function HookedResultsView<R extends object, C extends object>({idKey, mapper, ResultComponent}: {
-    idKey: keyof R,
-    mapper?: (result: R) => C,
-    ResultComponent: FunctionComponent<C>
+export default function HookedResultsView<C extends object>({id, children}: {
+    id: (result: C) => Key,
+    children: (result: C) => ReactNode
 }) {
     return (
         <ResultsView>
-            <ResultItems idKey={idKey} mapper={mapper} ResultComponent={ResultComponent}/>
+            <ResultItems id={id} children={children}/>
         </ResultsView>
     );
 }
 
-function ResultItems<R extends object, C extends object>({idKey, mapper, ResultComponent}: {
-    idKey: keyof R,
-    mapper?: (result: R) => C,
-    ResultComponent: FunctionComponent<C>
+function ResultItems<C extends object>({id, children}: {
+    id: (result: C) => Key,
+    children: (result: C) => ReactNode
 }) {
-    const results = useSearchResults<R>();
-
-    return results.items.map(result => {
-        const params = mapper ? mapper(result) : result as unknown as C;
-
-        return (
-            <ResultComponent key={result[idKey] as Key} {...params}/>
-        );
-    });
+    const results = useSearchResults<C>();
+    return results.items.map(result => (
+        <Fragment key={id(result)}>
+            {children(result)}
+        </Fragment>
+    ));
 }

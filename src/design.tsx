@@ -19,15 +19,15 @@ import {
 } from '../lib';
 
 const selectedFacets = [
-    {itemKey: 'school', label: 'school', onRemove: () => console.log('Remove school')},
+    {itemKey: 'bus', label: 'bus', onRemove: () => console.log('Remove bus')},
     {itemKey: 'school', label: 'school', onRemove: () => console.log('Remove school')},
     {itemKey: 'reis', label: 'reis', onRemove: () => console.log('Remove reis')}
 ];
 
 const navigation = [
-    {label: 'Home', href: '#'},
-    {label: 'About', href: '#'},
-    {label: 'Search', href: '#'}
+    {label: 'Home', href: '#home'},
+    {label: 'About', href: '#about'},
+    {label: 'Search', href: '#search'},
 ];
 
 export default function Design() {
@@ -37,7 +37,7 @@ export default function Design() {
     function Facets() {
         return (
             <FacetsSection>
-                <SearchFacet onSearch={query => console.log('Search query', query)} />
+                <SearchFacet onSearch={query => console.log('Search query', query)}/>
 
                 <Facet label="Numeric range">
                     <NumericRangeFacet min={0} max={1000} step={1}
@@ -80,22 +80,23 @@ export default function Design() {
         <Layout>
             <SiteHeader name="DEMO" navigation={navigation}/>
 
+            {/* eslint-disable-next-line react-hooks/static-components */}
             <ContentWithAsides leftAside={<Facets/>}>
                 <h2 className="mb-4">Results</h2>
 
                 <SelectedFacets selectedFacets={selectedFacets}
-                                onClear={() => console.log('Clear facets')} />
+                                onClear={() => console.log('Clear facets')}/>
 
                 <div className="flex flex-col gap-4">
                     <ResultsView>
                         {resultsBasic.map((resultBasic, idx) =>
-                            <ResultCardBasic key={idx} {...resultBasic}/>
+                            <ResultCardBasic key={`b${idx}`} {...resultBasic}/>
                         )}
                     </ResultsView>
 
                     <ResultsView>
                         {results.map((result, idx) =>
-                            <ResultCardSubResults key={idx} {...result}/>
+                            <ResultCardSubResults key={`r${idx}`} {...result}/>
                         )}
                     </ResultsView>
                 </div>
@@ -104,7 +105,7 @@ export default function Design() {
                     1: '#',
                     2: '#',
                     3: '#',
-                }} />
+                }}/>
             </ContentWithAsides>
         </Layout>
     )

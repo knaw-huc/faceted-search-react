@@ -1,3 +1,5 @@
+import {ResultCardBasicProps, ResultCardSubResultsProps} from '../lib';
+
 export const facetItemsList1 = [
     {
         itemKey: 'assum',
@@ -116,7 +118,7 @@ export const facetItemsList2 = [
     }
 ];
 
-export const resultsBasic = [
+export const resultsBasic: ResultCardBasicProps[]  = [
     {
         title: 'Ucto-Webservice',
         link: '#',
@@ -137,7 +139,7 @@ export const resultsBasic = [
     }
 ];
 
-export const results = [
+export const results: ResultCardSubResultsProps[]  = [
     {
         title: 'What is Community Radio??',
         link: '#',

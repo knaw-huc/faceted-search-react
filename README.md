@@ -493,11 +493,10 @@ pagination controls for navigating through search results.
 The `HookedResultsView` component is a wrapper around the `ResultsView` component that uses the `useSearchResults` hook
 to fetch the search results.
 
-| Parameter         | Value type             | Required? | Default value | Description                                                                      |
-|-------------------|------------------------|-----------|---------------|----------------------------------------------------------------------------------|
-| `idKey`           | `keyof R`              | ✓         |               | The key of the results that identifies a specific result.                        |
-| `mappper`         | `(result: R) => C`     |           |               | Mapper to map the obtained results to the params of the given `ResultComponent`. |
-| `ResultComponent` | `FunctionComponent<C>` | ✓         |               | The search result card component to render the results.                          |
+| Parameter  | Value type                 | Required? | Default value | Description                                           |
+|------------|----------------------------|-----------|---------------|-------------------------------------------------------|
+| `id`       | `(result: C) => Key`       | ✓         |               | A function to determine the key for the given result. |
+| `children` | `(result: C) => ReactNode` | ✓         |               | A render function for the given result.               |
 
 ## Internationalization (i18n)
 

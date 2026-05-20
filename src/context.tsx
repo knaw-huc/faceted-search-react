@@ -5,6 +5,7 @@ import {
     Facets,
     SearchState,
     FilterFacetItem,
+    ResultCardBasicProps,
     FacetsSection,
     FacetedSearch,
     HookedSearchFacet,
@@ -52,7 +53,9 @@ export default function Context() {
                     <h2 className="mb-4">Results</h2>
 
                     <HookedSelectedFacets/>
-                    <HookedResultsView idKey="title" ResultComponent={ResultCardBasic}/>
+                    <HookedResultsView<ResultCardBasicProps> id={result => result.title}>
+                        {results => <ResultCardBasic {...results}/>}
+                    </HookedResultsView>
                     <HookedPagination/>
                 </ContentWithAsides>
             </FacetedSearch>
