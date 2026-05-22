@@ -1,5 +1,5 @@
 import useSearchContext from './useSearchContext';
-import {FacetValueLabels} from 'store/FacetedSearchStore';
+import type {FacetValueLabels} from 'store/FacetedSearchStore';
 
 type useUpdateFacetValueLabelsReturn = (valueLabels: FacetValueLabels) => void;
 

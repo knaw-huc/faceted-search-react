@@ -1,5 +1,5 @@
 import {createStore} from 'zustand';
-import {StoreApi} from 'zustand/vanilla';
+import type {StoreApi} from 'zustand/vanilla';
 import {subscribeWithSelector} from 'zustand/middleware'
 import withUrlSync from './withUrlSync';
 

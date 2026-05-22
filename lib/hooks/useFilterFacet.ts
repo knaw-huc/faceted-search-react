@@ -1,5 +1,5 @@
 import {useContext, useState, startTransition} from 'react';
-import {Sort} from 'components/index';
+import type {Sort} from 'components/index';
 import {FilterFacetContext} from 'context/FilterFacet';
 import useFacet from './useFacet';
 

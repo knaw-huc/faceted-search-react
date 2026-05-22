@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import {type ReactNode} from 'react';
 import {Group, Button} from 'react-aria-components';
 
 export default function RangeInput({fromElement, toElement, buttonIcon}: {

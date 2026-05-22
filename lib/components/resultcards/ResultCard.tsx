@@ -1,4 +1,4 @@
-import {ReactNode, Suspense} from 'react';
+import {type ReactNode, Suspense} from 'react';
 import GhostLines from 'components/utils/GhostLines';
 
 export default function ResultCard({children}: { children: ReactNode }) {

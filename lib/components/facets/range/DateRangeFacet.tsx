@@ -3,7 +3,7 @@ import {DateRangePicker} from 'react-aria-components';
 import {CalendarDate, parseDate} from '@internationalized/date';
 import {CalendarIcon} from '@heroicons/react/16/solid';
 import useTranslate from 'hooks/useTranslate';
-import RangeSlider, {Term} from './RangeSlider';
+import RangeSlider, {type Term} from './RangeSlider';
 import RangeInput from './RangeInput';
 import DateInputSlot from './DateInputSlot';
 import PopoverCalendar from './PopoverCalendar';

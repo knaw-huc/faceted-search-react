@@ -2,10 +2,6 @@ import {facetItemsList1, facetItemsList2, resultsBasic} from './data';
 import Layout from './components/Layout';
 import ContentWithAsides from './components/ContentWithAsides';
 import {
-    Facets,
-    SearchState,
-    FilterFacetItem,
-    ResultCardBasicProps,
     FacetsSection,
     FacetedSearch,
     HookedSearchFacet,
@@ -20,6 +16,7 @@ import {
     useHookedFilterFacet,
     useSearchState,
 } from '../lib';
+import type {Facets, SearchState, FilterFacetItem, ResultCardBasicProps} from '../lib';
 
 const facets: Facets = {
     range: {

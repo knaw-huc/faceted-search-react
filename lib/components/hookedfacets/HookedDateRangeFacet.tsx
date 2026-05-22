@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
-import {Facet, DateRangeFacet, Term} from 'components/facets';
-import {FacetProps} from 'components/facets/Facet';
+import {type ReactNode} from 'react';
+import {Facet, DateRangeFacet, type Term} from 'components/facets';
+import type {FacetProps} from 'components/facets/Facet';
 import useDateRangeFacet from 'hooks/useDateRangeFacet';
 
 interface HookedDateRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {

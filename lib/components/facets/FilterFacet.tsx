@@ -1,4 +1,4 @@
-import {ReactNode, Suspense, useId, useMemo, useState} from 'react';
+import {type ReactNode, Suspense, useId, useMemo, useState} from 'react';
 import {ChevronDownIcon, ChevronRightIcon, ChevronDoubleDownIcon} from '@heroicons/react/24/solid';
 import {ScrollArea} from '@base-ui/react/scroll-area';
 import {Button, Checkbox} from 'react-aria-components';

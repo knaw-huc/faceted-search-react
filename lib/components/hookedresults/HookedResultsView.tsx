@@ -1,4 +1,5 @@
-import {Fragment, Key, ReactNode} from 'react';
+import {Fragment} from 'react';
+import type {Key, ReactNode} from 'react';
 import {ResultsView} from 'components/results';
 import useSearchResults from 'hooks/useSearchResults';
 

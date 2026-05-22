@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
-import {Facet, NumericRangeFacet, Term} from 'components/facets';
-import {FacetProps} from 'components/facets/Facet';
+import {type ReactNode} from 'react';
+import {Facet, NumericRangeFacet, type Term} from 'components/facets';
+import type {FacetProps} from 'components/facets/Facet';
 import useNumericRangeFacet from 'hooks/useNumericRangeFacet';
 
 interface HookedNumericRangeFacetProps extends Omit<FacetProps, 'label' | 'children'> {

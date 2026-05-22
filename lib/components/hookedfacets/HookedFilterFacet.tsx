@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
-import {Facet, FilterFacet, FilterFacetItem, FilterFacetItems} from 'components/facets';
-import {FacetProps} from 'components/facets/Facet';
+import type {ReactNode} from 'react';
+import {Facet, FilterFacet, type FilterFacetItem, FilterFacetItems} from 'components/facets';
+import type {FacetProps} from 'components/facets/Facet';
 import {default as FilterFacetContext} from 'context/FilterFacet';
 import {useFilterFacetContext} from 'hooks/useFilterFacet';
 

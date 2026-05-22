@@ -1,5 +1,5 @@
-import {createContext, ReactNode} from 'react';
-import useFilterFacet, {useFilterFacetReturn} from 'hooks/useFilterFacet';
+import {createContext, type ReactNode} from 'react';
+import useFilterFacet, {type useFilterFacetReturn} from 'hooks/useFilterFacet';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const FilterFacetContext = createContext<useFilterFacetReturn | null>(null);

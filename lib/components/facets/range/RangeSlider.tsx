@@ -1,4 +1,4 @@
-import {CSSProperties, ReactNode} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import {Slider, SliderTrack, SliderThumb} from 'react-aria-components';
 import {CalendarDate} from "@internationalized/date";
 import useTranslate from 'hooks/useTranslate';

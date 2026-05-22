@@ -1,5 +1,5 @@
 import useSearchContext from './useSearchContext';
-import {Facets, FacetValues, FacetValueLabels} from 'store/FacetedSearchStore';
+import type {Facets, FacetValues, FacetValueLabels} from 'store/FacetedSearchStore';
 
 type UseFacetsReturn = [
     Facets,

@@ -1,6 +1,6 @@
 import {startTransition, useEffect, useState} from 'react';
 import useTranslate from 'hooks/useTranslate';
-import RangeSlider, {Term} from './RangeSlider';
+import RangeSlider, {type Term} from './RangeSlider';
 import RangeInput from './RangeInput';
 import NumberInputSlot from './NumberInputSlot';
 

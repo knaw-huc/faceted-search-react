@@ -1,6 +1,7 @@
-import {createContext, useRef, ReactNode} from 'react';
-import createFacetedSearchStore, {Facets, SearchFn, FacetedSearchStore} from 'store/FacetedSearchStore';
-import {I18nProvider, TranslateFn} from './I18nContext';
+import {createContext, useRef, type ReactNode} from 'react';
+import createFacetedSearchStore from 'store/FacetedSearchStore';
+import type {Facets, SearchFn, FacetedSearchStore} from 'store/FacetedSearchStore';
+import {I18nProvider, type TranslateFn} from './I18nContext';
 
 interface FacetedSearchParams<R> {
     facets: Facets;

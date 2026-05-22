@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {Sort} from '../components';
+import type {Sort} from '../components';
 import {FilterFacetContext} from 'context/FilterFacet';
 
 interface useHookedFilterFacetReturn {

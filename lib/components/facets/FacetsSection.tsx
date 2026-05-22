@@ -1,4 +1,4 @@
-import {ReactNode, useState} from 'react';
+import {type ReactNode, useState} from 'react';
 import {Button} from 'react-aria-components';
 import useTranslate from 'hooks/useTranslate';
 

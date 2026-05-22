@@ -2,7 +2,7 @@ import {scaleBand, scaleLinear} from 'd3-scale';
 import {extent} from 'd3-array';
 import classes from './Histogram.module.css';
 import {useRef, useState} from "react";
-import {Term} from "./RangeSlider";
+import type {Term} from "./RangeSlider";
 import {CalendarDate, getLocalTimeZone} from "@internationalized/date";
 
 const width = 300;

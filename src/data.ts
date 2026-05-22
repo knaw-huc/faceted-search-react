@@ -1,4 +1,4 @@
-import {ResultCardBasicProps, ResultCardSubResultsProps} from '../lib';
+import type {ResultCardBasicProps, ResultCardSubResultsProps} from '../lib';
 
 export const facetItemsList1 = [
     {

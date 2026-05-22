@@ -1,4 +1,4 @@
-import {ReactNode, useContext} from 'react';
+import {type ReactNode, useContext} from 'react';
 import {useDateFormatter} from 'react-aria';
 import {
     Button,
@@ -13,11 +13,12 @@ import {
     CalendarGridBody,
     CalendarCell,
     CalendarHeaderCell,
-    CalendarCellRenderProps,
     RangeCalendarStateContext
 } from 'react-aria-components';
 import {ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, CheckIcon} from '@heroicons/react/24/solid';
+
 import type {CalendarDate} from '@internationalized/date';
+import type {CalendarCellRenderProps} from 'react-aria-components';
 
 export default function PopoverCalendar({min, max}: { min: CalendarDate, max: CalendarDate }) {
     return (

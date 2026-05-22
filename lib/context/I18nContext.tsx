@@ -1,4 +1,5 @@
-import {Context, createContext, ReactNode, useCallback} from 'react';
+import {createContext, useCallback} from 'react';
+import type {Context, ReactNode} from 'react';
 import {I18nProvider as LocaleProvider} from 'react-aria-components';
 import defaultTranslations from './defaultTranslations.json';
 
