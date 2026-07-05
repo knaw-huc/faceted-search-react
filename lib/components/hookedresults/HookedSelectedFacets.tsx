@@ -35,7 +35,12 @@ export default function HookedSelectedFacets() {
         });
     }
 
+    const onClearFacets = () => {
+        clearFacets();
+        setQuery(undefined);
+    }
+
     return (
-        <SelectedFacets selectedFacets={selectedFacets} onClear={clearFacets}/>
+        <SelectedFacets selectedFacets={selectedFacets} onClear={onClearFacets}/>
     );
 }
