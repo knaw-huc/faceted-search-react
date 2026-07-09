@@ -12,7 +12,7 @@ export default function FacetsSection({children}: { children: ReactNode }) {
             </div>
 
             <section
-                className={`w-full ${!showFacets && ' hidden'} lg:flex flex-col max-w-[300px] lg:max-w-(--site-max-width) absolute lg:relative p-4 lg:p-0 shadow-xl lg:shadow-none bg-neutral-50 lg:bg-white`}>
+                className={`w-full ${!showFacets && ' hidden'} lg:flex flex-col max-w-75 lg:max-w-(--site-max-width) absolute lg:relative p-4 lg:p-0 shadow-xl lg:shadow-none bg-neutral-50 lg:bg-white`}>
                 <div className="w-full text-right">
                     <FacetsCloseButton closeFacets={() => setShowFacets(false)}/>
                 </div>
