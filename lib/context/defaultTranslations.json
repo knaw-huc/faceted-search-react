@@ -2,6 +2,7 @@
   "search.label": "Search for text",
   "search.button.aria": "Search",
 
+  "filter.aria": "Facet items",
   "filter.label": "Filter on facet items",
   "filter.placeholder": "Type to filter",
   "filter.sort.asc": "Order from A to Z",

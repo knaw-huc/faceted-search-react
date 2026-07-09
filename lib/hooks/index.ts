@@ -4,6 +4,7 @@ export {default as useFacets} from './useFacets';
 export {default as useUpdateFacetValueLabels} from './useUpdateFacetValueLabels';
 export {default as useSearchFacet} from './useSearchFacet';
 export {default as useFilterFacet} from './useFilterFacet';
+export {default as useHierarchy} from './useHierarchy';
 export {default as useHookedFilterFacet} from './useHookedFilterFacet';
 export {default as useNumericRangeFacet} from './useNumericRangeFacet';
 export {default as useDateRangeFacet} from './useDateRangeFacet';
