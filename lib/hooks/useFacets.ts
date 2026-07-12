@@ -16,7 +16,7 @@ export default function useFacets(): UseFacetsReturn {
     const valueLabels = useSearchContext(s => s.valueLabels);
     const addFacetValue = useSearchContext(s => s.addFacetValue);
     const removeFacetValue = useSearchContext(s => s.removeFacetValue);
-    const clearFacetValues = useSearchContext(s => s.clearFacetValues);
+    const clearFacets = useSearchContext(s => s.clearFacets);
 
-    return [facets, facetValues, valueLabels, addFacetValue, removeFacetValue, clearFacetValues];
+    return [facets, facetValues, valueLabels, addFacetValue, removeFacetValue, clearFacets];
 }
