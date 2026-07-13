@@ -271,7 +271,7 @@ values:
    and the values are arrays of selected values.
 3. `(facetKey: string, value: string) => void`: A function to add a value for a specific facet.
 4. `(facetKey: string, value: string) => void`: A function to remove a value for a specific facet.
-5. `() => void`: A function to clear all selected facets.
+5. `() => void`: A function to clear all (selected/active) facets.
 
 ```ts
 interface Facet {

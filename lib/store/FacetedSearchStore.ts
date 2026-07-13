@@ -41,6 +41,7 @@ export interface FacetedSearchStoreState<R> {
     removeFacetValue: (facetKey: string, val: string) => void;
     updateFacetValueLabels: (facetKey: string, valueLabels: Record<string, string>) => void;
     clearFacetValues: () => void;
+    clearFacets: () => void;
     setPage: (page: number) => void;
     runSearch: () => void;
 }
@@ -129,6 +130,11 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
 
                 clearFacetValues: () => {
                     get().updateFacetValues({});
+                },
+
+                clearFacets: () => {
+                    get().setQuery(undefined);
+                    get().clearFacetValues();
                 },
 
                 setPage: (page) => {
