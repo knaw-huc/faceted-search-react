@@ -1,6 +1,6 @@
 {
   "name": "@knaw-huc/faceted-search-react",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,15 +32,15 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@base-ui/react": "^1.5.0",
+    "@base-ui/react": "^1.6.0",
     "@heroicons/react": "^2.2.0",
-    "@internationalized/date": "^3.12.1",
+    "@internationalized/date": "^3.12.2",
     "d3": "^7.9.0",
-    "dompurify": "^3.4.5",
-    "react-aria-components": "^1.17.0",
-    "tailwindcss-react-aria-components": "^2.1.0",
+    "dompurify": "^3.4.12",
+    "react-aria-components": "^1.19.0",
+    "tailwindcss-react-aria-components": "^2.2.0",
     "use-zustand": "^0.2.0",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.14"
   },
   "peerDependencies": {
     "react": "19",
@@ -49,21 +49,21 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@rolldown/plugin-babel": "^0.2.3",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.2",
     "@types/d3": "^7.4.3",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
+    "@types/node": "^25.9.5",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
+    "@vitejs/plugin-react": "^6.0.3",
     "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^10.4.0",
+    "eslint": "^10.7.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.6.0",
-    "tailwindcss": "^4.3.0",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4",
-    "unplugin-dts": "^1.0.1",
-    "vite": "^8.0.13"
+    "typescript-eslint": "^8.64.0",
+    "unplugin-dts": "^1.0.3",
+    "vite": "^8.1.5"
   }
 }
