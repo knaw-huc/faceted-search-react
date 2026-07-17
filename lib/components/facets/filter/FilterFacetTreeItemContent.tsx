@@ -1,5 +1,5 @@
 import {type CSSProperties, useMemo} from 'react';
-import {Button, Checkbox} from 'react-aria-components';
+import {Button, CheckboxField, CheckboxButton} from 'react-aria-components';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import useTranslate from 'hooks/useTranslate';
 import useHierarchy from 'hooks/useHierarchy';
@@ -34,13 +34,13 @@ export default function FilterFacetTreeItemContent({
                 <ChevronRightIcon className={`w-3 h-3 fill-neutral-900 ${isOpen ? 'rotate-90' : ''}`}/>
             </Button>}
 
-            <Checkbox slot="selection" className="flex flex-row items-center w-full"
+            <CheckboxField slot="selection" className="flex flex-row items-center w-full"
                       name={item.itemKey} isSelected={selected} isIndeterminate={indeterminate}
                       onChange={() => toggle(item.itemKey)}>
-                <CheckboxIndicator className={facetHasChildren && !hasChildren ? 'ml-5 mr-2' : 'mr-2'}
+                <CheckboxIndicator className={facetHasChildren && !hasChildren ? 'ml-5' : ''}
                                    isSelected={selected} isIndeterminate={indeterminate}/>
                 <ItemContent item={item} showAmount={showAmount}/>
-            </Checkbox>
+            </CheckboxField>
         </div>
     );
 }
@@ -51,8 +51,8 @@ function CheckboxIndicator({isSelected, isIndeterminate, className}: {
     className?: string
 }) {
     return (
-        <div
-            className={`${className || ''} w-4 h-4 shrink-0 box-border flex items-center justify-center rounded-sm border border-neutral-600 ${isSelected || isIndeterminate ? 'bg-(--color-support-002)' : ''}`}>
+        <CheckboxButton
+            className={`${className || ''} mr-2 w-4 h-4 shrink-0 box-border flex items-center justify-center rounded-sm border border-neutral-600 ${isSelected || isIndeterminate ? 'bg-(--color-support-002)' : ''}`}>
             {(isSelected || isIndeterminate) &&
                 <svg viewBox="0 0 18 18" aria-hidden="true" key={isIndeterminate ? 'indeterminate' : 'check'}
                      fill="none" stroke="white" strokeWidth="3px" className="w-3 h-3">
@@ -60,7 +60,7 @@ function CheckboxIndicator({isSelected, isIndeterminate, className}: {
                         ? <rect x={3} y={8} width={12} height={1}/>
                         : <polyline points="2 9 7 14 16 4"/>}
                 </svg>}
-        </div>
+        </CheckboxButton>
     );
 }
 

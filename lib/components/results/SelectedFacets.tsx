@@ -1,17 +1,10 @@
-import {type ReactNode} from 'react';
-import {Button} from "react-aria-components";
+import {Button} from 'react-aria-components';
 import useTranslate from 'hooks/useTranslate';
+import type {SelectedFacet} from 'hooks/useSelectedFacets';
 
 export interface SelectedFacetsProps {
     selectedFacets: SelectedFacet[];
     onClear: () => void;
-}
-
-export interface SelectedFacet {
-    itemKey: string;
-    name?: string;
-    label: ReactNode;
-    onRemove: () => void;
 }
 
 export default function SelectedFacets({selectedFacets, onClear}: SelectedFacetsProps) {
