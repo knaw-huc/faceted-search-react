@@ -37,20 +37,18 @@ function SelectedFacetItem({name, label, onRemove}: SelectedFacet) {
     const {t} = useTranslate();
 
     return (
-        <div className="rounded bg-(--color-support-002) text-white py-1 px-2 text-sm flex flex-row items-center">
-            <span className="mr-1">
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
-                     className="w-4 h-4 stroke-white">
-                    <path strokeLinecap="round" strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
-                </svg>
-            </span>
+        <div className="rounded bg-(--color-support-002) text-white py-1 px-2 text-sm flex flex-row gap-1 items-center">
+            <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+                 className="w-4 h-4 stroke-white">
+                <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+            </svg>
 
             <span>
                 {name && <span className="font-bold">{name}: </span>}{label}
             </span>
 
-            <Button className="ml-2" aria-label={t('selected.remove.aria')} onClick={onRemove}>
+            <Button className="ml-1" aria-label={t('selected.remove.aria')} onClick={onRemove}>
                 &#10005;
             </Button>
         </div>

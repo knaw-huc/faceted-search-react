@@ -1,8 +1,7 @@
 import {resolve} from 'path';
-import {defineConfig} from 'vite';
+import {defineConfig, esmExternalRequirePlugin} from 'vite';
 import react, {reactCompilerPreset} from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
-import {esmExternalRequirePlugin} from 'rolldown/plugins';
 import tailwindcss from '@tailwindcss/vite';
 import dts from 'unplugin-dts/vite';
 
@@ -11,7 +10,7 @@ export default defineConfig({
     publicDir: 'themes',
     plugins: [
         react(),
-        babel({presets: [reactCompilerPreset()]}),
+        babel({presets: [reactCompilerPreset({target: '19'})]}),
         esmExternalRequirePlugin({external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime']}),
         tailwindcss(),
         dts({tsconfigPath: 'tsconfig.lib.json'}),
