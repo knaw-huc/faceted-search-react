@@ -1,37 +1,22 @@
-import {useContext, useState, startTransition} from 'react';
-import type {Sort} from 'components/index';
-import {FilterFacetContext} from 'context/FilterFacet';
+import {startTransition, useState} from 'react';
 import useFacet from './useFacet';
+import type {Sort} from 'components/facets';
 
-export interface useFilterFacetReturn {
+export interface UseFilterFacetReturn {
     label: string;
-    selected: Set<string>;
     textFilter: string;
     sort: Sort;
-    onSelect: (selected: Set<string>) => void;
     onTextFilterChange: (textFilter: string) => void;
     onSort: (sort: Sort) => void;
 }
 
-export default function useFilterFacet(facetKey: string): useFilterFacetReturn {
-    const [filter, setFilter] = useState('');
+export default function useFilterFacet(facetKey: string): UseFilterFacetReturn {
+    const {label} = useFacet(facetKey, []);
     const [sort, setSort] = useState<Sort>('hits');
-    const [label, values, setValues] = useFacet(facetKey, []);
+    const [textFilter, setTextFilter] = useState('');
 
-    const selected = new Set(Array.isArray(values) ? values : [values]);
-
-    const onTextFilterChange = (textFilter: string) => startTransition(() => setFilter(textFilter));
     const onSort = (sortValue: Sort) => startTransition(() => setSort(sortValue));
-    const onSelect = (selected: Set<string>) => startTransition(() => setValues(Array.from(selected)));
+    const onTextFilterChange = (textFilter: string) => startTransition(() => setTextFilter(textFilter));
 
-    return {label, selected, onSelect, textFilter: filter, sort, onTextFilterChange, onSort};
-}
-
-export function useFilterFacetContext(): useFilterFacetReturn {
-    const filterFacetHook = useContext(FilterFacetContext);
-    if (!filterFacetHook) {
-        throw new Error('Missing FilterFacetContext.Provider in the tree');
-    }
-
-    return filterFacetHook;
+    return {label, textFilter, sort, onTextFilterChange, onSort};
 }

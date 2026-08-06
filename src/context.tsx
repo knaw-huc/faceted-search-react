@@ -1,4 +1,6 @@
-import {facetItemsList1, facetItemsList2, resultsBasic} from './data';
+import {use} from 'react';
+import {resultsBasic} from './data';
+import {fetchFacetItems} from './filterFacetData';
 import Layout from './components/Layout';
 import ContentWithAsides from './components/ContentWithAsides';
 import {
@@ -7,16 +9,13 @@ import {
     HookedSearchFacet,
     HookedNumericRangeFacet,
     HookedFilterFacet,
-    HookedFilterFacetItems,
     HookedSelectedFacets,
     HookedResultsView,
     ResultCardBasic,
     HookedPagination,
-    getReadableRange,
-    useHookedFilterFacet,
-    useSearchState,
+    getReadableRange, type FilterFacetItem,
 } from '../lib';
-import type {Facets, SearchState, FilterFacetItem, ResultCardBasicProps} from '../lib';
+import type {Facets, SearchState, ResultCardBasicProps, FilterFacetState} from '../lib';
 
 const facets: Facets = {
     range: {
@@ -30,6 +29,18 @@ const facets: Facets = {
         label: 'Location',
     }
 };
+
+const nameItemsCache = new Map<string, Promise<FilterFacetItem[]>>();
+const locationItemsCache = new Map<string, Promise<FilterFacetItem[]>>();
+
+function useItems(state: FilterFacetState) {
+    const cacheKey = JSON.stringify(state);
+    const cache = state.facetKey === 'name' ? nameItemsCache : locationItemsCache;
+    if (!cache.has(cacheKey))
+        cache.set(cacheKey, fetchFacetItems(state));
+
+    return use(cache.get(cacheKey)!);
+}
 
 async function searchFn(state: SearchState) {
     console.log('Search called', state);
@@ -65,26 +76,8 @@ function AllFacets() {
         <FacetsSection>
             <HookedSearchFacet/>
             <HookedNumericRangeFacet facetKey="range" min={0} max={1000} step={1}/>
-            <HookedFilterFacet facetKey="name" infoText="Info about this facet.">
-                <FacetItems items={facetItemsList1}/>
-            </HookedFilterFacet>
-            <HookedFilterFacet facetKey="location" infoText="Info about this facet.">
-                <FacetItems items={facetItemsList2}/>
-            </HookedFilterFacet>
+            <HookedFilterFacet facetKey="name" infoText="Info about this facet." useItems={useItems}/>
+            <HookedFilterFacet facetKey="location" infoText="Info about this facet." useItems={useItems}/>
         </FacetsSection>
-    );
-}
-
-function FacetItems({items}: { items: FilterFacetItem[] }) {
-    const state = useSearchState();
-    const {selected, textFilter, sort} = useHookedFilterFacet();
-    const selectedArr = Object.entries(selected)
-        .filter(([, selected]) => selected === true)
-        .map(([itemKey]) => itemKey);
-
-    console.log('Filter facet items called', state, selectedArr, textFilter, sort);
-
-    return (
-        <HookedFilterFacetItems items={items}/>
     );
 }

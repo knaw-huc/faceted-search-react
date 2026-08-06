@@ -120,12 +120,13 @@ export default function createFacetedSearchStore<R>(facets: Facets, searchFn: Se
                 },
 
                 updateFacetValueLabels: (facetKey: string, valueLabels: FacetValueLabels) => {
-                    set(s => ({
-                        valueLabels: {
-                            ...s.valueLabels,
-                            [facetKey]: valueLabels
-                        }
-                    }));
+                    set(s => {
+                        const current = s.valueLabels[facetKey];
+                        const merged = {...current, ...valueLabels};
+                        if (current && JSON.stringify(current) === JSON.stringify(merged))
+                            return s;
+                        return {valueLabels: {...s.valueLabels, [facetKey]: merged}};
+                    });
                 },
 
                 clearFacetValues: () => {

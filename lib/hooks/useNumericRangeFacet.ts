@@ -7,7 +7,7 @@ interface useNumericRangeFacetReturn {
 }
 
 export default function useNumericRangeFacet(facetKey: string, min: number, max: number): useNumericRangeFacetReturn {
-    const [label, values, setValues] = useFacet(facetKey, '');
+    const {label, values, setValues} = useFacet(facetKey, '');
 
     const value = values[0];
     const hasValues = value.includes(':');

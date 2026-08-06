@@ -17,7 +17,7 @@ export default function FilterFacetFilters({onTextFilterChange, onSort, sort}: F
     return (
         <div className="pb-1 flex gap-2 justify-between items-center border-neutral-300">
             {onTextFilterChange && <TextFilter onTextFilterChange={onTextFilterChange}/>}
-            {sort && onSort && <Sort sort={sort} onSort={onSort}/>}
+            {sort && onSort && <SortButtons sort={sort} onSort={onSort}/>}
         </div>
     );
 }
@@ -37,7 +37,7 @@ function TextFilter({onTextFilterChange}: { onTextFilterChange: (value: string) 
     );
 }
 
-function Sort({sort, onSort}: { sort: Sort, onSort: (type: Sort) => void }) {
+function SortButtons({sort, onSort}: { sort: Sort, onSort: (type: Sort) => void }) {
     const {t} = useTranslate();
 
     return (

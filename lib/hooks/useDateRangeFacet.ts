@@ -7,7 +7,7 @@ interface useDateRangeFacetReturn {
 }
 
 export default function useDateRangeFacet(facetKey: string, min: string, max: string): useDateRangeFacetReturn {
-    const [label, values, setValues] = useFacet(facetKey, '');
+    const {label, values, setValues} = useFacet(facetKey, '');
 
     const value = values[0];
     const hasValues = value.includes(':');

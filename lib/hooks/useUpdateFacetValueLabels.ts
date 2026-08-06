@@ -1,10 +1,10 @@
+import {useCallback} from 'react';
 import useSearchContext from './useSearchContext';
 import type {FacetValueLabels} from 'store/FacetedSearchStore';
 
-type useUpdateFacetValueLabelsReturn = (valueLabels: FacetValueLabels) => void;
+type UseUpdateFacetValueLabelsReturn = (valueLabels: FacetValueLabels) => void;
 
-export default function useUpdateFacetValueLabels(facetKey: string): useUpdateFacetValueLabelsReturn {
+export default function useUpdateFacetValueLabels(facetKey: string): UseUpdateFacetValueLabelsReturn {
     const updateFacetValueLabels = useSearchContext(s => s.updateFacetValueLabels);
-
-    return (valueLabels: FacetValueLabels) => updateFacetValueLabels(facetKey, valueLabels);
+    return useCallback((valueLabels: FacetValueLabels) => updateFacetValueLabels(facetKey, valueLabels), [updateFacetValueLabels, facetKey]);
 }

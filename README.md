@@ -69,7 +69,7 @@ the section behind a button.
 
 | Parameter  | Value type  | Required? | Default value | Description                                       |
 |------------|-------------|-----------|---------------|---------------------------------------------------|
-| `children` | `ReactNode` | ✓         |               | The content to display inside the facets section. |
+| `children` | `ReactNode` | ✓        |               | The content to display inside the facets section. |
 
 ### Component `Facet`
 
@@ -78,11 +78,11 @@ informational text, and child content. It supports toggling visibility and provi
 
 | Parameter     | Value type  | Required? | Default value | Description                                                     |
 |---------------|-------------|-----------|---------------|-----------------------------------------------------------------|
-| `label`       | `string`    | ✓         |               | The label displayed at the top of the facet.                    |
+| `label`       | `string`    | ✓        |               | The label displayed at the top of the facet.                    |
 | `infoText`    | `string`    |           |               | Optional text providing additional information about the facet. |
 | `startOpen`   | `boolean`   |           | `true`        | Determines whether the facet starts in an open state.           |
 | `allowToggle` | `boolean`   |           | `true`        | Allows toggling the visibility of the facet content.            |
-| `children`    | `ReactNode` | ✓         |               | The content to display inside the facet when it is open.        |
+| `children`    | `ReactNode` | ✓        |               | The content to display inside the facet when it is open.        |
 
 ### Component `SearchFacet`
 
@@ -93,24 +93,37 @@ used alongside other facets.
 | Parameter      | Value type                | Required? | Default value | Description                                                 |
 |----------------|---------------------------|-----------|---------------|-------------------------------------------------------------|
 | `initialQuery` | `string`                  |           |               | The initial search query to show in the search input field. |
-| `onSearch`     | `(query: string) => void` | ✓         |               | Callback function to handle search input changes.           |
+| `onSearch`     | `(query: string) => void` | ✓        |               | Callback function to handle search input changes.           |
 
 ### Component `FilterFacet`
 
 The `FilterFacet` component is designed to display a list of filter options that users can select to refine their search
 results. It supports hierarchical filters. The component is designed to be used within a `FacetsSection` and a `Facet`
-and can be used alongside other facets.
+and can be used alongside other facets. Use the `FilterFacetItems` component to render the filter options.
 
-| Parameter            | Value type                                        | Required? | Default value | Description                                                                                      |
-|----------------------|---------------------------------------------------|-----------|---------------|--------------------------------------------------------------------------------------------------|
-| `items`              | `FilterFacetItem[] \| Promise<FilterFacetItem[]>` | ✓         |               | The facet items to render. May be passed as a promise to indicate the results are still loading. |
-| `selected`           | `Selected`                                        | ✓         |               | An object that keeps track of the selected facet items.                                          |
-| `maxInitialItems`    | `number`                                          |           |               | The maximum number of items to show initially.                                                   |
-| `showAmount`         | `boolean`                                         |           | `true`        | Whether to show per item for how many search results it applies.                                 |
-| `itemsClosed`        | `boolean`                                         |           | `false`       | Whether to hide the child items in a hierarchical structure.                                     |
-| `onSelect`           | `(selected: Selected) => void`                    | ✓         |               | Callback function to handle changes in the selected items.                                       |
-| `onTextFilterChange` | `(value: string) => void`                         |           |               | Callback function to handle changes in the text filter input.                                    |
-| `onSort`             | `(type: Sort) => void`                            |           |               | Callback function to handle sorting change by the user.                                          |
+| Parameter            | Value type                | Required? | Default value | Description                                                   |
+|----------------------|---------------------------|-----------|---------------|---------------------------------------------------------------|
+| `sort`               | `Sort`                    |           |               | The intitial sorting order.                                   |
+| `onTextFilterChange` | `(value: string) => void` |           |               | Callback function to handle changes in the text filter input. |
+| `onSort`             | `(type: Sort) => void`    |           |               | Callback function to handle sorting change by the user.       |
+
+```ts
+type Sort = 'asc' | 'desc' | 'hits';
+```
+
+### Component `FilterFacetItems`
+
+The `FilterFacetItems` component is designed to display a list of filter options that users can select to refine their
+search results. It supports hierarchical filters.
+
+| Parameter         | Value type                     | Required? | Default value | Description                                                      |
+|-------------------|--------------------------------|-----------|---------------|------------------------------------------------------------------|
+| `items`           | `FilterFacetItem[]`            | ✓        |               | The facet items to render.                                       |
+| `selected`        | `Set<string>`                  | ✓        |               | An object that keeps track of the selected facet items.          |
+| `maxInitialItems` | `number`                       |           |               | The maximum number of items to show initially.                   |
+| `showAmount`      | `boolean`                      |           | `true`        | Whether to show per item for how many search results it applies. |
+| `itemsClosed`     | `boolean`                      |           | `false`       | Whether to hide the child items in a hierarchical structure.     |
+| `onSelect`        | `(selected: Selected) => void` | ✓        |               | Callback function to handle changes in the selected items.       |
 
 ```ts
 interface FilterFacetItem {
@@ -119,10 +132,6 @@ interface FilterFacetItem {
     amount: number;
     children?: FilterFacetItem[];
 }
-
-type SelectedState = boolean | 'indeterminate';
-type Selected = { [itemKey: string]: SelectedState };
-type Sort = 'asc' | 'desc' | 'hits';
 ```
 
 ### Component `NumericRangeFacet`
@@ -133,26 +142,25 @@ facets.
 
 | Parameter  | Value type                           | Required? | Default value | Description                                |
 |------------|--------------------------------------|-----------|---------------|--------------------------------------------|
-| `min`      | `number`                             | ✓         |               | The minimum of the allowed range.          |
-| `max`      | `number`                             | ✓         |               | The maximum of the allowed range.          |
-| `step`     | `number`                             | ✓         |               | The step size for the range.               |
+| `min`      | `number`                             | ✓        |               | The minimum of the allowed range.          |
+| `max`      | `number`                             | ✓        |               | The maximum of the allowed range.          |
+| `step`     | `number`                             | ✓        |               | The step size for the range.               |
 | `startMin` | `number`                             |           | `min`         | The initial minimum value.                 |
 | `startMax` | `number`                             |           | `max`         | The initial maximum value.                 |
-| `onChange` | `(min: number, max: number) => void` | ✓         |               | Callback function to handle range changes. |
+| `onChange` | `(min: number, max: number) => void` | ✓        |               | Callback function to handle range changes. |
 
 ### Component `DateRangeFacet`
 
-The `DateRangeFacet` component is designed to display a range filter that allows users to select a range of date
-values. The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other
-facets.
+The `DateRangeFacet` component is designed to display a range filter that allows users to select a range of date values.
+The component is designed to be used within a `FacetsSection` and a `Facet` and can be used alongside other facets.
 
 | Parameter  | Value type                           | Required? | Default value | Description                                |
 |------------|--------------------------------------|-----------|---------------|--------------------------------------------|
-| `min`      | `string` `(ISO 8601)`                | ✓         |               | The minimum date of the allowed range.     |
-| `max`      | `string` `(ISO 8601)`                | ✓         |               | The maximum date of the allowed range.     |
+| `min`      | `string` `(ISO 8601)`                | ✓        |               | The minimum date of the allowed range.     |
+| `max`      | `string` `(ISO 8601)`                | ✓        |               | The maximum date of the allowed range.     |
 | `startMin` | `string` `(ISO 8601)`                |           | `min`         | The initial minimum date value.            |
 | `startMax` | `string` `(ISO 8601)`                |           | `max`         | The initial maximum date value.            |
-| `onChange` | `(min: string, max: string) => void` | ✓         |               | Callback function to handle range changes. |
+| `onChange` | `(min: string, max: string) => void` | ✓        |               | Callback function to handle range changes. |
 
 ### Component `SelectedFacets`
 
@@ -160,8 +168,8 @@ The `SelectedFacets` component displays the currently selected facets and allows
 
 | Parameter        | Value type        | Required? | Default value | Description                                 |
 |------------------|-------------------|-----------|---------------|---------------------------------------------|
-| `selectedFacets` | `SelectedFacet[]` | ✓         |               | A list of selected facets to display.       |
-| `onClear`        | `() => void`      | ✓         |               | Callback function to clear selected facets. |
+| `selectedFacets` | `SelectedFacet[]` | ✓        |               | A list of selected facets to display.       |
+| `onClear`        | `() => void`      | ✓        |               | Callback function to clear selected facets. |
 
 ```ts
 interface SelectedFacet {
@@ -177,8 +185,8 @@ The `Pagination` component is designed to display pagination controls for naviga
 
 | Parameter     | Value type                   | Required? | Default value | Description                        |
 |---------------|------------------------------|-----------|---------------|------------------------------------|
-| `currentPage` | `number`                     | ✓         |               | The current page number.           |
-| `pages`       | `{ [page: number]: string }` | ✓         |               | The pages to render and the links. |
+| `currentPage` | `number`                     | ✓        |               | The current page number.           |
+| `pages`       | `{ [page: number]: string }` | ✓        |               | The pages to render and the links. |
 | `prev`        | `string`                     |           |               | The link to the previous page.     |
 | `next`        | `string`                     |           |               | The link to the next page.         |
 
@@ -188,7 +196,7 @@ The `ResultsView` is a container for search results. It will show a loading stat
 
 | Parameter  | Value type  | Required? | Default value | Description                                     |
 |------------|-------------|-----------|---------------|-------------------------------------------------|
-| `children` | `ReactNode` | ✓         |               | The content to display inside the results view. |
+| `children` | `ReactNode` | ✓        |               | The content to display inside the results view. |
 
 ### Component `ResultCard`
 
@@ -197,18 +205,18 @@ are still being loaded. It is used within the `ResultsView` to display individua
 
 | Parameter  | Value type  | Required? | Default value | Description                                    |
 |------------|-------------|-----------|---------------|------------------------------------------------|
-| `children` | `ReactNode` | ✓         |               | The content to display inside the result card. |
+| `children` | `ReactNode` | ✓        |               | The content to display inside the result card. |
 
 ### Component `ResultCardBasic`
 
-The `ResultCardBasic` component is a basic implementation of a search result card. It is designed to be used within
-the `ResultCard` and displays the title, description and the tags.
+The `ResultCardBasic` component is a basic implementation of a search result card. It is designed to be used within the
+`ResultCard` and displays the title, description and the tags.
 
 | Parameter     | Value type | Required? | Default value | Description                                        |
 |---------------|------------|-----------|---------------|----------------------------------------------------|
-| `title`       | `string`   | ✓         |               | The title of this search result.                   |
-| `link`        | `string`   | ✓         |               | The link to the detail page of this search result. |
-| `description` | `string`   | ✓         |               | The description of this search result.             |
+| `title`       | `string`   | ✓        |               | The title of this search result.                   |
+| `link`        | `string`   | ✓        |               | The link to the detail page of this search result. |
+| `description` | `string`   | ✓        |               | The description of this search result.             |
 | `tags`        | `string[]` |           |               | The tags for this search result.                   |
 
 ### Component `ResultCardSubResults`
@@ -218,9 +226,9 @@ be used within the `ResultCard`.
 
 | Parameter              | Value type                   | Required? | Default value | Description                                          |
 |------------------------|------------------------------|-----------|---------------|------------------------------------------------------|
-| `title`                | `string`                     | ✓         |               | The title of this search result.                     |
-| `link`                 | `string`                     | ✓         |               | The link to the detail page of this search result.   |
-| `items`                | `ResultCardSubResultsItem[]` | ✓         |               | A list with the sub results to render.               |
+| `title`                | `string`                     | ✓        |               | The title of this search result.                     |
+| `link`                 | `string`                     | ✓        |               | The link to the detail page of this search result.   |
+| `items`                | `ResultCardSubResultsItem[]` | ✓        |               | A list with the sub results to render.               |
 | `maxInitialItemsShown` | `number`                     |           |               | The maximum number of sub-results to show initially. |
 
 ```ts
@@ -254,11 +262,11 @@ The `useFacet` hook is used to register and manage the state of a specific facet
 | `facetKey`     | `string`             | The key of the facet to manage.      |
 | `defaultValue` | `string \| string[]` | The default value(s) for this facet. |
 
-The hook returns three values:
+The hook returns an object with the values:
 
-1. `string`: The human-readable label for the facet.
-2. `string | string[]`: The current value(s) for this facet.
-3. `(value: string | string[]) => void`: A function to set the value(s) for this facet.
+1. `label`: `string`: The human-readable label for the facet.
+2. `values`: `string | string[]`: The current value (s) for this facet.
+3. `setValues`: `(value: string | string[]) => void`: A function to set the value (s) for this facet.
 
 ### Hook `useFacets`
 
@@ -282,8 +290,8 @@ interface Facet {
 
 ### Hook `useSearchFacet`
 
-The `useSearchFacet` hook is used to register and manage the state of a search facet. It provides functionality to
-fetch search results based on the current search state and the search term.
+The `useSearchFacet` hook is used to register and manage the state of a search facet. It provides functionality to fetch
+search results based on the current search state and the search term.
 
 | Parameter  | Value type | Description                                    |
 |------------|------------|------------------------------------------------|
@@ -301,39 +309,44 @@ interface useSearchFacetReturn {
 
 ### Hook `useFilterFacet`
 
-The `useFilterFacet` hook is used to register and manage the state of a filter facet. It provides functionality to fetch
-items whenever the search state, the selected items, the text filter or the sorting changes.
+The `useFilterFacet` hook is used to register and manage the state of a filter facet. The facet items are managed by
+another hook `useFilterFacetSelection`.
 
-| Parameter      | Value type     | Description                                            |
-|----------------|----------------|--------------------------------------------------------|
-| `facetKey`     | `string`       | The key of the filter facet to manage.                 |
-| `fetchItemsFn` | `FetchItemsFn` | Callback function to fetch all the filter facet items. |
+| Parameter  | Value type | Description                            |
+|------------|------------|----------------------------------------|
+| `facetKey` | `string`   | The key of the filter facet to manage. |
 
-The hook returns an object `useFilterFacetReturn` with the items to display, the selected items and functions to
-interact with the filter facet.
+The hook returns an object `UseFilterFacetReturn` with the text filter and sort selection and functions to interact with
+the filter facet.
 
 ```ts
-type FetchItemsFn = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) => FilterFacetItem[] | Promise<FilterFacetItem[]>;
-
-interface useFilterFacetReturn {
+interface UseFilterFacetReturn {
     label: string;
-    items: FilterFacetItem[] | Promise<FilterFacetItem[]>;
-    selected: Selected;
-    onSelect: (selected: Selected) => void;
+    textFilter: string;
+    sort: Sort;
     onTextFilterChange: (textFilter: string) => void;
     onSort: (sort: Sort) => void;
 }
 
-interface FilterFacetItem {
-    itemKey: string;
-    label: string;
-    amount: number;
-    children?: FilterFacetItem[];
-}
-
-type Selected = { [itemKey: string]: SelectedState };
-type SelectedState = boolean | 'indeterminate';
 type Sort = 'asc' | 'desc' | 'hits';
+```
+
+### Hook `useFilterFacetSelection`
+
+The `useFilterFacet` hook is used to register and manage the state of a filter facet items.
+
+| Parameter  | Value type | Description                            |
+|------------|------------|----------------------------------------|
+| `facetKey` | `string`   | The key of the filter facet to manage. |
+
+The hook returns an object `UseFilterFacetSelectionReturn` with the items selected and a function to interact with new
+selections.
+
+```ts
+interface UseFilterFacetSelectionReturn {
+    selected: Set<string>;
+    onSelect: (selected: Set<string>) => void;
+}
 ```
 
 ### Hook `useNumericRangeFacet`
@@ -414,32 +427,26 @@ term.
 
 ### Component `HookedFilterFacet`
 
-The `HookedFilterFacet` component is a wrapper around the `FilterFacet` component that uses the `useFilterFacet` hook
-to manage the filter state. It provides a list of filter options that users can select to refine their search results.
+The `HookedFilterFacet` component is a wrapper around the `FilterFacet` component that uses the `useFilterFacet` hook to
+manage the filter state and the `useFilterFacetSelection` hook to manage the item selection. It renders the facet header
+and the filter and sort toolbar, and provides the `Suspense` boundary. Supply the `useItems` hook the component can use
+to fetch and update the facet items.
 
-| Parameter         | Value type     | Required? | Default value | Description                                                      |
-|-------------------|----------------|-----------|---------------|------------------------------------------------------------------|
-| `facetKey`        | `string`       | ✓         |               | The key of the filter facet to manage.                           |
-| `infoText`        | `string`       |           |               | Optional text providing additional information about the facet.  |
-| `fetchItemsFn`    | `FetchItemsFn` | ✓         |               | Callback function to fetch all the filter facet items.           |
-| `maxInitialItems` | `number`       |           |               | The maximum number of items to show initially.                   |
-| `showAmount`      | `boolean`      |           |               | Whether to show per item for how many search results it applies. |
-| `itemsClosed`     | `boolean`      |           |               | Whether to hide the child items in a hierarchical structure.     |
-| `allowFilter`     | `boolean`      |           | `true`        | Whether to allow filtering of the items.                         |
-| `allowSort`       | `boolean`      |           | `true`        | Whether to allow sorting of the items.                           |
-| `startOpen`       | `boolean`      |           | `true`        | Determines whether the facet starts in an open state.            |
-| `allowToggle`     | `boolean`      |           | `true`        | Allows toggling the visibility of the facet content.             |
+| Parameter         | Value type            | Required? | Default value | Description                                                      |
+|-------------------|-----------------------|-----------|---------------|------------------------------------------------------------------|
+| `facetKey`        | `string`              | ✓        |               | The key of the filter facet to manage.                           |
+| `useItems`        | `UseFilterFacetItems` | ✓        |               | Hook returning the items for the given state.                    |
+| `infoText`        | `string`              |           |               | Optional text providing additional information about the facet.  |
+| `allowFilter`     | `boolean`             |           | `true`        | Whether to allow filtering of the items.                         |
+| `allowSort`       | `boolean`             |           | `true`        | Whether to allow sorting of the items.                           |
+| `allowToggle`     | `boolean`             |           | `true`        | Allows toggling the visibility of the facet content.             |
+| `startOpen`       | `boolean`             |           | `true`        | Determines whether the facet starts in an open state.            |
+| `showAmount`      | `boolean`             |           | `true`        | Whether to show per item for how many search results it applies. |
+| `itemsClosed`     | `boolean`             |           | `false`       | Whether to hide the child items in a hierarchical structure.     |
+| `maxInitialItems` | `number`              |           |               | The maximum number of items to show initially.                   |
 
 ```ts
-type FetchItemsFn = (state: SearchState, selected: string[], textFilter?: string, sort?: Sort) => FilterFacetItem[] | Promise<FilterFacetItem[]>;
-type Sort = 'asc' | 'desc' | 'hits';
-
-interface FilterFacetItem {
-    itemKey: string;
-    label: string;
-    amount: number;
-    children?: FilterFacetItem[];
-}
+type UseFilterFacetItems = (state: FilterFacetState) => FilterFacetItem[];
 ```
 
 ### Component `HookedNumericRangeFacet`
@@ -450,11 +457,11 @@ range of numeric values.
 
 | Parameter     | Value type | Required? | Default value | Description                                                     |
 |---------------|------------|-----------|---------------|-----------------------------------------------------------------|
-| `facetKey`    | `string`   | ✓         |               | The key of the range facet to manage.                           |
+| `facetKey`    | `string`   | ✓        |               | The key of the range facet to manage.                           |
 | `infoText`    | `string`   |           |               | Optional text providing additional information about the facet. |
-| `min`         | `number`   | ✓         |               | The minimum of the allowed range.                               |
-| `max`         | `number`   | ✓         |               | The maximum of the allowed range.                               |
-| `step`        | `number`   | ✓         |               | The step size for the range.                                    |
+| `min`         | `number`   | ✓        |               | The minimum of the allowed range.                               |
+| `max`         | `number`   | ✓        |               | The maximum of the allowed range.                               |
+| `step`        | `number`   | ✓        |               | The step size for the range.                                    |
 | `startMin`    | `number`   |           | `min`         | The initial minimum value.                                      |
 | `startMax`    | `number`   |           | `max`         | The initial maximum value.                                      |
 | `allowToggle` | `boolean`  |           | `true`        | Allows toggling the visibility of the facet content.            |
@@ -463,15 +470,15 @@ range of numeric values.
 ### Component `HookedDateRangeFacet`
 
 The `HookedDateRangeFacet` component is a wrapper around the `DateRangeFacet` component that uses the
-`useDateRangeFacet` hook to manage the date range state. It provides a range input that allows users to select a
-range of dates.
+`useDateRangeFacet` hook to manage the date range state. It provides a range input that allows users to select a range
+of dates.
 
 | Parameter     | Value type            | Required? | Default value | Description                                                     |
 |---------------|-----------------------|-----------|---------------|-----------------------------------------------------------------|
-| `facetKey`    | `string`              | ✓         |               | The key of the range facet to manage.                           |
+| `facetKey`    | `string`              | ✓        |               | The key of the range facet to manage.                           |
 | `infoText`    | `string`              |           |               | Optional text providing additional information about the facet. |
-| `min`         | `string` `(ISO 8601)` | ✓         |               | The minimum date of the allowed range.                          |
-| `max`         | `string` `(ISO 8601)` | ✓         |               | The maximum date of the allowed range.                          |
+| `min`         | `string` `(ISO 8601)` | ✓        |               | The minimum date of the allowed range.                          |
+| `max`         | `string` `(ISO 8601)` | ✓        |               | The maximum date of the allowed range.                          |
 | `startMin`    | `string` `(ISO 8601)` |           | `min`         | The initial minimum date value.                                 |
 | `startMax`    | `string` `(ISO 8601)` |           | `max`         | The initial maximum date value.                                 |
 | `allowToggle` | `boolean`             |           | `true`        | Allows toggling the visibility of the facet content.            |
@@ -495,8 +502,8 @@ to fetch the search results.
 
 | Parameter  | Value type                 | Required? | Default value | Description                                           |
 |------------|----------------------------|-----------|---------------|-------------------------------------------------------|
-| `id`       | `(result: C) => Key`       | ✓         |               | A function to determine the key for the given result. |
-| `children` | `(result: C) => ReactNode` | ✓         |               | A render function for the given result.               |
+| `id`       | `(result: C) => Key`       | ✓        |               | A function to determine the key for the given result. |
+| `children` | `(result: C) => ReactNode` | ✓        |               | A render function for the given result.               |
 
 ## Internationalization (i18n)
 

@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {facetItemsList1, facetItemsList2, results, resultsBasic} from './data';
+import {results, resultsBasic} from './data';
+import {nameFacetData, locationFacetData} from './filterFacetData';
 import Layout from './components/Layout';
 import SiteHeader from './components/SiteHeader';
 import ContentWithAsides from './components/ContentWithAsides';
@@ -31,8 +32,8 @@ const navigation = [
 ];
 
 function Facets() {
-    const [facetItemsList1State, setFacetItemsList1State] = useState<Set<string>>(new Set());
-    const [facetItemsList2State, setFacetItemsList2State] = useState<Set<string>>(new Set());
+    const [nameSelected, setNameSelected] = useState<Set<string>>(new Set());
+    const [locationSelected, setLocationSelected] = useState<Set<string>>(new Set());
 
     return (
         <FacetsSection>
@@ -51,24 +52,16 @@ function Facets() {
             <Facet label="Name" infoText="Info about this facet.">
                 <FilterFacet sort="hits" onSort={type => console.log('Name sort', type)}
                              onTextFilterChange={value => console.log('Name text filter', value)}>
-                    <FilterFacetItems items={facetItemsList1} selected={facetItemsList1State}
-                                      onSelect={state => setFacetItemsList1State(state)}/>
+                    <FilterFacetItems items={nameFacetData} maxInitialItems={3} selected={nameSelected}
+                                      onSelect={state => setNameSelected(state)}/>
                 </FilterFacet>
             </Facet>
 
             <Facet label="Location" infoText="Info about this facet.">
                 <FilterFacet sort="asc" onSort={type => console.log('Location sort', type)}
                              onTextFilterChange={value => console.log('Location text filter', value)}>
-                    <FilterFacetItems items={facetItemsList2} selected={facetItemsList2State}
-                                      onSelect={state => setFacetItemsList2State(state)}/>
-                </FilterFacet>
-            </Facet>
-
-            <Facet label="Organisation" infoText="Info about this facet.">
-                <FilterFacet sort="desc" onSort={type => console.log('Organisation sort', type)}
-                             onTextFilterChange={value => console.log('Organisation text filter', value)}>
-                    <FilterFacetItems items={facetItemsList1} maxInitialItems={3} selected={new Set()}
-                                      onSelect={() => console.log('Changed organisation')}/>
+                    <FilterFacetItems items={locationFacetData} selected={locationSelected}
+                                      onSelect={state => setLocationSelected(state)}/>
                 </FilterFacet>
             </Facet>
         </FacetsSection>
