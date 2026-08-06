@@ -14,10 +14,9 @@ export interface SelectedFacet {
     onRemove: () => void;
 }
 
-export default function useSelectedFacets(): UseSelectedFacetsReturn {
+export default function useSelectedFacets(includeQuery: boolean = true): UseSelectedFacetsReturn {
     const [label, query, setQuery] = useQuery();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [facets, facetValues, facetValueLabels, _addFacetValue, removeFacetValue, clearFacets] = useFacets();
+    const {facets, facetValues, valueLabels: facetValueLabels, removeFacetValue, clearFacets} = useFacets();
 
     return [
         useMemo(() => {
@@ -39,7 +38,7 @@ export default function useSelectedFacets(): UseSelectedFacetsReturn {
                 })
             );
 
-            if (query) {
+            if (includeQuery && query) {
                 selectedFacets.unshift({
                     itemKey: 'q',
                     name: label,
@@ -49,7 +48,7 @@ export default function useSelectedFacets(): UseSelectedFacetsReturn {
             }
 
             return selectedFacets;
-        }, [label, query, setQuery, facets, facetValues, facetValueLabels, removeFacetValue]),
+        }, [includeQuery, label, query, setQuery, facets, facetValues, facetValueLabels, removeFacetValue]),
         clearFacets
     ];
 }

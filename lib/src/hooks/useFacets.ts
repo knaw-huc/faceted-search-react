@@ -1,14 +1,14 @@
 import useSearchContext from './useSearchContext';
 import type {Facets, FacetValues, FacetValueLabels} from 'store/FacetedSearchStore';
 
-type UseFacetsReturn = [
-    Facets,
-    FacetValues,
-    Record<string, FacetValueLabels>,
-    (facetKey: string, value: string) => void,
-    (facetKey: string, value: string) => void,
-    () => void,
-];
+interface UseFacetsReturn {
+    facets: Facets;
+    facetValues: FacetValues;
+    valueLabels: Record<string, FacetValueLabels>;
+    addFacetValue: (facetKey: string, value: string) => void;
+    removeFacetValue: (facetKey: string, value: string) => void;
+    clearFacets: () => void;
+}
 
 export default function useFacets(): UseFacetsReturn {
     const facets = useSearchContext(s => s.facets);
@@ -18,5 +18,5 @@ export default function useFacets(): UseFacetsReturn {
     const removeFacetValue = useSearchContext(s => s.removeFacetValue);
     const clearFacets = useSearchContext(s => s.clearFacets);
 
-    return [facets, facetValues, valueLabels, addFacetValue, removeFacetValue, clearFacets];
+    return {facets, facetValues, valueLabels, addFacetValue, removeFacetValue, clearFacets};
 }

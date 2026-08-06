@@ -270,16 +270,18 @@ The hook returns an object with the values:
 
 ### Hook `useFacets`
 
-The `useFacets` hook is used to work with the state of all facets in the search interface. It returns the following
+The `useFacets` hook is used to work with the state of all facets in the search interface. It returns an object with the
 values:
 
-1. `Record<string, Facet>`: An object containing all registered facets, where the keys are the facet keys and the values
-   are objects with the facet's label and a function to get a human-readable value for a given value.
-2. `Record<string, string[]>`: An object containing the current values for all facets, where the keys are the facet keys
-   and the values are arrays of selected values.
-3. `(facetKey: string, value: string) => void`: A function to add a value for a specific facet.
-4. `(facetKey: string, value: string) => void`: A function to remove a value for a specific facet.
-5. `() => void`: A function to clear all (selected/active) facets.
+1. `facets`: `Record<string, Facet>`: An object containing all registered facets, where the keys are the facet keys and
+   the values are objects with the facet's label and a function to get a human-readable value for a given value.
+2. `facetValues`: `Record<string, string[]>`: An object containing the current values for all facets, where the keys are
+   the facet keys and the values are arrays of selected values.
+3. `valueLabels`: `Record<string, Record<string, string>>`: An object containing the labels for values of all facets,
+   where the keys are the facet keys and the values are a mapping for a value to a label.
+4. `addFacetValue`: `(facetKey: string, value: string) => void`: A function to add a value for a specific facet.
+5. `removeFacetValue`: `(facetKey: string, value: string) => void`: A function to remove a value for a specific facet.
+6. `clearFacets`: `() => void`: A function to clear all (selected/active) facets.
 
 ```ts
 interface Facet {
@@ -391,6 +393,20 @@ interface useDateRangeFacetReturn {
 }
 ```
 
+### Hook `useSelectedFacets`
+
+The `useSelectedFacets` hook is used to fetch all the selected facets. It returns a list of selected facets of type
+`SelectedFacet` and a function to clear all selected facets.
+
+```ts
+interface SelectedFacet {
+    itemKey: string;
+    name?: string;
+    label: ReactNode;
+    onRemove: () => void;
+}
+```
+
 ### Hook `useSearchResults`
 
 The `useSearchResults` hook is used to fetch the search results `SearchResults` based on the current search state.
@@ -487,7 +503,9 @@ of dates.
 ### Component `HookedSelectedFacets`
 
 The `HookedSelectedFacets` component is a wrapper around the `SelectedFacets` component that uses the `useFacets` hook
-to manage the selected facets. It displays the currently selected facets and allows users to clear them.
+and the `useSelectedFacets` hook to manage the selected facets. It displays the currently selected facets and allows
+users to clear them. You can pass an `includeQuery` prop to indicate if the search query should be shown as well, which
+defaults to `true`.
 
 ### Component `HookedPagination`
 
