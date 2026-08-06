@@ -1,4 +1,4 @@
-import type {FilterFacetItem, FilterFacetState, Sort} from '../lib';
+import type {FilterFacetItem, FilterFacetState, Sort} from '@knaw-huc/faceted-search-react';
 
 export const nameFacetData = [
     {

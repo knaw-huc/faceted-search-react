@@ -1,69 +1,14 @@
 {
-  "name": "@knaw-huc/faceted-search-react",
-  "version": "0.0.19",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knaw-huc/faceted-search-react"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./style.css": "./dist/faceted-search-react.css",
-    "./huygens.css": "./dist/huygens.css",
-    "./iisg.css": "./dist/iisg.css",
-    "./ineo.css": "./dist/ineo.css",
-    "./meertens.css": "./dist/meertens.css"
-  },
-  "files": [
-    "dist"
-  ],
-  "sideEffects": [
-    "**/*.css"
+  "name": "faceted-search-react",
+  "private": true,
+  "workspaces": [
+    "lib",
+    "app"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@base-ui/react": "^1.6.0",
-    "@heroicons/react": "^2.2.0",
-    "@internationalized/date": "^3.12.2",
-    "d3": "^7.9.0",
-    "dompurify": "^3.4.12",
-    "react-aria-components": "^1.19.0",
-    "tailwindcss-react-aria-components": "^2.2.0",
-    "use-zustand": "^0.2.0",
-    "zustand": "^5.0.14"
-  },
-  "peerDependencies": {
-    "react": "19",
-    "react-dom": "19"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@rolldown/plugin-babel": "^0.2.3",
-    "@tailwindcss/vite": "^4.3.2",
-    "@types/d3": "^7.4.3",
-    "@types/node": "^25.9.5",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
-    "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^10.7.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.3",
-    "globals": "^17.7.0",
-    "tailwindcss": "^4.3.2",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.64.0",
-    "unplugin-dts": "^1.0.3",
-    "vite": "^8.1.5"
+    "build": "npm run build --workspace=lib",
+    "dev": "npm run dev --workspace=app",
+    "dev:lib": "npm run dev --workspace=lib",
+    "publish:lib": "npm publish --workspace=lib"
   }
 }

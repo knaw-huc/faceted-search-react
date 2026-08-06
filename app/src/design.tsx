@@ -17,7 +17,7 @@ import {
     ResultsView,
     SearchFacet,
     SelectedFacets
-} from '../lib';
+} from '@knaw-huc/faceted-search-react';
 
 const selectedFacets = [
     {itemKey: 'bus', label: 'bus', onRemove: () => console.log('Remove bus')},

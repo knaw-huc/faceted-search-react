@@ -1,4 +1,4 @@
-import {resolve} from 'path';
+import {copyFileSync} from 'node:fs';
 import {defineConfig, esmExternalRequirePlugin} from 'vite';
 import react, {reactCompilerPreset} from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
@@ -14,10 +14,15 @@ export default defineConfig({
         esmExternalRequirePlugin({external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime']}),
         tailwindcss(),
         dts({tsconfigPath: 'tsconfig.lib.json'}),
+        {
+            name: 'copy-tailwind-css', closeBundle() {
+                copyFileSync('src/tailwind.css', 'dist/tailwind.css');
+            }
+        },
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'lib/index.ts'),
+            entry: 'src/index.ts',
             formats: ['es'],
         },
         rolldownOptions: {

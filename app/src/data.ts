@@ -1,4 +1,4 @@
-import type {ResultCardBasicProps, ResultCardSubResultsProps} from '../lib';
+import type {ResultCardBasicProps, ResultCardSubResultsProps} from '@knaw-huc/faceted-search-react';
 
 export const resultsBasic: ResultCardBasicProps[]  = [
     {

@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "@knaw-huc/faceted-search-react/tailwind.css";
+
+@plugin "tailwindcss-react-aria-components";
+@source "../../lib/src";

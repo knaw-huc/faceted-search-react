@@ -14,8 +14,8 @@ import {
     ResultCardBasic,
     HookedPagination,
     getReadableRange, type FilterFacetItem,
-} from '../lib';
-import type {Facets, SearchState, ResultCardBasicProps, FilterFacetState} from '../lib';
+} from '@knaw-huc/faceted-search-react';
+import type {Facets, SearchState, ResultCardBasicProps, FilterFacetState} from '@knaw-huc/faceted-search-react';
 
 const facets: Facets = {
     range: {
