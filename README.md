@@ -212,12 +212,14 @@ are still being loaded. It is used within the `ResultsView` to display individua
 The `ResultCardBasic` component is a basic implementation of a search result card. It is designed to be used within the
 `ResultCard` and displays the title, description and the tags.
 
-| Parameter     | Value type | Required? | Default value | Description                                        |
-|---------------|------------|-----------|---------------|----------------------------------------------------|
-| `title`       | `string`   | ✓        |               | The title of this search result.                   |
-| `link`        | `string`   | ✓        |               | The link to the detail page of this search result. |
-| `description` | `string`   | ✓        |               | The description of this search result.             |
-| `tags`        | `string[]` |           |               | The tags for this search result.                   |
+| Parameter     | Value type | Required? | Default value | Description                                                                     |
+|---------------|------------|-----------|---------------|---------------------------------------------------------------------------------|
+| `title`       | `string`   | ✓        |               | The title of this search result.                                                |
+| `link`        | `string`   | ✓        |               | The link to the detail page of this search result.                              |
+| `description` | `string`   | ✓        |               | The description of this search result.                                          |
+| `tags`        | `string[]` |           |               | The tags for this search result.                                                |
+| `startMarker` | `string`   |           |               | If the `description` is highlighted, the start marker of the highlighted parts. |
+| `endMarker`   | `string`   |           |               | If the `description` is highlighted, the end marker of the highlighted parts.   |
 
 ### Component `ResultCardSubResults`
 
@@ -238,6 +240,17 @@ interface ResultCardSubResultsItem {
     onClick?: () => void;
 }
 ```
+
+### Component `Highlight`
+
+The `Highlight` component is designed to parse text with rendered highlighted segments.
+
+| Parameter     | Value type                                   | Required? | Default value | Description                                |
+|---------------|----------------------------------------------|-----------|---------------|--------------------------------------------|
+| `text`        | `string`                                     | ✓        |               | The text with highlighted segments.        |
+| `startMarker` | `string`                                     | ✓        |               | The start marker of the highlighted parts. |
+| `endMarker`   | `string`                                     | ✓        |               | The end marker of the highlighted parts.   |
+| `render`      | `(text: string, index: number) => ReactNode` | ✓        |               | A render function for a highlighted part.  |
 
 ## Using the search implementation hooks
 
@@ -430,6 +443,23 @@ interface Pagination {
     setPage: (page: number) => void;
     getPrevPages: (max: number) => number[];
     getNextPages: (total: number, max: number) => number[];
+}
+```
+
+### Hook `useHighlight`
+
+The `useHighlight` hook is used to parse `text` with rendered highlighted segments, indicated by a `startMarker` and an
+`endMarker`. It returns the normalized text with the offsets of each highlighted segment.
+
+```ts
+interface HighlightedText {
+   text: string;
+   spans: Offsets[];
+}
+
+interface Offsets {
+   start: number;
+   end: number;
 }
 ```
 

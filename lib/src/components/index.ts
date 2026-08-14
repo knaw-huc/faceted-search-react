@@ -3,3 +3,4 @@ export * from './hookedfacets';
 export * from './resultcards';
 export * from './results';
 export * from './hookedresults';
+export * from './utils';

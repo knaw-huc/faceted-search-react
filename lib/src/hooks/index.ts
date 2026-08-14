@@ -13,3 +13,4 @@ export {default as useSearchResults} from './useSearchResults';
 export {default as useSearchState} from './useSearchState';
 export {default as useSelectedFacets} from './useSelectedFacets';
 export {default as useTranslate} from './useTranslate';
+export {default as useHighlight, type HighlightedText, type Offsets} from './useHighlight';

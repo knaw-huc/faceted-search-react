@@ -1,14 +1,26 @@
+import {useCallback} from 'react';
+import {Highlight} from 'components/utils';
 import ResultCard from './ResultCard';
-import DOMPurify from 'dompurify';
 
 export interface ResultCardBasicProps {
     title: string;
     link: string;
     description?: string;
     tags?: string[];
+    startMarker?: string;
+    endMarker?: string;
 }
 
-export default function ResultCardBasic({title, link, description, tags}: ResultCardBasicProps) {
+export default function ResultCardBasic({
+                                            title,
+                                            link,
+                                            description,
+                                            tags,
+                                            startMarker,
+                                            endMarker
+                                        }: ResultCardBasicProps) {
+    const renderHighlight = useCallback((text: string) => <mark>{text}</mark>, []);
+
     return (
         <ResultCard>
             <a href={link} className="w-full no-underline flex flex-col col-span-4">
@@ -17,8 +29,11 @@ export default function ResultCardBasic({title, link, description, tags}: Result
                 </div>
 
                 {description && <div className="p-2 text-neutral-700">
-                    {/*{description}*/}
-                    <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
+                    {startMarker && endMarker &&
+                        <Highlight text={description} startMarker={startMarker} endMarker={endMarker}
+                                   render={renderHighlight}/>}
+
+                    {(!startMarker || !endMarker) && description}
                 </div>}
 
                 {tags && tags.length > 0 && <div className="p-2 flex gap-2">
