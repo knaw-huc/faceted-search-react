@@ -1,11 +1,10 @@
 import {createContext, useState, type ReactNode} from 'react';
 import createFacetedSearchStore from 'store/FacetedSearchStore';
-import type {Facets, SearchFn, FacetedSearchStore} from 'store/FacetedSearchStore';
+import type {Facets, FacetedSearchStore} from 'store/FacetedSearchStore';
 import {I18nProvider, type TranslateFn} from './I18nContext';
 
-interface FacetedSearchParams<R> {
+interface FacetedSearchParams {
     facets: Facets;
-    searchFn: SearchFn<R>;
     searchLabel?: string;
     pageSize?: number;
     translate?: TranslateFn;
@@ -14,20 +13,19 @@ interface FacetedSearchParams<R> {
     children: ReactNode;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components, @typescript-eslint/no-explicit-any
-export const FacetedSearchContext = createContext<FacetedSearchStore<any> | null>(null);
+// eslint-disable-next-line react-refresh/only-export-components
+export const FacetedSearchContext = createContext<FacetedSearchStore | null>(null);
 
-export default function FacetedSearch<R>({
-                                             facets,
-                                             searchFn,
-                                             searchLabel,
-                                             pageSize,
-                                             translate,
-                                             translations,
-                                             locale,
-                                             children
-                                         }: FacetedSearchParams<R>) {
-    const [store] = useState(() => createFacetedSearchStore(facets, searchFn, searchLabel, pageSize));
+export default function FacetedSearch({
+                                          facets,
+                                          searchLabel,
+                                          pageSize,
+                                          translate,
+                                          translations,
+                                          locale,
+                                          children
+                                      }: FacetedSearchParams) {
+    const [store] = useState(() => createFacetedSearchStore(facets, searchLabel, pageSize));
 
     return (
         <FacetedSearchContext.Provider value={store}>

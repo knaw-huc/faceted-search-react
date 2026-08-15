@@ -1,16 +1,16 @@
 import type {StateCreator} from 'zustand';
 import type {FacetedSearchStoreState, FacetValues, SearchState} from './FacetedSearchStore';
 
-type SearchStoreStateCreator<R> = StateCreator<FacetedSearchStoreState<R>>;
+type SearchStoreStateCreator = StateCreator<FacetedSearchStoreState>;
 
-export default function withUrlSync<R>(config: SearchStoreStateCreator<R>): SearchStoreStateCreator<R> {
+export default function withUrlSync(config: SearchStoreStateCreator): SearchStoreStateCreator {
     return (set, get, api) => {
         const store = config(partial => {
             if (typeof partial === 'function') {
                 set((prev) => {
                     const before = prev.state;
                     const result =
-                        (partial as (state: FacetedSearchStoreState<R>) => Partial<FacetedSearchStoreState<R>>)(prev);
+                        (partial as (state: FacetedSearchStoreState) => Partial<FacetedSearchStoreState>)(prev);
                     const after = result.state ?? before;
 
                     if (!areStatesEqual(before, after)) {

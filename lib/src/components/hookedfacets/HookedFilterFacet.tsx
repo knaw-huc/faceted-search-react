@@ -13,7 +13,7 @@ export interface FilterFacetState {
     facetKey: string;
     sort: Sort;
     textFilter: string;
-    selected: Set<string>;
+    selected: string[];
 }
 
 export interface HookedFilterFacetProps extends BaseFilterFacetProps, Omit<FacetProps, 'label' | 'children'> {
@@ -81,7 +81,7 @@ function HookedFilterFacetItems({
                                 }: HookedFilterFacetItemsProps) {
     const {selected, onSelect} = useFilterFacetSelection(facetKey);
     const updateFacetValueLabels = useUpdateFacetValueLabels(facetKey);
-    const items = useItems({facetKey, sort, textFilter, selected});
+    const items = useItems({facetKey, sort, textFilter, selected: [...selected].sort()});
 
     useEffect(() => updateFacetValueLabels(mapFacetResultsToValueLabels(items)), [updateFacetValueLabels, items]);
 

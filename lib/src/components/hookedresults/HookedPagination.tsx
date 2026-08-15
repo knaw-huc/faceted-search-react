@@ -1,7 +1,5 @@
-import {Suspense} from 'react';
 import {Pagination} from 'components/results';
 import usePagination from 'hooks/usePagination';
-import useSearchResults from 'hooks/useSearchResults';
 
 function getUrlForPage(page: number): string {
     const url = new URL(window.location.href);
@@ -10,16 +8,10 @@ function getUrlForPage(page: number): string {
 }
 
 export default function HookedPagination() {
-    return (
-        <Suspense>
-            <SuspendedPagination/>
-        </Suspense>
-    );
-}
+    const {page, pageSize, total, getPrevPages, getNextPages} = usePagination();
 
-function SuspendedPagination() {
-    const {total} = useSearchResults();
-    const {page, pageSize, getPrevPages, getNextPages} = usePagination();
+    if (total === 0)
+        return null;
 
     const totalPages = Math.ceil(total / pageSize);
     const prevPages: [number, string][] = getPrevPages(4).map((p => [p, getUrlForPage(p)]));
@@ -35,6 +27,6 @@ function SuspendedPagination() {
     };
 
     return (
-        <Pagination current={page} prev={prev} next={next} pages={pages} />
+        <Pagination current={page} prev={prev} next={next} pages={pages}/>
     );
 }

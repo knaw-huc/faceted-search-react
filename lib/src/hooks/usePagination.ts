@@ -3,9 +3,10 @@ import useSearchContext from './useSearchContext';
 interface Pagination {
     page: number;
     pageSize: number;
+    total: number;
     setPage: (page: number) => void;
     getPrevPages: (max: number) => number[];
-    getNextPages: (total: number, max: number) => number[];
+    getNextPages: (totalPages: number, max: number) => number[];
 }
 
 function getPages(noPages: number, startPage: number = 1): number[] {
@@ -25,13 +26,15 @@ function getNextPages(curPage: number, totalPages: number, maxPages: number = 4)
 export default function usePagination(): Pagination {
     const page = useSearchContext(s => s.state.page);
     const pageSize = useSearchContext(s => s.pageSize);
+    const total = useSearchContext(s => s.total);
     const setPage = useSearchContext(s => s.setPage);
 
     return {
         page,
         pageSize,
+        total,
         setPage,
         getPrevPages: (max: number = 4) => getPrevPages(page, max),
-        getNextPages: (total: number, max: number = 4) => getNextPages(page, total, max),
+        getNextPages: (totalPages: number, max: number = 4) => getNextPages(page, totalPages, max),
     };
 }

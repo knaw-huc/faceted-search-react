@@ -1,6 +1,6 @@
 import {use} from 'react';
-import {resultsBasic} from './data';
 import {fetchFacetItems} from './filterFacetData';
+import {fetchResults} from './resultsData';
 import Layout from './components/Layout';
 import ContentWithAsides from './components/ContentWithAsides';
 import {
@@ -15,7 +15,13 @@ import {
     HookedPagination,
     getReadableRange, type FilterFacetItem,
 } from '@knaw-huc/faceted-search-react';
-import type {Facets, SearchState, ResultCardBasicProps, FilterFacetState} from '@knaw-huc/faceted-search-react';
+import type {
+    Facets,
+    ResultCardBasicProps,
+    SearchState,
+    SearchResults,
+    FilterFacetState
+} from '@knaw-huc/faceted-search-react';
 
 const facets: Facets = {
     range: {
@@ -32,6 +38,7 @@ const facets: Facets = {
 
 const nameItemsCache = new Map<string, Promise<FilterFacetItem[]>>();
 const locationItemsCache = new Map<string, Promise<FilterFacetItem[]>>();
+const resultsCache = new Map<string, Promise<SearchResults<ResultCardBasicProps>>>();
 
 function useItems(state: FilterFacetState) {
     const cacheKey = JSON.stringify(state);
@@ -42,13 +49,12 @@ function useItems(state: FilterFacetState) {
     return use(cache.get(cacheKey)!);
 }
 
-async function searchFn(state: SearchState) {
-    console.log('Search called', state);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return {
-        items: resultsBasic,
-        total: resultsBasic.length
-    };
+function useResults(state: SearchState) {
+    const cacheKey = JSON.stringify(state);
+    if (!resultsCache.has(cacheKey))
+        resultsCache.set(cacheKey, fetchResults(state));
+
+    return use(resultsCache.get(cacheKey)!);
 }
 
 export default function Context() {
@@ -56,12 +62,12 @@ export default function Context() {
 
     return (
         <Layout>
-            <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search" pageSize={pageSize}>
+            <FacetedSearch facets={facets} searchLabel="Search" pageSize={pageSize}>
                 <ContentWithAsides leftAside={<AllFacets/>}>
                     <h2 className="mb-4">Results</h2>
 
                     <HookedSelectedFacets/>
-                    <HookedResultsView<ResultCardBasicProps> id={result => result.title}>
+                    <HookedResultsView<ResultCardBasicProps> useResults={useResults} id={result => result.title}>
                         {results => <ResultCardBasic {...results}/>}
                     </HookedResultsView>
                     <HookedPagination/>

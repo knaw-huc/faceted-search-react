@@ -3,5 +3,5 @@ import useSearchContext from './useSearchContext';
 import type {FacetedSearchStoreState, SearchState} from 'store/FacetedSearchStore';
 
 export default function useSearchState(): SearchState {
-    return useSearchContext(useShallow<FacetedSearchStoreState<never>, SearchState>(s => s.state));
+    return useSearchContext(useShallow<FacetedSearchStoreState, SearchState>(s => s.state));
 }

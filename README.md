@@ -25,17 +25,15 @@ import {FacetedSearch} from '@knaw-huc/faceted-search-react';
 
 function App() {
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} searchLabel="Search for" pageSize={pageSize}>
+        <FacetedSearch facets={facets} searchLabel="Search for" pageSize={pageSize}>
             <YourAppComponents/>
         </FacetedSearch>
     );
 }
 ```
 
-The `facets` lists all facets with their key, label and a rendering function of the value. The `searchFn` is a function
-that takes a `SearchState` object with the current search state and returns the search results (or a promise of search
-results): `SearchResults<R>`. The `searchLabel` provides the label for the search box. The `pageSize` is the number of
-results to show per page.
+The `facets` lists all facets with their key, label and a rendering function of the value. The `searchLabel` provides
+the label for the search box. The `pageSize` is the number of results to show per page.
 
 ```ts
 type Facets = Record<string, Facet>;
@@ -46,6 +44,7 @@ interface Facet {
 }
 
 interface SearchState {
+    query?: string;
     facetValues: Record<string, string[]>;
     page: number;
     sort?: string;
@@ -420,29 +419,24 @@ interface SelectedFacet {
 }
 ```
 
-### Hook `useSearchResults`
+### Hook `useUpdateTotal`
 
-The `useSearchResults` hook is used to fetch the search results `SearchResults` based on the current search state.
-
-```ts
-interface SearchResults<R> {
-    items: R[];
-    total: number;
-}
-```
+The `useUpdateTotal` hook publishes the total number of search results into the store, so components that do not fetch
+the results themselves, such as the pagination, still know how many there are.
 
 ### Hook `usePagination`
 
 The `usePagination` hook is used to manage the pagination state of the search results. It returns a `Pagination` object
-with the current page, page size, and functions to navigate through the pages.
+with the current page, page size, total number of results, and functions to navigate through the pages.
 
 ```ts
 interface Pagination {
     page: number;
     pageSize: number;
+    total: number;
     setPage: (page: number) => void;
     getPrevPages: (max: number) => number[];
-    getNextPages: (total: number, max: number) => number[];
+    getNextPages: (totalPages: number, max: number) => number[];
 }
 ```
 
@@ -453,13 +447,13 @@ The `useHighlight` hook is used to parse `text` with rendered highlighted segmen
 
 ```ts
 interface HighlightedText {
-   text: string;
-   spans: Offsets[];
+    text: string;
+    spans: Offsets[];
 }
 
 interface Offsets {
-   start: number;
-   end: number;
+    start: number;
+    end: number;
 }
 ```
 
@@ -540,18 +534,20 @@ defaults to `true`.
 ### Component `HookedPagination`
 
 The `HookedPagination` component is a wrapper around the `Pagination` component that uses the `usePagination` hook to
-manage the pagination state and the `useSearchResults` hook to determine the total search result size. It provides
-pagination controls for navigating through search results.
+manage the pagination state and to read the total search result size. It provides pagination controls for navigating
+through search results.
 
 ### Component `HookedResultsView`
 
-The `HookedResultsView` component is a wrapper around the `ResultsView` component that uses the `useSearchResults` hook
-to fetch the search results.
+The `HookedResultsView` component is a wrapper around the `ResultsView` component. It provides the `Suspense` boundary
+for the results and publishes the total through `useUpdateTotal`. Supply the `useResults` hook the component can use to
+fetch the results.
 
-| Parameter  | Value type                 | Required? | Default value | Description                                           |
-|------------|----------------------------|-----------|---------------|-------------------------------------------------------|
-| `id`       | `(result: C) => Key`       | ✓        |               | A function to determine the key for the given result. |
-| `children` | `(result: C) => ReactNode` | ✓        |               | A render function for the given result.               |
+| Parameter    | Value type                                  | Required? | Default value | Description                                           |
+|--------------|---------------------------------------------|-----------|---------------|-------------------------------------------------------|
+| `useResults` | `(state: ResultsState) => SearchResults<C>` | ✓        |               | Hook returning the results for the given state.       |
+| `id`         | `(result: C) => Key`                        | ✓        |               | A function to determine the key for the given result. |
+| `children`   | `(result: C) => ReactNode`                  | ✓        |               | A render function for the given result.               |
 
 ## Internationalization (i18n)
 
@@ -588,7 +584,7 @@ function App() {
     const locale = myLocale();
 
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} translate={translate} locale={locale}>
+        <FacetedSearch facets={facets} translate={translate} locale={locale}>
             <YourAppComponents/>
         </FacetedSearch>
     );
@@ -605,7 +601,7 @@ function App() {
     const locale = myLocale();
 
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} translate={t} locale={locale}>
+        <FacetedSearch facets={facets} translate={t} locale={locale}>
             <YourAppComponents/>
         </FacetedSearch>
     );
@@ -625,7 +621,7 @@ const myTranslations = {
 
 function App() {
     return (
-        <FacetedSearch facets={facets} searchFn={searchFn} translations={myTranslations}>
+        <FacetedSearch facets={facets} translations={myTranslations}>
             <YourAppComponents/>
         </FacetedSearch>
     );
