@@ -7,6 +7,7 @@ interface FacetedSearchParams {
     facets: Facets;
     searchLabel?: string;
     pageSize?: number;
+    syncPageToUrl?: boolean;
     translate?: TranslateFn;
     translations?: Record<string, string>;
     locale?: string | Intl.Locale;
@@ -20,12 +21,13 @@ export default function FacetedSearch({
                                           facets,
                                           searchLabel,
                                           pageSize,
+                                          syncPageToUrl,
                                           translate,
                                           translations,
                                           locale,
                                           children
                                       }: FacetedSearchParams) {
-    const [store] = useState(() => createFacetedSearchStore(facets, searchLabel, pageSize));
+    const [store] = useState(() => createFacetedSearchStore(facets, searchLabel, pageSize, syncPageToUrl));
 
     return (
         <FacetedSearchContext.Provider value={store}>

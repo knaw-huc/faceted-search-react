@@ -11,7 +11,7 @@ export interface SearchResults<R> {
     total: number;
 }
 
-interface HookedResultsViewProps<C extends object> {
+export interface HookedResultsViewProps<C extends object> {
     useResults: (state: SearchState) => SearchResults<C>;
     id: (result: C) => Key;
     children: (result: C) => ReactNode;

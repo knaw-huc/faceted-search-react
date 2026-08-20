@@ -1,5 +1,5 @@
 import {type ReactNode, Suspense} from 'react';
-import Spinner from 'components/utils/Spinner';
+import ResultsLoading from 'components/utils/ResultsLoading';
 
 export default function ResultsView({children}: { children: ReactNode }) {
     return (
@@ -8,13 +8,5 @@ export default function ResultsView({children}: { children: ReactNode }) {
                 {children}
             </ul>
         </Suspense>
-    );
-}
-
-function ResultsLoading() {
-    return (
-        <div className="flex flex-row justify-center">
-            <Spinner/>
-        </div>
     );
 }

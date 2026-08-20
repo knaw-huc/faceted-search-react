@@ -13,14 +13,15 @@ import {
     HookedResultsView,
     ResultCardBasic,
     HookedPagination,
-    getReadableRange, type FilterFacetItem,
+    getReadableRange,
 } from '@knaw-huc/faceted-search-react';
 import type {
     Facets,
     ResultCardBasicProps,
     SearchState,
     SearchResults,
-    FilterFacetState
+    FilterFacetState,
+    FilterFacetItem
 } from '@knaw-huc/faceted-search-react';
 
 const facets: Facets = {

@@ -39,7 +39,12 @@ export interface FacetedSearchStoreState {
 
 export type FacetedSearchStore = StoreApi<FacetedSearchStoreState>;
 
-export default function createFacetedSearchStore(facets: Facets, searchLabel?: string, pageSize?: number) {
+export default function createFacetedSearchStore(
+    facets: Facets,
+    searchLabel?: string,
+    pageSize?: number,
+    syncPageToUrl?: boolean,
+) {
     return createStore<FacetedSearchStoreState>()(
         withUrlSync((set, get) => ({
             state: {
@@ -60,7 +65,11 @@ export default function createFacetedSearchStore(facets: Facets, searchLabel?: s
                 if (query === undefined || query === '') {
                     query = undefined;
                 }
-                set(s => ({state: {...s.state, query}}));
+                set(s => {
+                    if (s.state.query === query)
+                        return s;
+                    return {state: {...s.state, query, page: 1}};
+                });
             },
 
             updateFacetValues: (facets: FacetValues) => {
@@ -131,6 +140,6 @@ export default function createFacetedSearchStore(facets: Facets, searchLabel?: s
             setTotal: (total: number) => {
                 set(s => s.total === total ? s : {total});
             },
-        }))
+        }), {syncPageToUrl})
     );
 }

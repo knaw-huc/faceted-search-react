@@ -3,7 +3,11 @@ import type {FacetedSearchStoreState, FacetValues, SearchState} from './FacetedS
 
 type SearchStoreStateCreator = StateCreator<FacetedSearchStoreState>;
 
-export default function withUrlSync(config: SearchStoreStateCreator): SearchStoreStateCreator {
+export interface UrlSyncOptions {
+    syncPageToUrl?: boolean;
+}
+
+export default function withUrlSync(config: SearchStoreStateCreator, {syncPageToUrl = true}: UrlSyncOptions = {}): SearchStoreStateCreator {
     return (set, get, api) => {
         const store = config(partial => {
             if (typeof partial === 'function') {
@@ -14,7 +18,7 @@ export default function withUrlSync(config: SearchStoreStateCreator): SearchStor
                     const after = result.state ?? before;
 
                     if (!areStatesEqual(before, after)) {
-                        updateSearchParamsFromSearchState(after);
+                        updateSearchParamsFromSearchState(after, syncPageToUrl);
                     }
 
                     return result;
@@ -25,17 +29,17 @@ export default function withUrlSync(config: SearchStoreStateCreator): SearchStor
                 const after = partial.state ?? before;
 
                 if (!areStatesEqual(before, after)) {
-                    updateSearchParamsFromSearchState(after);
+                    updateSearchParamsFromSearchState(after, syncPageToUrl);
                 }
 
                 set(partial);
             }
         }, get, api);
 
-        store.state = parseSearchParamsToSearchState();
+        store.state = parseSearchParamsToSearchState(syncPageToUrl);
 
         window.addEventListener('popstate', () => {
-            const newState = parseSearchParamsToSearchState();
+            const newState = parseSearchParamsToSearchState(syncPageToUrl);
             const current = get().state;
             if (!areStatesEqual(current, newState)) {
                 set({state: newState});
@@ -50,10 +54,10 @@ function areStatesEqual(a: SearchState, b: SearchState) {
     return JSON.stringify(a) === JSON.stringify(b);
 }
 
-function updateSearchParamsFromSearchState(state: SearchState) {
+function updateSearchParamsFromSearchState(state: SearchState, syncPageToUrl: boolean) {
     const params = new URLSearchParams();
 
-    if (state.page > 1) {
+    if (syncPageToUrl && state.page > 1) {
         params.set('page', String(state.page));
     }
     if (state.query) {
@@ -73,7 +77,7 @@ function updateSearchParamsFromSearchState(state: SearchState) {
     window.history.replaceState(null, '', newUrl);
 }
 
-function parseSearchParamsToSearchState(): SearchState {
+function parseSearchParamsToSearchState(syncPageToUrl: boolean): SearchState {
     const params = new URLSearchParams(window.location.search);
     const facetValues: FacetValues = {};
 
@@ -90,7 +94,7 @@ function parseSearchParamsToSearchState(): SearchState {
 
     return {
         query: params.get('q') || undefined,
-        page: parseInt(params.get('page') || '1', 10),
+        page: syncPageToUrl ? parseInt(params.get('page') || '1', 10) : 1,
         sort: params.get('sort') || undefined,
         facetValues,
     };

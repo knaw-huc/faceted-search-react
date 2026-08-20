@@ -33,7 +33,8 @@ function App() {
 ```
 
 The `facets` lists all facets with their key, label and a rendering function of the value. The `searchLabel` provides
-the label for the search box. The `pageSize` is the number of results to show per page.
+the label for the search box. The `pageSize` is the number of results to show per page. The `syncPageToUrl` parameter
+can be used together with infinite scrolling paging to disable URL sync of the current page.
 
 ```ts
 type Facets = Record<string, Facet>;
@@ -548,6 +549,10 @@ fetch the results.
 | `useResults` | `(state: ResultsState) => SearchResults<C>` | ✓        |               | Hook returning the results for the given state.       |
 | `id`         | `(result: C) => Key`                        | ✓        |               | A function to determine the key for the given result. |
 | `children`   | `(result: C) => ReactNode`                  | ✓        |               | A render function for the given result.               |
+
+### Component `HookedInfiniteResultsView`
+
+The `HookedInfiniteResultsView` component is an infinite paging alternative to `HookedResultsView`.
 
 ## Internationalization (i18n)
 
