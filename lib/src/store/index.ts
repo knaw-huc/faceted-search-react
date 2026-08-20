@@ -1,1 +1,1 @@
-export type {Facets, FacetValues, SearchState, SearchResults} from './FacetedSearchStore';
+export type {Facets, FacetValues, SearchState} from './FacetedSearchStore';

@@ -18,11 +18,6 @@ export interface Facet {
     valueRenderer?: (value: string, valueLabel?: string) => string;
 }
 
-export interface SearchResults<R> {
-    items: R[];
-    total: number;
-}
-
 export interface FacetedSearchStoreState {
     state: SearchState;
     facets: Facets;

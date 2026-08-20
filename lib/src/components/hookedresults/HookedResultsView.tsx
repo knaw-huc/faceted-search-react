@@ -4,7 +4,12 @@ import useSearchState from 'hooks/useSearchState';
 import useUpdateTotal from 'hooks/useUpdateTotal';
 
 import type {Key, ReactNode} from 'react';
-import type {SearchResults, SearchState} from 'store/FacetedSearchStore';
+import type {SearchState} from 'store/FacetedSearchStore';
+
+export interface SearchResults<R> {
+    items: R[];
+    total: number;
+}
 
 interface HookedResultsViewProps<C extends object> {
     useResults: (state: SearchState) => SearchResults<C>;
