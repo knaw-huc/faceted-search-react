@@ -8,7 +8,12 @@ function getUrlForPage(page: number): string {
 }
 
 export default function HookedPagination() {
-    const {page, pageSize, total, getPrevPages, getNextPages} = usePagination();
+    const {page, pageSize, total, setPage, getPrevPages, getNextPages} = usePagination();
+
+    function onPageChange(page: number) {
+        setPage(page);
+        window.scrollTo(0, 0);
+    }
 
     if (total === 0)
         return null;
@@ -27,6 +32,6 @@ export default function HookedPagination() {
     };
 
     return (
-        <Pagination current={page} prev={prev} next={next} pages={pages}/>
+        <Pagination current={page} prev={prev} next={next} pages={pages} onPageChange={onPageChange}/>
     );
 }
