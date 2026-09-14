@@ -18,6 +18,7 @@ export interface FilterFacetItemsProps {
     maxInitialItems?: number;
     showAmount?: boolean;
     itemsClosed?: boolean;
+    initialLevels?: number;
     onSelect: (selected: Set<string>) => void;
 }
 
@@ -33,6 +34,7 @@ export default function FilterFacetItems({
                                              maxInitialItems,
                                              showAmount = true,
                                              itemsClosed = false,
+                                             initialLevels = 1,
                                              onSelect
                                          }: FilterFacetItemsProps) {
     const {t} = useTranslate();
@@ -42,18 +44,18 @@ export default function FilterFacetItems({
     const hasChildren = items.some(item => item.children && item.children.length > 0);
 
     const expandedKeys = useMemo(() => itemsClosed ? new Set<string>() : (() => {
-        const addExpandingKeys = (item: FilterFacetItem) => {
-            if (item.children) {
+        const addExpandingKeys = (item: FilterFacetItem, level: number = 0) => {
+            if (item.children && level < initialLevels) {
                 keys.add(item.itemKey);
-                item.children.map(addExpandingKeys);
+                item.children.map(i => addExpandingKeys(i, level + 1));
             }
         };
 
         const keys = new Set<string>();
-        filteredItems.map(addExpandingKeys);
+        filteredItems.map(i => addExpandingKeys(i, 0));
 
         return keys;
-    })(), [itemsClosed, filteredItems]);
+    })(), [itemsClosed, filteredItems, initialLevels]);
 
     return (
         <Hierarchy items={filteredItems} selected={selected} setSelected={onSelect}
