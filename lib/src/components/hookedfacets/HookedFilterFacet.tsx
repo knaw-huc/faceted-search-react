@@ -19,11 +19,13 @@ export interface FilterFacetState {
 export interface HookedFilterFacetProps extends BaseFilterFacetProps, Omit<FacetProps, 'label' | 'children'> {
     allowFilter?: boolean;
     allowSort?: boolean;
+    initialLevels?: number;
 }
 
 interface HookedFilterFacetItemsProps extends BaseFilterFacetProps {
     sort: Sort;
     textFilter: string;
+    initialLevels: number;
 }
 
 interface BaseFilterFacetProps {
@@ -55,6 +57,7 @@ export default function HookedFilterFacet({
                                               itemsClosed = false,
                                               maxInitialItems,
                                               useItems,
+                                              initialLevels = 1,
                                           }: HookedFilterFacetProps) {
     const {label, sort, textFilter, onTextFilterChange, onSort} = useFilterFacet(facetKey);
 
@@ -64,7 +67,8 @@ export default function HookedFilterFacet({
                          onSort={allowSort ? onSort : undefined} sort={sort}>
                 <HookedFilterFacetItems facetKey={facetKey} sort={sort} textFilter={textFilter}
                                         useItems={useItems} maxInitialItems={maxInitialItems}
-                                        showAmount={showAmount} itemsClosed={itemsClosed}/>
+                                        showAmount={showAmount} itemsClosed={itemsClosed}
+                                        initialLevels={initialLevels} />
             </FilterFacet>
         </Facet>
     );
@@ -77,6 +81,7 @@ function HookedFilterFacetItems({
                                     useItems,
                                     maxInitialItems,
                                     showAmount,
+                                    initialLevels,
                                     itemsClosed
                                 }: HookedFilterFacetItemsProps) {
     const {selected, onSelect} = useFilterFacetSelection(facetKey);
@@ -86,7 +91,7 @@ function HookedFilterFacetItems({
     useEffect(() => updateFacetValueLabels(mapFacetResultsToValueLabels(items)), [updateFacetValueLabels, items]);
 
     return (
-        <FilterFacetItems items={items} selected={selected} onSelect={onSelect}
+        <FilterFacetItems items={items} selected={selected} onSelect={onSelect} initialLevels={initialLevels}
                           maxInitialItems={maxInitialItems} showAmount={showAmount} itemsClosed={itemsClosed}/>
     );
 }
