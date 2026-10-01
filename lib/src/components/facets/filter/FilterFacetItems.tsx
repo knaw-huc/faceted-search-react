@@ -60,7 +60,8 @@ export default function FilterFacetItems({
     return (
         <Hierarchy items={filteredItems} selected={selected} setSelected={onSelect}
                    getKey={item => item.itemKey} getChildren={item => item.children}>
-            <Tree selectionMode="multiple" aria-label={t('filter.aria')} defaultExpandedKeys={expandedKeys}>
+            <Tree selectionMode="multiple" aria-label={t('filter.aria')} defaultExpandedKeys={expandedKeys}
+                  className="max-h-80 overflow-y-auto pr-4">
                 <TreeItems items={filteredItems} showAmount={showAmount} facetHasChildren={hasChildren}/>
             </Tree>
 
