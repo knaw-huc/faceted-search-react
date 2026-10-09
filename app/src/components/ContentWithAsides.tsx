@@ -6,16 +6,16 @@ export default function ContentWithAsides({children, leftAside, rightAside}: {
     rightAside?: ReactNode;
 }) {
     return (
-        <div className="flex flex-col lg:flex-row xl:gap-10 h-full grow max-w-(--site-max-width) w-full mt-8 lg:mb-16">
-            {leftAside && <div className="w-full lg:w-96 px-4 pb-6">
+        <div className="content-with-asides">
+            {leftAside && <div className="aside">
                 {leftAside}
             </div>}
 
-            <div className="grow px-4 pb-20">
+            <div className="main">
                 {children}
             </div>
 
-            {rightAside && <div className="w-full lg:w-96 px-4 pb-6">
+            {rightAside && <div className="aside">
                 {rightAside}
             </div>}
         </div>
