@@ -1,18 +1,35 @@
-.barchart-bar-background {
-    fill: white;
-}
-
-.barchart-bar-fill {
+.barchart-bar {
+    pointer-events: all;
+    fill: var(--color-support-001);
     transition: all 0.15s ease-in-out;
     animation: show 0.15s ease-in-out forwards;
     transform-origin: bottom right;
     transform: scale(0);
-    opacity: .4;
-}
 
-.barchart-bar.active {
-    .barchart-bar-fill {
+    .background {
+        fill: none;
+    }
+
+    .fill {
+        transition: all 0.15s ease-in-out;
+        animation: show 0.15s ease-in-out forwards;
+        transform-origin: bottom right;
+        transform: scale(0);
+        opacity: .4;
+    }
+
+    &.active .fill {
         opacity: .8;
+    }
+
+    &:hover {
+        .background {
+            fill: var(--color-neutral-50);
+        }
+
+        .fill {
+            opacity: 1;
+        }
     }
 }
 
@@ -24,41 +41,14 @@
 
 .tooltip {
     pointer-events: none;
-    position: fixed;
-    display: inline-block;
     background-color: #FFF;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     transition: all 0.15s ease-in-out;
     font-size: .6em;
     padding: .25em .5em;
     border-radius: .5em;
-}
 
-.barchart-bar {
-    height: 100%;
-
-    transition: all 0.15s ease-in-out;
-    animation: show 0.15s ease-in-out forwards;
-    transform-origin: bottom right;
-    transform: scale(0);
-
-    text {
-        visibility: hidden;
-        font-weight: lighter;
-        z-index: -10;
-    }
-
-    &:hover {
-        text {
-            visibility: visible;
-        }
-
-        .barchart-bar-background {
-            fill: var(--color-neutral-50);
-        }
-
-        .barchart-bar-fill {
-            opacity: 1;
-        }
+    .range {
+        font-weight: 700;
     }
 }

@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {results, resultsBasic} from './data';
+import {numericTerms} from './rangeFacetData';
 import {nameFacetData, locationFacetData} from './filterFacetData';
 import Layout from './components/Layout';
 import SiteHeader from './components/SiteHeader';
@@ -40,7 +41,9 @@ function Facets() {
             <SearchFacet onSearch={query => console.log('Search query', query)}/>
 
             <Facet label="Numeric range">
-                <NumericRangeFacet min={0} max={1000} step={1}
+                <NumericRangeFacet min={numericTerms[0].start as number}
+                                   max={numericTerms.at(-1)!.end as number}
+                                   step={1} terms={numericTerms}
                                    onChange={(min, max) => console.log('Numeric range', min, max)}/>
             </Facet>
 

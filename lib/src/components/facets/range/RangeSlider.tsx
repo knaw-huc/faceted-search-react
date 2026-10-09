@@ -50,7 +50,7 @@ export default function RangeSlider({
         <Slider aria-label={t('range.slider.aria')}
                 value={curMinMax} minValue={min} maxValue={max} step={step}
                 onChange={setCurMinMax} onChangeEnd={onValueCommit}>
-            {terms && <Histogram terms={terms} selection={{start: rawMinMax[0], end: rawMinMax[1]}}/>}
+            {terms && <Histogram terms={terms} selection={rawMinMax}/>}
             <RangeSliderTrack/>
             {children}
         </Slider>
