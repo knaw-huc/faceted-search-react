@@ -1,5 +1,114 @@
-@import "tailwindcss";
-@import "@knaw-huc/faceted-search-react/tailwind.css";
+@import "@knaw-huc/faceted-search-react/style.css";
 
-@plugin "tailwindcss-react-aria-components";
-@source "../../lib/src";
+h2 {
+    margin-bottom: 1rem;
+}
+
+.layout {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-with-asides {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    max-width: var(--site-max-width);
+    width: 100%;
+    margin-top: 2rem;
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+        margin-bottom: 4rem;
+    }
+
+    @media (min-width: 1280px) {
+        gap: 2.5rem;
+    }
+
+    .aside {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 1.5rem;
+
+        @media (min-width: 1024px) {
+            width: 24rem;
+        }
+    }
+
+    .main {
+        flex-grow: 1;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 5rem;
+    }
+}
+
+header {
+    padding: 0.5rem 1rem;
+    width: 100%;
+    background-color: var(--color-brand);
+    color: var(--color-header-text);
+
+    > div {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-width: var(--site-max-width);
+
+        @media (min-width: 768px) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .logo {
+        padding-right: 2rem;
+
+        > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+
+        > * {
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 0.125rem;
+        }
+
+        > a {
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition-property: background-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+            border-radius: 0.125rem;
+
+            &:hover {
+                background-color: var(--color-support-001);
+            }
+        }
+    }
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

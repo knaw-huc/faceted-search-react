@@ -14,7 +14,6 @@
       "types": "./dist/index.d.ts"
     },
     "./style.css": "./dist/faceted-search-react.css",
-    "./tailwind.css": "./dist/tailwind.css",
     "./huygens.css": "./dist/huygens.css",
     "./iisg.css": "./dist/iisg.css",
     "./ineo.css": "./dist/ineo.css",

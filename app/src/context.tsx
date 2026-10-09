@@ -65,7 +65,7 @@ export default function Context() {
         <Layout>
             <FacetedSearch facets={facets} searchLabel="Search" pageSize={pageSize}>
                 <ContentWithAsides leftAside={<AllFacets/>}>
-                    <h2 className="mb-4">Results</h2>
+                    <h2>Results</h2>
 
                     <HookedSelectedFacets/>
                     <HookedResultsView<ResultCardBasicProps> useResults={useResults} id={result => result.title}>
