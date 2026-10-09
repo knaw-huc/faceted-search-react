@@ -32,5 +32,10 @@ export default defineConfig({
     },
     resolve: {
         tsconfigPaths: true
+    },
+    css: {
+        modules: {
+            localsConvention: 'camelCaseOnly'
+        }
     }
 });
