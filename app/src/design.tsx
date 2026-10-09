@@ -74,12 +74,12 @@ export default function Design() {
             <SiteHeader name="DEMO" navigation={navigation}/>
 
             <ContentWithAsides leftAside={<Facets/>}>
-                <h2 className="mb-4">Results</h2>
+                <h2>Results</h2>
 
                 <SelectedFacets selectedFacets={selectedFacets}
                                 onClear={() => console.log('Clear facets')}/>
 
-                <div className="flex flex-col gap-4">
+                <div className="results">
                     <ResultsView>
                         {resultsBasic.map((resultBasic, idx) =>
                             <ResultCardBasic key={`b${idx}`} {...resultBasic}/>
