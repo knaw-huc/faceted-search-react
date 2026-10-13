@@ -1,4 +1,4 @@
-import {startTransition, useMemo} from 'react';
+import {useMemo} from 'react';
 import useFacet from './useFacet';
 
 export interface UseFilterFacetSelectionReturn {
@@ -10,7 +10,7 @@ export default function useFilterFacetSelection(facetKey: string): UseFilterFace
     const {values, setValues} = useFacet(facetKey, []);
 
     const selected = useMemo(() => new Set(Array.isArray(values) ? values : [values]), [values]);
-    const onSelect = (selected: Set<string>) => startTransition(() => setValues(Array.from(selected)));
+    const onSelect = (selected: Set<string>) => setValues(Array.from(selected));
 
     return {selected, onSelect};
 }

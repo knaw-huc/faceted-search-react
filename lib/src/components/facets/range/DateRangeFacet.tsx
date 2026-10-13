@@ -1,4 +1,4 @@
-import {startTransition, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {DateRangePicker} from 'react-aria-components';
 import {CalendarDate, parseDate} from '@internationalized/date';
 import {CalendarIcon} from '@heroicons/react/16/solid';
@@ -48,7 +48,7 @@ export default function DateRangeFacet({
 
     function onRangeChange({start, end}: { start: CalendarDate, end: CalendarDate }) {
         setCurMinMax([start, end]);
-        startTransition(() => onChange(start.toString(), end.toString()));
+        onChange(start.toString(), end.toString());
     }
 
     function onRangeChangeDays(min: number, max: number) {
