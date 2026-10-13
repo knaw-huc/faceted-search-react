@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useMemo, useDeferredValue} from 'react';
 import {Facet, FilterFacet, FilterFacetItems} from 'components/facets';
 import useFilterFacet from 'hooks/useFilterFacet';
 import useFilterFacetSelection from 'hooks/useFilterFacetSelection';
@@ -68,7 +68,7 @@ export default function HookedFilterFacet({
                 <HookedFilterFacetItems facetKey={facetKey} sort={sort} textFilter={textFilter}
                                         useItems={useItems} maxInitialItems={maxInitialItems}
                                         showAmount={showAmount} itemsClosed={itemsClosed}
-                                        initialLevels={initialLevels} />
+                                        initialLevels={initialLevels}/>
             </FilterFacet>
         </Facet>
     );
@@ -86,7 +86,10 @@ function HookedFilterFacetItems({
                                 }: HookedFilterFacetItemsProps) {
     const {selected, onSelect} = useFilterFacetSelection(facetKey);
     const updateFacetValueLabels = useUpdateFacetValueLabels(facetKey);
-    const items = useItems({facetKey, sort, textFilter, selected: [...selected].sort()});
+    const filterFacetState = useMemo<FilterFacetState>(() => ({
+        facetKey, sort, textFilter, selected: [...selected].sort()
+    }), [facetKey, sort, textFilter, selected]);
+    const items = useItems(useDeferredValue(filterFacetState));
 
     useEffect(() => updateFacetValueLabels(mapFacetResultsToValueLabels(items)), [updateFacetValueLabels, items]);
 

@@ -1,4 +1,4 @@
-import {startTransition, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import useTranslate from 'hooks/useTranslate';
 import RangeSlider, {type Term} from './RangeSlider';
 import RangeInput from './RangeInput';
@@ -37,7 +37,7 @@ export default function NumericRangeFacet({
     }
 
     function onRangeChangeCommit(min: number, max: number) {
-        startTransition(() => onChange(min, max));
+        onChange(min, max);
     }
 
     return (

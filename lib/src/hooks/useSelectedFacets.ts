@@ -1,4 +1,4 @@
-import {type ReactNode, startTransition, useMemo} from 'react';
+import {type ReactNode, useMemo} from 'react';
 import useQuery from 'hooks/useQuery';
 import useFacets from 'hooks/useFacets';
 
@@ -33,7 +33,7 @@ export default function useSelectedFacets(includeQuery: boolean = true): UseSele
                         itemKey: `${facetKey}__${value}`,
                         name: facet?.label || facetKey,
                         label,
-                        onRemove: () => startTransition(() => removeFacetValue(facetKey, value)),
+                        onRemove: () => removeFacetValue(facetKey, value),
                     };
                 })
             );
@@ -43,7 +43,7 @@ export default function useSelectedFacets(includeQuery: boolean = true): UseSele
                     itemKey: 'q',
                     name: label,
                     label: query,
-                    onRemove: () => startTransition(() => setQuery(undefined)),
+                    onRemove: () => setQuery(undefined),
                 });
             }
 
