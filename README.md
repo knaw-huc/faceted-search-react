@@ -60,6 +60,14 @@ interface SearchResults<R> {
 Within the `FacetedSearch` context, you can use the provided hooks to build your search interface. The library also
 provides hooked components that bind the basic components with these hooks.
 
+By default, `FacetedSearch` controls the search state, and syncs it with the URL. To control the state yourself, for example to sync it with your own router, pass `state` and `onStateChange`:
+
+```tsx
+<FacetedSearch facets={facets} state={state} onStateChange={setState}>
+    <YourAppComponents/>
+</FacetedSearch>
+```
+
 ## Using the basic components
 
 ### Component `FacetsSection`

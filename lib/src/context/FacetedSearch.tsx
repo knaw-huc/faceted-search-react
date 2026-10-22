@@ -1,6 +1,7 @@
-import {createContext, useState, type ReactNode} from 'react';
+import {createContext, useEffect, useState, type ReactNode} from 'react';
 import createFacetedSearchStore from 'store/FacetedSearchStore';
-import type {Facets, FacetedSearchStore} from 'store/FacetedSearchStore';
+import areStatesEqual from 'store/areStatesEqual.ts';
+import type {Facets, FacetedSearchStore, SearchState} from 'store/FacetedSearchStore';
 import {I18nProvider, type TranslateFn} from './I18nContext';
 
 interface FacetedSearchParams {
@@ -11,6 +12,8 @@ interface FacetedSearchParams {
     translate?: TranslateFn;
     translations?: Record<string, string>;
     locale?: string | Intl.Locale;
+    state?: SearchState;
+    onStateChange?: (state: SearchState) => void;
     children: ReactNode;
 }
 
@@ -25,9 +28,28 @@ export default function FacetedSearch({
                                           translate,
                                           translations,
                                           locale,
+                                          state,
+                                          onStateChange,
                                           children
                                       }: FacetedSearchParams) {
-    const [store] = useState(() => createFacetedSearchStore(facets, searchLabel, pageSize, syncPageToUrl));
+    const [store] = useState(() => createFacetedSearchStore(facets, searchLabel, pageSize, syncPageToUrl, state));
+
+    useEffect(() => {
+        if (state && !areStatesEqual(store.getState().state, state)) {
+            store.setState({state});
+        }
+    }, [store, state]);
+
+    useEffect(() => {
+        if (!state || !onStateChange) {
+            return;
+        }
+        return store.subscribe(({state: current}) => {
+            if (!areStatesEqual(current, state)) {
+                onStateChange(current);
+            }
+        });
+    }, [store, state, onStateChange]);
 
     return (
         <FacetedSearchContext.Provider value={store}>

@@ -44,10 +44,11 @@ export default function createFacetedSearchStore(
     searchLabel?: string,
     pageSize?: number,
     syncPageToUrl?: boolean,
+    initialState?: SearchState,
 ) {
     return createStore<FacetedSearchStoreState>()(
         withUrlSync((set, get) => ({
-            state: {
+            state: initialState ?? {
                 facetValues: {},
                 page: 1,
             },
@@ -140,6 +141,6 @@ export default function createFacetedSearchStore(
             setTotal: (total: number) => {
                 set(s => s.total === total ? s : {total});
             },
-        }), {syncPageToUrl})
+        }), {syncPageToUrl, syncToUrl: !initialState})
     );
 }
