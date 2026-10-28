@@ -1,13 +1,22 @@
 import type {StateCreator} from 'zustand';
 import type {FacetedSearchStoreState, FacetValues, SearchState} from './FacetedSearchStore';
+import areStatesEqual from './areStatesEqual.ts';
 
 type SearchStoreStateCreator = StateCreator<FacetedSearchStoreState>;
 
 export interface UrlSyncOptions {
     syncPageToUrl?: boolean;
+    syncToUrl?: boolean;
 }
 
-export default function withUrlSync(config: SearchStoreStateCreator, {syncPageToUrl = true}: UrlSyncOptions = {}): SearchStoreStateCreator {
+export default function withUrlSync(
+  config: SearchStoreStateCreator,
+  {syncToUrl = true, syncPageToUrl = true}: UrlSyncOptions = {}
+): SearchStoreStateCreator {
+    if (!syncToUrl) {
+        return config;
+    }
+
     return (set, get, api) => {
         const store = config(partial => {
             if (typeof partial === 'function') {
@@ -48,10 +57,6 @@ export default function withUrlSync(config: SearchStoreStateCreator, {syncPageTo
 
         return store;
     };
-}
-
-function areStatesEqual(a: SearchState, b: SearchState) {
-    return JSON.stringify(a) === JSON.stringify(b);
 }
 
 function updateSearchParamsFromSearchState(state: SearchState, syncPageToUrl: boolean) {
