@@ -1,6 +1,6 @@
 import {useMemo, useState} from 'react';
 import {ChevronDoubleDownIcon} from '@heroicons/react/24/solid';
-import {Tree, TreeItem, TreeItemContent} from 'react-aria-components';
+import {ListLayout, Tree, TreeItem, TreeItemContent, TreeLoadMoreItem, Virtualizer, type Key} from 'react-aria-components';
 import Hierarchy from 'context/Hierarchy';
 import useTranslate from 'hooks/useTranslate';
 import FilterFacetTreeItemContent from './FilterFacetTreeItemContent';
@@ -24,6 +24,7 @@ export interface FilterFacetItemsProps {
 
 interface FilterFacetTreeItemsProps {
     items: FilterFacetItem[];
+    expandedKeys: Set<Key>;
     showAmount: boolean;
     facetHasChildren: boolean;
 }
@@ -43,7 +44,7 @@ export default function FilterFacetItems({
     const filteredItems = showAll ? items : items.slice(0, maxInitialItems);
     const hasChildren = items.some(item => item.children && item.children.length > 0);
 
-    const expandedKeys = useMemo(() => itemsClosed ? new Set<string>() : (() => {
+    const initialExpandedKeys = useMemo(() => itemsClosed ? new Set<string>() : (() => {
         const addExpandingKeys = (item: FilterFacetItem, level: number = 0) => {
             if (item.children && level < initialLevels) {
                 keys.add(item.itemKey);
@@ -56,14 +57,19 @@ export default function FilterFacetItems({
 
         return keys;
     })(), [itemsClosed, filteredItems, initialLevels]);
+    const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(initialExpandedKeys);
 
     return (
         <Hierarchy items={filteredItems} selected={selected} setSelected={onSelect}
                    getKey={item => item.itemKey} getChildren={item => item.children}>
-            <Tree selectionMode="multiple" aria-label={t('filter.aria')} defaultExpandedKeys={expandedKeys}
-                  className="max-h-80 overflow-y-auto pr-1 scrollbar-gutter-stable scrollbar-thin scrollbar-thumb-(--color-support-001)">
-                <TreeItems items={filteredItems} showAmount={showAmount} facetHasChildren={hasChildren}/>
-            </Tree>
+            <Virtualizer layout={ListLayout} layoutOptions={{estimatedRowSize: 24}}>
+                <Tree selectionMode="multiple" aria-label={t('filter.aria')}
+                      expandedKeys={expandedKeys} onExpandedChange={setExpandedKeys}
+                      className="max-h-80 overflow-y-auto pr-1 scrollbar-gutter-stable scrollbar-thin scrollbar-thumb-(--color-support-001)">
+                    <TreeItems items={filteredItems} expandedKeys={expandedKeys} showAmount={showAmount}
+                               facetHasChildren={hasChildren}/>
+                </Tree>
+            </Virtualizer>
 
             {maxInitialItems && items.length > maxInitialItems &&
                 <ToggleItems isOpen={showAll} toggle={() => setShowAll(showAll => !showAll)}/>}
@@ -71,7 +77,7 @@ export default function FilterFacetItems({
     );
 }
 
-function TreeItems({items, showAmount, facetHasChildren}: FilterFacetTreeItemsProps) {
+function TreeItems({items, expandedKeys, showAmount, facetHasChildren}: FilterFacetTreeItemsProps) {
     return (
         <>
             {items.map(item => (
@@ -84,8 +90,10 @@ function TreeItems({items, showAmount, facetHasChildren}: FilterFacetTreeItemsPr
                                                         hasChildren={hasChildItems} isOpen={isExpanded}/>}
                     </TreeItemContent>
 
-                    {item.children && item.children.length > 0 &&
-                        <TreeItems items={item.children} showAmount={showAmount} facetHasChildren={facetHasChildren}/>}
+                    {item.children && item.children.length > 0 && (expandedKeys.has(item.itemKey)
+                        ? <TreeItems items={item.children} expandedKeys={expandedKeys} showAmount={showAmount}
+                                     facetHasChildren={facetHasChildren}/>
+                        : <TreeLoadMoreItem/>)}
                 </TreeItem>
             ))}
         </>
